@@ -113,3 +113,20 @@
 @media(max-width:620px){
   .mission-edit{font-size:12px;}
 }
+
+/* v2.3 crisp piggy-bank illustration */
+.pig{
+  width:82px;
+  height:72px;
+  border-radius:18px;
+  padding:4px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 9px 20px rgba(175,105,26,.15);
+}
+.pig img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  image-rendering:auto;
+}
