@@ -59,9 +59,9 @@
       <button class="card jump" data-title="Jump Sky">
         <div class="card-title">⭐ Jump Sky</div>
         <small>今日の星</small>
-        <div class="stars">★ ★ ★ ★ ☆</div>
+        <div id="stars" class="stars">☆ ☆ ☆ ☆ ☆</div>
         <p>今日もよく頑張ったね！<br>星を集めて、夜空をきれいにしよう♪</p>
-        <div class="bar"><span></span></div>
+        <div class="bar"><span id="jumpBar"></span></div>
       </button>
 
       <button class="card bank" data-title="Dream Bank">
@@ -69,7 +69,7 @@
         <small>現在のポイント</small>
         <strong id="points">0 pt</strong>
         <p>目標まであと</p>
-        <div class="bar orange"><span></span></div>
+        <div class="bar orange"><span id="pointBar"></span></div>
         <small>ごほうびリストを見る ›</small>
       </button>
     </section>
@@ -96,6 +96,29 @@
       <button>♙<small>メニュー</small></button>
     </nav>
   </main>
+
+
+  <dialog id="categoryDialog">
+    <form method="dialog" class="challenge-dialog">
+      <h2>今回は何に挑戦する？</h2>
+      <div id="categoryList" class="category-list"></div>
+      <button value="cancel" class="cancel">戻る</button>
+    </form>
+  </dialog>
+
+  <dialog id="timerDialog">
+    <div class="challenge-dialog timer-panel">
+      <small id="timerCategory"></small>
+      <h2>Challenge45</h2>
+      <div id="timerDisplay" class="timer-display">45:00</div>
+      <p id="timerMessage">深呼吸して、集中Jump！</p>
+      <div class="timer-actions">
+        <button id="pauseTimer" class="cancel">一時停止</button>
+        <button id="completeTimer">完了にする</button>
+      </div>
+      <button id="cancelTimer" class="text-button">中止して戻る</button>
+    </div>
+  </dialog>
 
   <dialog id="dialog">
     <div>
