@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#138c43">
   <title>Study☆Star</title>
-  <link rel="stylesheet" href="styles-v14.css">
+  <link rel="stylesheet" href="styles-v15.css">
 </head>
 <body>
 <main class="app">
@@ -16,21 +16,13 @@
   </header>
 
   <section class="hero-shell">
-    <div class="avatar-panel">
-      <img src="kaito-advance-v14.jpg" alt="KAITOアドヴァンス">
-    </div>
-
+    <div class="avatar-panel"><img src="kaito-advance-v15.png" alt="KAITOアドヴァンス"></div>
     <div class="message-card card">
       <div class="eyebrow">★ KAITOアドヴァンス</div>
       <h1 id="greeting">おはよう、海翔！</h1>
       <p id="adMessage">今日も最高の<br><strong>Jump</strong>にしよう！</p>
     </div>
-
-    <div class="countdown-card card">
-      <small>受検まで</small>
-      <strong id="days">あと--日</strong>
-    </div>
-
+    <div class="countdown-card card"><small>受検まで</small><strong id="days">あと--日</strong></div>
     <div class="mission-card card">
       <div class="mission-title">◎ 今日のミッション <span>☀️</span></div>
       <label><span>🎓 塾（夏期講習）15:50〜18:10</span></label>
@@ -42,114 +34,38 @@
   </section>
 
   <button id="challengeBtn" class="action-card challenge-card">
-    <span class="action-icon">🚀</span>
-    <span class="action-copy"><strong>Challenge45を始める</strong><small>本番1回分の集中Jump！</small></span>
-    <span class="go-badge">よし<br>行こう！</span><span class="chevron">›</span>
+    <span class="action-icon">🚀</span><span class="action-copy"><strong>Challenge45を始める</strong><small>本番1回分の集中Jump！</small></span>
+    <span class="go-badge">Go<br>Go！</span><span class="chevron">›</span>
+  </button>
+  <button id="recordBtn" class="action-card record-card">
+    <span class="action-icon">📖</span><span class="action-copy"><strong>学習時間を残す</strong><small>過去の日付もカレンダーから記録できるよ！</small></span><span class="chevron">›</span>
   </button>
 
-  <button id="recordBtn" class="action-card record-card">
-    <span class="action-icon">📖</span>
-    <span class="action-copy"><strong>学習時間を残す</strong><small>Challenge45以外の学習を記録しよう！</small></span>
-    <span class="chevron">›</span>
-  </button>
+  <section class="summer-card card">
+    <div class="summer-head"><div><small>夏休みミッション</small><h2>300時間チャレンジ</h2></div><span>☀️</span></div>
+    <div class="summer-numbers"><strong id="summerTotal">0時間00分</strong><small id="summerRemain">残り300時間00分</small></div>
+    <div class="progress summer"><span id="summerBar"></span></div><p id="summerRate">達成率 0.0%</p>
+  </section>
 
   <section class="dashboard-grid">
-    <button class="jump-card card" data-title="Jump Sky">
-      <div class="card-heading">⭐ Jump Sky</div><small>今日の星</small>
-      <div id="stars" class="stars">☆ ☆ ☆ ☆ ☆</div>
-      <p>今日もよく頑張ったね！<br>星を集めて、夜空をきれいにしよう♪</p>
-      <div class="progress dark"><span id="jumpBar"></span></div>
-    </button>
-
-    <button class="bank-card card" data-title="Dream Bank">
-      <div class="card-heading bank-title">🏛 Dream Bank</div><small>現在のポイント</small>
-      <strong id="points">0 pt</strong><p>次のごほうびまで</p>
-      <div class="progress light"><span id="pointBar"></span></div><small>ごほうびリストを見る ›</small>
-    </button>
+    <button class="jump-card card" data-title="Jump Sky"><div class="card-heading">⭐ Jump Sky</div><small>今日の星</small><div id="stars" class="stars">☆ ☆ ☆ ☆ ☆</div><p>今日もよく頑張ったね！<br>星を集めて、夜空をきれいにしよう♪</p><div class="progress dark"><span id="jumpBar"></span></div></button>
+    <button class="bank-card card" data-title="Dream Bank"><div class="card-heading bank-title">🏛 Dream Bank</div><small>現在のポイント</small><strong id="points">0 pt</strong><p>次のごほうびまで</p><div class="progress light"><span id="pointBar"></span></div><small>ごほうびリストを見る ›</small></button>
   </section>
-
   <section class="lower-grid">
-    <button class="info-card card" data-title="つぶやき帳">
-      <div class="card-heading green-title">🗒 つぶやき帳</div><p>今日のつぶやきを書こう！</p><small>タップして書いてみよう ✎</small>
-    </button>
-    <button class="info-card card" data-title="今後の予定">
-      <div class="card-heading green-title">🗓 今後の予定</div><p>夏期講習や模試の予定を確認</p><small>すべて見る ›</small>
-    </button>
+    <button id="historyBtn" class="info-card card"><div class="card-heading green-title">📚 学習記録</div><p id="historySummary">まだ記録がありません</p><small>記録を見る・削除する ›</small></button>
+    <button class="info-card card" data-title="つぶやき帳"><div class="card-heading green-title">🗒 つぶやき帳</div><p>今日のつぶやきを書こう！</p><small>タップして書いてみよう ✎</small></button>
   </section>
-
-  <nav class="bottom-nav">
-    <button class="active">⌂<small>ホーム</small></button>
-    <button data-title="記録">◷<small>記録</small></button>
-    <button data-title="Jump Sky">☆<small>Jump Sky</small></button>
-    <button data-title="Dream Bank">🏛<small>Dream Bank</small></button>
-    <button data-title="メニュー">♙<small>メニュー</small></button>
-  </nav>
+  <nav class="bottom-nav"><button class="active">⌂<small>ホーム</small></button><button id="navRecord">◷<small>記録</small></button><button data-title="Jump Sky">☆<small>Jump Sky</small></button><button data-title="Dream Bank">🏛<small>Dream Bank</small></button><button data-title="メニュー">♙<small>メニュー</small></button></nav>
 </main>
 
-<dialog id="categoryDialog">
-  <form method="dialog" class="dialog-card">
-    <h2>今回は何に挑戦する？</h2>
-    <div id="categoryList" class="category-list"></div>
-    <button value="cancel" class="secondary">戻る</button>
-  </form>
-</dialog>
+<dialog id="categoryDialog"><form method="dialog" class="dialog-card"><h2>今回は何に挑戦する？</h2><div id="categoryList" class="category-list"></div><button value="cancel" class="secondary">戻る</button></form></dialog>
+<dialog id="readyDialog"><div class="dialog-card ready-card"><small>選んだ学習</small><h2 id="readyCategory">自由学習</h2><div class="ready-time">45:00</div><p>まだカウントダウンは始まりません。<br>準備ができたらSTARTを押そう。</p><button id="startChallenge" class="start-button">▶ START</button><button id="backToCategory" class="text-button">カテゴリを選び直す</button><button id="closeReady" class="text-button">ホームへ戻る</button></div></dialog>
+<dialog id="timerDialog"><div class="dialog-card"><small id="timerCategory"></small><h2>Challenge45</h2><div id="timer" class="timer">45:00</div><p>深呼吸して、集中Jump！</p><div class="dialog-actions"><button id="pauseTimer" class="secondary">一時停止</button></div><button id="cancelTimer" class="text-button">中止して戻る</button><p class="timer-note">45分終了後、その日の1・2回目は55P、3回目以降は88Pが自動で加算されます。</p></div></dialog>
 
-<dialog id="readyDialog">
-  <div class="dialog-card ready-card">
-    <small>選んだ学習</small>
-    <h2 id="readyCategory">自由学習</h2>
-    <div class="ready-time">45:00</div>
-    <p>まだカウントダウンは始まりません。<br>準備ができたらSTARTを押そう。</p>
-    <button id="startChallenge" class="start-button">▶ START</button>
-    <button id="backToCategory" class="text-button">カテゴリを選び直す</button>
-    <button id="closeReady" class="text-button">ホームへ戻る</button>
-  </div>
-</dialog>
+<dialog id="recordDialog"><form method="dialog" class="dialog-card record-form"><h2>学習時間を残す</h2><p class="form-note">今日だけでなく、過去の日付にもさかのぼって記録できます。</p><label>学習日<input id="recordDate" type="date" required></label><label>カテゴリ<select id="recordCategory"></select></label><label>学習時間<div class="time-inputs"><select id="recordHours"></select><span>時間</span><select id="recordMinutes"><option value="0">0分</option><option value="5">5分</option><option value="10">10分</option><option value="15">15分</option><option value="20">20分</option><option value="30">30分</option><option value="45">45分</option></select></div></label><label>メモ（任意）<textarea id="recordMemo" rows="3" placeholder="取り組んだ内容など"></textarea></label><p class="point-note">※手入力の学習記録にはChallenge45ポイントは付きません。</p><div class="dialog-actions"><button value="cancel" class="secondary">戻る</button><button id="saveRecord">記録する</button></div></form></dialog>
 
-<dialog id="timerDialog">
-  <div class="dialog-card">
-    <small id="timerCategory"></small>
-    <h2>Challenge45</h2>
-    <div id="timer" class="timer">45:00</div>
-    <p>深呼吸して、集中Jump！</p>
-    <div class="dialog-actions"><button id="pauseTimer" class="secondary">一時停止</button></div>
-    <button id="cancelTimer" class="text-button">中止して戻る</button>
-    <p class="timer-note">ポイントは45分終了後に自動で加算されます。</p>
-  </div>
-</dialog>
-
-<dialog id="recordDialog">
-  <form method="dialog" class="dialog-card">
-    <h2>学習時間を残す</h2>
-    <label>カテゴリ<select id="recordCategory"></select></label>
-    <label>学習時間<select id="recordMinutes">
-      <option value="15">15分</option><option value="30">30分</option>
-      <option value="45">45分</option><option value="60">60分</option>
-      <option value="90">90分</option><option value="120">120分</option>
-    </select></label>
-    <div class="dialog-actions">
-      <button value="cancel" class="secondary">戻る</button>
-      <button id="saveRecord">記録する</button>
-    </div>
-  </form>
-</dialog>
-
-<dialog id="messageDialog">
-  <div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogText"></p><button id="closeDialog">OK</button></div>
-</dialog>
-
-<dialog id="parentDialog">
-  <form method="dialog" class="dialog-card">
-    <h2>保護者モード</h2>
-    <input id="password" type="password" inputmode="numeric" maxlength="6" placeholder="パスワード">
-    <p id="error" hidden>パスワードが違います。</p>
-    <div class="dialog-actions">
-      <button value="cancel" class="secondary">戻る</button>
-      <button id="login">開く</button>
-    </div>
-  </form>
-</dialog>
-
-<script src="app-v14.js"></script>
-</body>
-</html>
+<dialog id="historyDialog"><div class="dialog-card history-dialog"><div class="history-head"><h2>学習記録</h2><button id="closeHistory" class="secondary">閉じる</button></div><div id="historyList" class="history-list"></div></div></dialog>
+<dialog id="messageDialog"><div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogText"></p><button id="closeDialog">OK</button></div></dialog>
+<dialog id="parentDialog"><form method="dialog" class="dialog-card"><h2>保護者モード</h2><input id="password" type="password" inputmode="numeric" maxlength="6" placeholder="パスワード"><p id="error" hidden>パスワードが違います。</p><div class="dialog-actions"><button value="cancel" class="secondary">戻る</button><button id="login">開く</button></div></form></dialog>
+<script src="app-v15.js"></script>
+</body></html>
