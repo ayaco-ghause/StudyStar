@@ -254,3 +254,255 @@ body{
   .count-card strong{font-size:25px}
   .avatar-stage img{width:142%;height:116%;margin-left:-25%}
 }
+
+
+/* =========================================
+   Study☆Star 正式版1.2
+   「最初に感動した画面」の華やかさを再構成
+   ========================================= */
+
+/* タイトル：元画像の丸み・太さ・緑色をより強く */
+.brand-main{
+  font-family:"Arial Rounded MT Bold","Trebuchet MS","Yu Gothic UI","Yu Gothic",sans-serif;
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:-3.1px;
+  color:#08783f;
+  line-height:1;
+  text-shadow:
+    0 2px 0 #fff,
+    0 4px 0 rgba(10,112,58,.06),
+    0 8px 18px rgba(18,108,57,.14);
+}
+.brand-main span{
+  color:#f5b51b;
+  font-size:1.12em;
+  margin:0 1px;
+  filter:drop-shadow(0 3px 4px rgba(218,148,0,.15));
+}
+.brand-sub{
+  margin-top:7px;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.08em;
+  color:#067039;
+}
+
+/* ヘッダーも少し華やかに */
+.topbar{
+  background:
+    radial-gradient(circle at 19% 32%,rgba(190,239,183,.22),transparent 18%),
+    radial-gradient(circle at 83% 30%,rgba(255,224,102,.16),transparent 17%),
+    linear-gradient(180deg,#fff,#fbfff9);
+}
+.round-btn{
+  border:1px solid rgba(91,164,107,.15);
+  box-shadow:0 8px 20px rgba(33,86,48,.14);
+}
+
+/* アドをホームの主役に */
+.hero-card{
+  grid-template-columns:1.34fr 1.02fr 1.18fr;
+  min-height:398px;
+  border:2px solid rgba(83,181,104,.62);
+  box-shadow:
+    inset 0 0 0 7px rgba(255,255,255,.66),
+    0 18px 42px rgba(29,98,51,.17);
+}
+.avatar-stage{
+  min-height:370px;
+}
+.avatar-stage img{
+  width:145%;
+  height:122%;
+  max-height:438px;
+  margin-left:-20%;
+  filter:
+    drop-shadow(0 12px 8px rgba(18,69,34,.20))
+    drop-shadow(0 1px 0 rgba(255,255,255,.9));
+}
+.ground-shadow{
+  left:8%;
+  right:8%;
+  bottom:4px;
+  height:23px;
+  background:rgba(24,92,44,.26);
+  filter:blur(7px);
+}
+
+/* 葉っぱの代わりに、立体的な光と星 */
+.hero-glow{
+  position:absolute;
+  z-index:0;
+  border-radius:50%;
+  pointer-events:none;
+}
+.glow-a{
+  width:105px;height:105px;
+  left:8px;top:76px;
+  background:radial-gradient(circle,rgba(255,255,255,.93),rgba(184,241,179,.30) 42%,transparent 72%);
+  box-shadow:0 0 36px rgba(170,240,163,.35);
+}
+.glow-b{
+  width:90px;height:90px;
+  right:255px;bottom:18px;
+  background:radial-gradient(circle,rgba(255,253,225,.9),rgba(255,224,111,.24) 43%,transparent 73%);
+}
+
+/* メッセージカードの余白と華やかさ */
+.ad-message{
+  min-height:210px;
+  padding:19px 17px;
+  box-shadow:0 12px 30px rgba(35,91,52,.13);
+}
+.ad-message h1{
+  margin-top:18px;
+  font-size:23px;
+}
+.ad-message p{
+  font-size:16px;
+  line-height:1.8;
+}
+.ad-message strong{
+  font-size:26px;
+}
+.eyebrow{
+  font-size:14px;
+}
+
+/* 受検まで：小さく見えないよう明確に */
+.count-card{
+  min-height:102px;
+  padding:16px 12px 14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.count-card span{
+  font-size:17px;
+  font-weight:900;
+  color:#304c38;
+  letter-spacing:.12em;
+}
+.count-card strong{
+  font-size:34px;
+  line-height:1.15;
+  margin-top:8px;
+  text-shadow:0 2px 0 #fff,0 5px 12px rgba(0,143,69,.12);
+}
+
+/* ミッションカードの右側の余白を整理 */
+.mission-card{
+  box-shadow:0 12px 30px rgba(35,91,52,.14);
+}
+.mission-head{
+  padding:17px 15px;
+  font-size:18px;
+}
+.mission-item{
+  padding:15px 13px;
+}
+.mission-edit{
+  margin-top:auto;
+  padding:12px 10px;
+  font-size:12px;
+}
+
+/* アクションボタンの「押したくなる」雰囲気 */
+.action-card{
+  min-height:110px;
+  border-radius:26px;
+}
+.action-card strong{
+  font-size:27px;
+}
+.challenge{
+  background:
+    radial-gradient(circle at 82% 48%,rgba(190,255,120,.25),transparent 27%),
+    linear-gradient(135deg,#13b852,#078b3e);
+}
+.record{
+  background:
+    radial-gradient(circle at 81% 40%,rgba(168,224,255,.23),transparent 27%),
+    linear-gradient(135deg,#258fe5,#096bc1);
+}
+.challenge .big-icon,.record .big-icon{
+  transform:scale(1.08);
+}
+
+/* 各カードに軽いきらめき・奥行き */
+.summer-card,.history-card,.tweet-card,.schedule-card,.jump-card,.bank-card{
+  box-shadow:
+    0 15px 34px rgba(30,88,47,.13),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+.summer-card{
+  background:
+    radial-gradient(circle at 94% 16%,rgba(255,218,70,.24),transparent 20%),
+    radial-gradient(circle at 7% 22%,rgba(183,238,181,.18),transparent 22%),
+    #fff;
+}
+.jump-card{
+  background:
+    radial-gradient(circle at 74% 25%,rgba(44,160,255,.95),transparent 28%),
+    radial-gradient(circle at 32% 72%,rgba(62,117,255,.28),transparent 32%),
+    linear-gradient(140deg,#071f54,#0a438b);
+}
+.bank-card{
+  background:
+    radial-gradient(circle at 88% 20%,rgba(255,213,69,.28),transparent 23%),
+    radial-gradient(circle at 16% 88%,rgba(255,235,188,.62),transparent 34%),
+    linear-gradient(145deg,#fffaf0,#fff1d7);
+}
+.bank-card img{
+  transform:scale(1.05);
+}
+.tweet-card{
+  background:
+    radial-gradient(circle at 95% 10%,rgba(104,214,123,.16),transparent 22%),
+    linear-gradient(180deg,#fff,#fbfffa);
+}
+.schedule-card{
+  background:
+    radial-gradient(circle at 94% 10%,rgba(255,217,88,.15),transparent 22%),
+    linear-gradient(180deg,#fff,#fffefa);
+}
+
+/* PCで見たときも画面が細すぎない */
+.app-shell{
+  width:min(100%,920px);
+}
+.bottom-nav{
+  width:min(100%,920px);
+}
+
+@media(max-width:720px){
+  .brand-main{font-size:38px}
+  .hero-card{
+    grid-template-columns:1.14fr 1fr;
+    min-height:auto;
+  }
+  .avatar-stage{min-height:330px}
+  .avatar-stage img{
+    width:138%;
+    height:118%;
+    max-height:390px;
+    margin-left:-20%;
+  }
+  .count-card span{font-size:16px}
+  .count-card strong{font-size:30px}
+}
+@media(max-width:460px){
+  .brand-main{font-size:31px;letter-spacing:-2.2px}
+  .hero-card{grid-template-columns:1.08fr 1fr}
+  .avatar-stage{min-height:298px}
+  .avatar-stage img{
+    width:148%;
+    height:118%;
+    margin-left:-28%;
+  }
+  .count-card span{font-size:15px}
+  .count-card strong{font-size:27px}
+  .action-card strong{font-size:20px}
+}
