@@ -1,0 +1,782 @@
+
+:root{
+ --green:#08984a;--green2:#16b552;--deep:#006d38;--navy:#08275c;--blue:#167bd4;
+ --cream:#fff8ea;--ink:#14241b;--muted:#65756a;--line:#dbe9dd;--shadow:0 16px 36px rgba(34,84,49,.15);
+}
+*{box-sizing:border-box}
+html{background:#eef8ef}
+body{margin:0;color:var(--ink);font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;background:
+ radial-gradient(circle at 15% 5%,#fff 0 7%,transparent 24%),
+ linear-gradient(135deg,#eef9ef,#f9fff7 50%,#ebf7ef);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app-shell{width:min(100%,860px);margin:auto;background:rgba(250,255,249,.92);min-height:100vh;box-shadow:0 0 50px rgba(28,90,45,.12);padding-bottom:90px}
+.topbar{height:112px;display:grid;grid-template-columns:52px 1fr 52px;align-items:center;padding:14px 18px 8px;position:relative;background:linear-gradient(180deg,#fff,#fbfff9)}
+.round-btn{width:46px;height:46px;border:0;border-radius:50%;background:#fff;box-shadow:0 7px 18px rgba(33,86,48,.13);font-size:22px}
+.brand{text-align:center}
+.brand-main{font-family:Georgia,serif;font-size:44px;font-weight:900;letter-spacing:-2px;color:#07150c}
+.brand-main span{color:#f3ad12;font-size:1.08em}
+.brand-sub{font-size:13px;font-weight:800;color:var(--deep);letter-spacing:.08em}
+.version{position:absolute;right:18px;bottom:3px;background:white;border:1px solid #e2eee4;border-radius:20px;padding:5px 9px;font-size:11px;color:var(--deep);font-weight:800}
+main{padding:0 16px 22px}
+.hero-card{position:relative;overflow:hidden;display:grid;grid-template-columns:1.22fr 1.06fr 1.22fr;grid-template-rows:1fr auto;gap:13px;padding:14px;border:1.5px solid #85c897;border-radius:29px;background:
+ radial-gradient(circle at 8% 18%,rgba(255,255,255,.95),transparent 27%),
+ linear-gradient(145deg,#fafff8,#eaf8e9);box-shadow:inset 0 0 0 6px rgba(255,255,255,.62),var(--shadow);min-height:370px}
+.leaf{position:absolute;font-size:64px;opacity:.26;filter:saturate(.8);z-index:0}.leaf-a{left:-17px;top:-15px;transform:rotate(-30deg)}.leaf-b{right:-18px;bottom:-16px;transform:rotate(148deg)}
+.avatar-stage{grid-row:1/3;position:relative;display:flex;align-items:flex-end;justify-content:center;min-height:340px;z-index:1;overflow:visible}
+.avatar-stage img{position:relative;z-index:2;width:128%;height:113%;max-height:390px;object-fit:contain;object-position:center bottom;margin-left:-10%;filter:drop-shadow(0 8px 6px rgba(18,69,34,.16))}
+.ground-shadow{position:absolute;z-index:1;bottom:2px;left:13%;right:13%;height:18px;border-radius:50%;background:rgba(30,102,51,.22);filter:blur(6px)}
+.spark{position:absolute;color:#fff;font-size:28px;text-shadow:0 0 10px #fff,0 0 18px #d8ffcf;z-index:3}.s1{left:5%;top:17%}.s2{right:4%;top:8%}
+.glass{position:relative;z-index:2;background:rgba(255,255,255,.94);border:1px solid #eff4ef;border-radius:23px;box-shadow:0 10px 26px rgba(33,85,48,.11)}
+.ad-message{padding:18px 17px;min-height:194px}
+.eyebrow{font-weight:900;font-size:13px;color:var(--deep)}
+.ad-message h1{font-size:22px;margin:15px 0 8px;white-space:nowrap}
+.ad-message p{font-size:16px;line-height:1.72;margin:0}.ad-message strong{font-size:24px;color:var(--green)}
+.mini-pencil{position:absolute;right:11px;bottom:10px;width:32px;height:32px;border-radius:50%;border:2px solid #57a66a;background:#fff;color:var(--deep)}
+.count-card{padding:12px;text-align:center;align-self:end}.count-card span{font-size:12px}.count-card strong{display:block;color:var(--green);font-size:29px;margin-top:5px}
+.mission-card{grid-column:3;grid-row:1/3;z-index:2;overflow:hidden;border-radius:23px;background:#fff;box-shadow:0 10px 26px rgba(33,85,48,.12);display:flex;flex-direction:column}
+.mission-head{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#079547,#0b7f3e);color:#fff;padding:16px;font-weight:900;font-size:17px}
+.mission-head b{font-size:22px;color:#ffd536}
+.mission-item{display:flex;align-items:center;gap:9px;padding:14px 14px;border-bottom:1px solid #e5ece6;font-size:14px;line-height:1.4}.mission-item span:first-child{flex:1}.mission-item input{width:18px;height:18px;accent-color:var(--green)}
+.mission-edit{margin:auto 10px 10px;padding:11px;border:0;border-radius:15px;background:#eaf8ec;color:var(--deep);font-weight:900;font-size:12px;white-space:nowrap}.mission-edit span{float:right;font-size:18px}
+.action-card{position:relative;width:100%;border:0;border-radius:24px;margin-top:15px;padding:18px 22px;display:grid;grid-template-columns:68px 1fr auto 26px;align-items:center;text-align:left;color:#fff;box-shadow:0 12px 24px rgba(18,85,44,.18);overflow:hidden}
+.action-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 50%,rgba(255,255,255,.2),transparent 34%);pointer-events:none}
+.challenge{background:linear-gradient(135deg,#0eb14b,#04883d)}.record{background:linear-gradient(135deg,#1f8de4,#096bc1)}
+.big-icon{font-size:49px;filter:drop-shadow(0 5px 4px rgba(0,0,0,.18))}.action-card strong{display:block;font-size:25px}.action-card small{display:block;margin-top:5px;color:#fff7b8;font-weight:800}.record small{color:#e8f4ff}
+.glow-pill{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;text-align:center;border:2px solid #e8ffb6;box-shadow:0 0 17px #caff70,inset 0 0 15px rgba(255,255,255,.35);font-weight:900}.chev{font-size:44px}
+.summer-card,.history-card{margin-top:15px;background:#fff;border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-head h2{font-size:18px;margin:0}.section-head button{border:0;background:none;color:var(--deep);font-weight:800}
+.summer-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;margin:17px 0}.summer-stats small{display:block;color:var(--muted)}.summer-stats strong{display:block;color:var(--green);font-size:18px;margin-top:6px}
+.progress,.jump-progress,.bank-progress{height:13px;background:#dfe9e1;border-radius:99px;overflow:hidden}.progress span,.jump-progress span,.bank-progress span{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#30c959,#078941);transition:.35s}
+.dashboard-grid,.lower-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+.jump-card,.bank-card{border:0;border-radius:24px;text-align:left;min-height:232px;box-shadow:var(--shadow)}
+.jump-card{padding:18px;color:#fff;background:
+ radial-gradient(circle at 75% 30%,rgba(34,146,255,.85),transparent 30%),
+ linear-gradient(140deg,#08245b,#0b4389)}.jump-card small{display:block;margin-top:7px}.stars{font-size:37px;color:#ffd83d;letter-spacing:2px;margin:18px 0 8px}.jump-card p{min-height:42px}.jump-progress{background:rgba(255,255,255,.23)}.jump-progress span{background:linear-gradient(90deg,#72e84f,#b6f83d)}
+.bank-card{position:relative;overflow:hidden;padding:18px;background:linear-gradient(145deg,#fffaf0,#fff1d7);display:grid;grid-template-columns:1.25fr .9fr;gap:6px}.bank-card img{width:100%;align-self:center;filter:drop-shadow(0 8px 8px rgba(118,63,42,.18))}.bank-copy strong{display:block;font-size:38px;margin:10px 0 17px}.bank-copy em{font-style:normal;font-size:18px}.bank-progress span{background:linear-gradient(90deg,#ffb51f,#f28a24)}.reward-link{position:absolute;left:0;right:0;bottom:0;background:rgba(255,255,255,.72);text-align:center;padding:11px;font-weight:900}.reward-link span{float:right;margin-right:18px}
+.tweet-card,.schedule-card{background:#fff;border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.tweet-entry{width:100%;border:1px solid #cfe7d2;background:#f1faed;border-radius:15px;padding:12px;text-align:left;color:#275f34}.tweet-entry span{display:block;margin-top:5px;font-size:12px}.recent-list{font-size:13px}.recent-row{display:grid;grid-template-columns:48px 1fr auto;gap:8px;padding:9px 2px;border-bottom:1px dashed #dce8dd}.recent-row button{border:0;background:none;color:#b74b4b}
+.schedule-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.day{border:1px solid #dce9de;border-radius:12px;min-height:102px;padding:8px;text-align:center}.day b{display:block;color:var(--deep);font-size:12px}.day span{display:block;margin-top:14px;font-size:12px;line-height:1.45}.day.today{background:#effbeb;border-color:#88c998}
+.record-list{margin-top:10px}.record-row{display:grid;grid-template-columns:80px 1fr auto auto;gap:8px;align-items:center;padding:11px 0;border-bottom:1px solid #e6ede7;font-size:13px}.record-row strong{display:block}.record-row button{border:0;background:#fff0f0;color:#a93c3c;border-radius:9px;padding:7px}
+.empty{color:#78907e;padding:18px;text-align:center}
+.bottom-nav{position:fixed;z-index:20;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,860px);display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid #d8e6da;padding:9px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px rgba(32,77,43,.1)}
+.bottom-nav button{border:0;background:none;color:#23332a;font-size:20px}.bottom-nav button span{display:block;font-size:11px;margin-top:2px}.bottom-nav .active{color:var(--green);font-weight:900}
+dialog{border:0;padding:0;border-radius:24px;max-width:min(92vw,520px);width:100%;box-shadow:0 25px 70px rgba(0,0,0,.28)}dialog::backdrop{background:rgba(15,38,24,.55);backdrop-filter:blur(3px)}
+.dialog-card{padding:22px;background:#fff}.dialog-head{display:flex;justify-content:space-between;align-items:center}.dialog-head h2{margin:0}.dialog-head button{border:0;background:none;font-size:28px}.dialog-card label{display:block;font-weight:800;margin-top:15px}.dialog-card input,.dialog-card select,.dialog-card textarea{width:100%;margin-top:7px;padding:12px;border:1px solid #cbdccf;border-radius:12px;background:#fbfffb}.dialog-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:18px}
+.primary,.sub,.danger{border:0;border-radius:13px;padding:13px;font-weight:900}.primary{background:var(--green);color:#fff}.sub{background:#edf2ee;color:#33463a}.danger{background:#ffe8e8;color:#a02b2b}.wide{width:100%;font-size:20px}.rule-note{margin-top:14px;background:#edf8ef;border-radius:12px;padding:10px;font-size:13px}
+.center-copy{text-align:center}.ready-badge{text-align:center;font-size:42px;font-weight:900;letter-spacing:.12em;color:var(--green);margin:22px}.timer{text-align:center;font-size:72px;font-weight:900;color:var(--deep);margin:20px 0}.timer-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.list-dialog{max-height:80vh;overflow:auto}
+.toast{position:fixed;z-index:50;left:50%;bottom:96px;transform:translate(-50%,20px);background:#153d26;color:#fff;padding:12px 18px;border-radius:16px;opacity:0;pointer-events:none;transition:.3s;box-shadow:0 12px 28px rgba(0,0,0,.22);max-width:88vw}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:720px){
+ .app-shell{box-shadow:none}.topbar{height:93px}.brand-main{font-size:35px}.hero-card{grid-template-columns:1.04fr 1fr;grid-template-rows:auto auto auto;min-height:auto}.avatar-stage{grid-row:1/3;min-height:318px}.avatar-stage img{width:126%;height:112%;margin-left:-16%}.ad-message{min-height:175px}.mission-card{grid-column:1/3;grid-row:3}.count-card{align-self:stretch}.action-card{grid-template-columns:58px 1fr auto 19px}.glow-pill{display:none}.dashboard-grid,.lower-grid{grid-template-columns:1fr}.schedule-card{display:none}
+}
+@media(max-width:460px){
+ main{padding:0 10px 20px}.topbar{padding-inline:10px}.round-btn{width:40px;height:40px}.brand-main{font-size:29px}.brand-sub{font-size:10px}.version{font-size:9px;right:10px}
+ .hero-card{gap:8px;padding:9px;border-radius:22px;grid-template-columns:1.02fr 1fr}.avatar-stage{min-height:284px}.avatar-stage img{width:138%;height:114%;margin-left:-23%}.ad-message{padding:14px 11px;min-height:166px}.ad-message h1{font-size:18px;white-space:normal}.ad-message p{font-size:13px}.ad-message strong{font-size:20px}.count-card strong{font-size:23px}.mission-item{padding:12px 10px}.mission-head{padding:13px;font-size:15px}
+ .action-card{padding:14px 13px;grid-template-columns:52px 1fr 14px;border-radius:19px}.big-icon{font-size:40px}.action-card strong{font-size:19px}.action-card small{font-size:11px}.chev{font-size:31px}
+ .summer-card,.history-card{padding:14px}.summer-stats strong{font-size:14px}.bank-card{grid-template-columns:1.35fr .8fr}.bank-copy strong{font-size:31px}.record-row{grid-template-columns:61px 1fr auto}.record-row .kind{display:none}
+}
+
+
+/* =========================================
+   正式版1.1 デザイン調整
+   ========================================= */
+
+/* タイトルを元画像の、丸みがあり親しみやすい雰囲気へ */
+.brand-main{
+  font-family:"Arial Rounded MT Bold","Trebuchet MS","Yu Gothic",sans-serif;
+  font-size:46px;
+  font-weight:900;
+  letter-spacing:-2.8px;
+  color:#08723c;
+  text-shadow:
+    0 2px 0 rgba(255,255,255,.95),
+    0 4px 8px rgba(22,91,45,.12);
+}
+.brand-main span{
+  display:inline-block;
+  color:#f2b31a;
+  font-family:"Trebuchet MS",sans-serif;
+  font-size:1.08em;
+  transform:translateY(1px);
+  text-shadow:0 2px 0 #fff,0 0 10px rgba(255,197,34,.24);
+}
+.brand-sub{
+  margin-top:2px;
+  font-size:14px;
+  letter-spacing:.06em;
+}
+
+/* アドの立体感に合わせ、葉っぱ絵文字をやめて光と立体的な背景装飾へ */
+.hero-card{
+  background:
+    radial-gradient(circle at 13% 18%,rgba(255,255,255,.98) 0 8%,transparent 29%),
+    radial-gradient(circle at 25% 78%,rgba(170,235,163,.36),transparent 34%),
+    radial-gradient(circle at 83% 18%,rgba(255,244,169,.22),transparent 23%),
+    linear-gradient(145deg,#fbfff9,#e7f7e7 70%,#effbec);
+}
+.hero-orb{
+  position:absolute;
+  z-index:0;
+  border-radius:50%;
+  filter:blur(.2px);
+  pointer-events:none;
+}
+.orb-a{
+  width:170px;height:170px;
+  left:-52px;top:-48px;
+  background:
+    radial-gradient(circle at 36% 30%,rgba(255,255,255,.95),rgba(139,223,145,.48) 45%,rgba(48,171,80,.10) 72%,transparent 73%);
+  box-shadow:inset -16px -18px 32px rgba(17,142,63,.11),0 14px 32px rgba(35,127,64,.08);
+}
+.orb-b{
+  width:126px;height:126px;
+  right:-36px;bottom:-38px;
+  background:
+    radial-gradient(circle at 34% 28%,rgba(255,255,255,.9),rgba(255,229,119,.34) 48%,rgba(255,191,45,.08) 72%,transparent 73%);
+}
+.hero-star{
+  position:absolute;
+  z-index:1;
+  color:#fff;
+  text-shadow:0 0 8px #fff,0 0 18px rgba(198,255,191,.95);
+  pointer-events:none;
+}
+.star-a{left:3.5%;top:26%;font-size:31px}
+.star-b{left:27%;top:8%;font-size:19px}
+.star-c{right:31%;bottom:9%;font-size:20px;color:#fff7c9}
+
+/* 受検までを読みやすく */
+.count-card{
+  padding:15px 12px 13px;
+}
+.count-card span{
+  display:block;
+  font-size:16px;
+  font-weight:900;
+  color:#324d3a;
+  letter-spacing:.08em;
+}
+.count-card strong{
+  font-size:32px;
+  margin-top:7px;
+}
+
+/* 全体に少し華やかさと奥行きを追加 */
+.hero-card,.summer-card,.history-card,.tweet-card,.schedule-card,
+.jump-card,.bank-card,.action-card{
+  border:1px solid rgba(255,255,255,.8);
+}
+.ad-message:before{
+  content:"";
+  position:absolute;
+  width:72px;height:72px;
+  right:-22px;top:-24px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,225,92,.28),transparent 70%);
+}
+.mission-card{
+  border:1px solid rgba(255,255,255,.9);
+}
+.mission-head{
+  background:
+    radial-gradient(circle at 88% 30%,rgba(255,224,67,.26),transparent 18%),
+    linear-gradient(135deg,#0aa34e,#077a3c);
+}
+.action-card{
+  box-shadow:
+    0 14px 28px rgba(18,85,44,.20),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+.challenge:after,.record:after{
+  content:"✦";
+  position:absolute;
+  right:105px;
+  top:16px;
+  color:rgba(255,255,255,.72);
+  font-size:20px;
+  text-shadow:0 0 10px rgba(255,255,255,.85);
+}
+.record:after{right:64px;top:21px;font-size:16px}
+.summer-card{
+  background:
+    radial-gradient(circle at 92% 18%,rgba(255,224,83,.22),transparent 18%),
+    #fff;
+}
+.bank-card{
+  background:
+    radial-gradient(circle at 90% 18%,rgba(255,211,76,.23),transparent 24%),
+    linear-gradient(145deg,#fffaf0,#fff1d7);
+}
+.tweet-card{
+  background:
+    radial-gradient(circle at 96% 8%,rgba(109,205,126,.13),transparent 20%),
+    #fff;
+}
+.schedule-card{
+  background:
+    radial-gradient(circle at 94% 8%,rgba(255,213,82,.12),transparent 20%),
+    #fff;
+}
+
+/* アドを少しだけ大きく、主役感を強化 */
+.avatar-stage img{
+  width:134%;
+  height:116%;
+  max-height:406px;
+  margin-left:-14%;
+}
+.ground-shadow{
+  left:10%;
+  right:10%;
+  height:20px;
+  background:rgba(28,95,47,.24);
+}
+
+/* PC表示でも左右の余白が寂しく見えにくい */
+body{
+  background:
+    radial-gradient(circle at 10% 12%,rgba(255,255,255,.95) 0 7%,transparent 23%),
+    radial-gradient(circle at 90% 16%,rgba(214,245,211,.65),transparent 28%),
+    linear-gradient(135deg,#edf8ee,#fafff8 52%,#eaf6ed);
+}
+
+@media(max-width:720px){
+  .brand-main{font-size:37px}
+  .count-card span{font-size:15px}
+  .count-card strong{font-size:28px}
+  .avatar-stage img{width:132%;height:115%;margin-left:-18%}
+}
+@media(max-width:460px){
+  .brand-main{font-size:31px;letter-spacing:-2px}
+  .brand-sub{font-size:10px}
+  .count-card span{font-size:14px}
+  .count-card strong{font-size:25px}
+  .avatar-stage img{width:142%;height:116%;margin-left:-25%}
+}
+
+
+/* =========================================
+   Study☆Star 正式版1.2
+   「最初に感動した画面」の華やかさを再構成
+   ========================================= */
+
+/* タイトル：元画像の丸み・太さ・緑色をより強く */
+.brand-main{
+  font-family:"Arial Rounded MT Bold","Trebuchet MS","Yu Gothic UI","Yu Gothic",sans-serif;
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:-3.1px;
+  color:#08783f;
+  line-height:1;
+  text-shadow:
+    0 2px 0 #fff,
+    0 4px 0 rgba(10,112,58,.06),
+    0 8px 18px rgba(18,108,57,.14);
+}
+.brand-main span{
+  color:#f5b51b;
+  font-size:1.12em;
+  margin:0 1px;
+  filter:drop-shadow(0 3px 4px rgba(218,148,0,.15));
+}
+.brand-sub{
+  margin-top:7px;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.08em;
+  color:#067039;
+}
+
+/* ヘッダーも少し華やかに */
+.topbar{
+  background:
+    radial-gradient(circle at 19% 32%,rgba(190,239,183,.22),transparent 18%),
+    radial-gradient(circle at 83% 30%,rgba(255,224,102,.16),transparent 17%),
+    linear-gradient(180deg,#fff,#fbfff9);
+}
+.round-btn{
+  border:1px solid rgba(91,164,107,.15);
+  box-shadow:0 8px 20px rgba(33,86,48,.14);
+}
+
+/* アドをホームの主役に */
+.hero-card{
+  grid-template-columns:1.34fr 1.02fr 1.18fr;
+  min-height:398px;
+  border:2px solid rgba(83,181,104,.62);
+  box-shadow:
+    inset 0 0 0 7px rgba(255,255,255,.66),
+    0 18px 42px rgba(29,98,51,.17);
+}
+.avatar-stage{
+  min-height:370px;
+}
+.avatar-stage img{
+  width:145%;
+  height:122%;
+  max-height:438px;
+  margin-left:-20%;
+  filter:
+    drop-shadow(0 12px 8px rgba(18,69,34,.20))
+    drop-shadow(0 1px 0 rgba(255,255,255,.9));
+}
+.ground-shadow{
+  left:8%;
+  right:8%;
+  bottom:4px;
+  height:23px;
+  background:rgba(24,92,44,.26);
+  filter:blur(7px);
+}
+
+/* 葉っぱの代わりに、立体的な光と星 */
+.hero-glow{
+  position:absolute;
+  z-index:0;
+  border-radius:50%;
+  pointer-events:none;
+}
+.glow-a{
+  width:105px;height:105px;
+  left:8px;top:76px;
+  background:radial-gradient(circle,rgba(255,255,255,.93),rgba(184,241,179,.30) 42%,transparent 72%);
+  box-shadow:0 0 36px rgba(170,240,163,.35);
+}
+.glow-b{
+  width:90px;height:90px;
+  right:255px;bottom:18px;
+  background:radial-gradient(circle,rgba(255,253,225,.9),rgba(255,224,111,.24) 43%,transparent 73%);
+}
+
+/* メッセージカードの余白と華やかさ */
+.ad-message{
+  min-height:210px;
+  padding:19px 17px;
+  box-shadow:0 12px 30px rgba(35,91,52,.13);
+}
+.ad-message h1{
+  margin-top:18px;
+  font-size:23px;
+}
+.ad-message p{
+  font-size:16px;
+  line-height:1.8;
+}
+.ad-message strong{
+  font-size:26px;
+}
+.eyebrow{
+  font-size:14px;
+}
+
+/* 受検まで：小さく見えないよう明確に */
+.count-card{
+  min-height:102px;
+  padding:16px 12px 14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.count-card span{
+  font-size:17px;
+  font-weight:900;
+  color:#304c38;
+  letter-spacing:.12em;
+}
+.count-card strong{
+  font-size:34px;
+  line-height:1.15;
+  margin-top:8px;
+  text-shadow:0 2px 0 #fff,0 5px 12px rgba(0,143,69,.12);
+}
+
+/* ミッションカードの右側の余白を整理 */
+.mission-card{
+  box-shadow:0 12px 30px rgba(35,91,52,.14);
+}
+.mission-head{
+  padding:17px 15px;
+  font-size:18px;
+}
+.mission-item{
+  padding:15px 13px;
+}
+.mission-edit{
+  margin-top:auto;
+  padding:12px 10px;
+  font-size:12px;
+}
+
+/* アクションボタンの「押したくなる」雰囲気 */
+.action-card{
+  min-height:110px;
+  border-radius:26px;
+}
+.action-card strong{
+  font-size:27px;
+}
+.challenge{
+  background:
+    radial-gradient(circle at 82% 48%,rgba(190,255,120,.25),transparent 27%),
+    linear-gradient(135deg,#13b852,#078b3e);
+}
+.record{
+  background:
+    radial-gradient(circle at 81% 40%,rgba(168,224,255,.23),transparent 27%),
+    linear-gradient(135deg,#258fe5,#096bc1);
+}
+.challenge .big-icon,.record .big-icon{
+  transform:scale(1.08);
+}
+
+/* 各カードに軽いきらめき・奥行き */
+.summer-card,.history-card,.tweet-card,.schedule-card,.jump-card,.bank-card{
+  box-shadow:
+    0 15px 34px rgba(30,88,47,.13),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+.summer-card{
+  background:
+    radial-gradient(circle at 94% 16%,rgba(255,218,70,.24),transparent 20%),
+    radial-gradient(circle at 7% 22%,rgba(183,238,181,.18),transparent 22%),
+    #fff;
+}
+.jump-card{
+  background:
+    radial-gradient(circle at 74% 25%,rgba(44,160,255,.95),transparent 28%),
+    radial-gradient(circle at 32% 72%,rgba(62,117,255,.28),transparent 32%),
+    linear-gradient(140deg,#071f54,#0a438b);
+}
+.bank-card{
+  background:
+    radial-gradient(circle at 88% 20%,rgba(255,213,69,.28),transparent 23%),
+    radial-gradient(circle at 16% 88%,rgba(255,235,188,.62),transparent 34%),
+    linear-gradient(145deg,#fffaf0,#fff1d7);
+}
+.bank-card img{
+  transform:scale(1.05);
+}
+.tweet-card{
+  background:
+    radial-gradient(circle at 95% 10%,rgba(104,214,123,.16),transparent 22%),
+    linear-gradient(180deg,#fff,#fbfffa);
+}
+.schedule-card{
+  background:
+    radial-gradient(circle at 94% 10%,rgba(255,217,88,.15),transparent 22%),
+    linear-gradient(180deg,#fff,#fffefa);
+}
+
+/* PCで見たときも画面が細すぎない */
+.app-shell{
+  width:min(100%,920px);
+}
+.bottom-nav{
+  width:min(100%,920px);
+}
+
+@media(max-width:720px){
+  .brand-main{font-size:38px}
+  .hero-card{
+    grid-template-columns:1.14fr 1fr;
+    min-height:auto;
+  }
+  .avatar-stage{min-height:330px}
+  .avatar-stage img{
+    width:138%;
+    height:118%;
+    max-height:390px;
+    margin-left:-20%;
+  }
+  .count-card span{font-size:16px}
+  .count-card strong{font-size:30px}
+}
+@media(max-width:460px){
+  .brand-main{font-size:31px;letter-spacing:-2.2px}
+  .hero-card{grid-template-columns:1.08fr 1fr}
+  .avatar-stage{min-height:298px}
+  .avatar-stage img{
+    width:148%;
+    height:118%;
+    margin-left:-28%;
+  }
+  .count-card span{font-size:15px}
+  .count-card strong{font-size:27px}
+  .action-card strong{font-size:20px}
+}
+
+
+/* =========================================
+   Study☆Star 正式版2.0
+   感動を増やすアップデート
+   ========================================= */
+body{font-size:16px}
+.section-head h2{font-size:21px}
+.section-head button{font-size:14px}
+.action-card small,.summer-card small,.jump-card small,.bank-card small{font-size:14px}
+.mission-item{font-size:15px}
+.mission-item small{font-size:13px}
+.bottom-nav button span{font-size:12px}
+
+/* アドの挨拶カード */
+.ad-message{overflow:hidden;padding-right:112px;min-height:230px}
+.ad-message h1{font-size:25px}
+.ad-message p{font-size:17px;line-height:1.82}
+.ad-reaction{
+  position:absolute;right:5px;bottom:0;width:112px;height:134px;
+  overflow:hidden;pointer-events:none;
+  background:radial-gradient(circle at 50% 45%,rgba(255,243,169,.55),transparent 62%);
+}
+.ad-reaction img{
+  position:absolute;width:255px;height:360px;max-width:none;
+  object-fit:contain;left:-69px;top:-20px;
+  filter:drop-shadow(0 7px 5px rgba(27,87,45,.17));
+}
+.ad-reaction span{
+  position:absolute;right:7px;top:9px;font-size:23px;
+  filter:drop-shadow(0 0 7px #fff);
+}
+.mini-pencil{display:none!important}
+
+/* 300時間チャレンジを主役級へ */
+.summer-card{
+  padding:22px 22px 20px;border:2px solid rgba(255,190,38,.48);
+  background:
+    radial-gradient(circle at 91% 18%,rgba(255,213,54,.36),transparent 22%),
+    radial-gradient(circle at 7% 87%,rgba(76,202,100,.15),transparent 26%),
+    linear-gradient(135deg,#fffdf5,#fff4ce);
+}
+.summer-banner{display:grid;grid-template-columns:58px 1fr auto;gap:13px;align-items:center}
+.summer-banner .summer-sun{
+  width:55px;height:55px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(145deg,#ffdc56,#ffab22);font-size:31px;
+  box-shadow:0 0 0 7px rgba(255,218,82,.18),0 8px 18px rgba(215,136,13,.20);
+}
+.summer-banner small{display:block;color:#8a641e;font-weight:900;letter-spacing:.06em}
+.summer-banner h2{margin:3px 0 0;font-size:29px;color:#4f3512;line-height:1.15}
+.summer-banner>strong{
+  font-size:23px;color:#e17914;background:#fff;border-radius:17px;padding:10px 13px;
+  box-shadow:0 7px 17px rgba(172,104,9,.12)
+}
+.summer-stats{margin:22px 0 18px}
+.summer-stats small{font-size:15px}
+.summer-stats strong{font-size:21px}
+.progress{height:17px;box-shadow:inset 0 1px 3px rgba(51,87,58,.14)}
+.progress span{background:linear-gradient(90deg,#23b54d,#8bd73a,#f2c431)}
+
+/* Jump Skyの小さな動き */
+.jump-card{position:relative;overflow:hidden}
+.sky-spark{position:absolute;color:#fff9c3;text-shadow:0 0 9px #fff;animation:twinkle 2.4s ease-in-out infinite}
+.sky-spark-a{right:22%;top:18%;font-size:20px}.sky-spark-b{right:9%;bottom:25%;font-size:13px;animation-delay:.8s}
+.shooting-star{
+  position:absolute;right:22%;top:20%;width:70px;height:2px;
+  background:linear-gradient(90deg,transparent,#fff);transform:rotate(-25deg);
+  opacity:.7;animation:shoot 5s ease-in-out infinite
+}
+@keyframes twinkle{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes shoot{0%,70%{opacity:0;transform:translate(70px,-30px) rotate(-25deg)}78%{opacity:1}100%{opacity:0;transform:translate(-90px,45px) rotate(-25deg)}}
+
+/* Dream Bankの目標表示を強く */
+#nextRewardText{
+  display:block;font-size:16px;font-weight:900;color:#8a4f14;line-height:1.45;
+  min-height:45px;margin-top:3px
+}
+.bank-progress{height:15px}
+
+/* つぶやきカード */
+.tweet-card{position:relative;overflow:hidden;border:1.5px solid #b9dfbd}
+.card-decoration{position:absolute;right:17px;top:48px;color:#f6c83f;font-size:28px;text-shadow:0 0 10px #fff}
+.tweet-ad{display:flex;align-items:center;gap:12px;margin:13px 0 11px;padding:10px 12px;border-radius:17px;background:linear-gradient(135deg,#f2fced,#e8f8e6)}
+.tweet-face{width:57px;height:57px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 7px 14px rgba(40,108,58,.12);flex:0 0 auto}
+.tweet-face img{width:128px;height:180px;max-width:none;object-fit:contain;margin-left:-35px;margin-top:-11px}
+.tweet-ad p{margin:0;font-size:13px;line-height:1.55;color:#356a40}.tweet-ad b{font-size:14px}
+.tweet-entry{padding:14px;font-size:15px;box-shadow:inset 0 1px 0 #fff}
+.tweet-entry span{font-size:13px}
+.recent-row{font-size:14px}
+
+/* 今日の予定 */
+.schedule-card{position:relative;overflow:hidden;border:1.5px solid #f0d899}
+.schedule-sun{position:absolute;right:-13px;top:-17px;width:83px;height:83px;border-radius:50%;display:grid;place-items:center;background:rgba(255,215,74,.19);font-size:35px;color:#f2ae15}
+.today-feature{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center;margin-top:13px;padding:11px;border-radius:17px;background:linear-gradient(135deg,#fff9d9,#f3fbed);border:1px solid #e7d99b}
+.today-date{text-align:center;border-right:1px solid #dfd5a6}.today-date small{display:block;font-size:12px;color:#94711e}.today-date strong{font-size:20px;color:#0b823f}
+.today-plan{display:flex;align-items:center;gap:10px}.today-plan>span{font-size:28px}.today-plan b{display:block;font-size:16px}.today-plan small{display:block;margin-top:3px;font-size:14px;color:#5c6f61}
+.schedule-row{grid-template-columns:repeat(4,1fr)}.day{min-height:78px;background:rgba(255,255,255,.72)}.day span{margin-top:9px;font-size:13px}
+
+/* つぶやきダイアログ */
+.tweet-dialog-card{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 100% 0,rgba(255,220,83,.25),transparent 28%),
+    radial-gradient(circle at 0 100%,rgba(126,218,139,.20),transparent 32%),
+    linear-gradient(180deg,#fff,#fbfff8)
+}
+.dialog-stars{text-align:right;color:#eeb62b;letter-spacing:.35em;font-size:19px}
+.tweet-dialog-ad{display:flex;align-items:center;gap:13px;margin:13px 0;padding:12px;border-radius:17px;background:#edf9e9;color:#346841}
+.tweet-dialog-ad span{width:58px;height:58px;border-radius:50%;overflow:hidden;background:#fff;flex:0 0 auto}
+.tweet-dialog-ad img{width:130px;height:184px;max-width:none;object-fit:contain;margin-left:-36px;margin-top:-12px}
+.tweet-dialog-ad p{margin:0;font-weight:900;font-size:15px}
+.dialog-card label{font-size:16px}
+.dialog-card input,.dialog-card select,.dialog-card textarea{font-size:16px}
+.dialog-head h2{font-size:24px}
+.dialog-actions button{font-size:16px}
+
+/* 保護者モード */
+.parent-dialog-card{background:linear-gradient(180deg,#fff,#f6fbf7)}
+
+/* 学習履歴 */
+.record-row{font-size:14px}.record-row strong{font-size:15px}.record-row small{display:block;margin-top:3px;font-size:12px;color:#718176}
+
+@media(max-width:720px){
+  .ad-message{padding-right:91px;min-height:205px}
+  .ad-reaction{width:91px;height:118px}
+  .ad-reaction img{width:224px;height:318px;left:-68px;top:-16px}
+  .summer-banner h2{font-size:24px}
+  .summer-banner{grid-template-columns:48px 1fr auto}.summer-banner .summer-sun{width:47px;height:47px;font-size:27px}
+}
+@media(max-width:460px){
+  body{font-size:15px}
+  .ad-message{padding-right:75px;min-height:190px}
+  .ad-message h1{font-size:20px}.ad-message p{font-size:14px}
+  .ad-reaction{width:78px;height:105px}
+  .ad-reaction img{width:204px;height:292px;left:-68px;top:-14px}
+  .summer-card{padding:17px 13px}
+  .summer-banner{grid-template-columns:42px 1fr;gap:8px}
+  .summer-banner .summer-sun{width:42px;height:42px;font-size:24px}
+  .summer-banner h2{font-size:20px}
+  .summer-banner>strong{grid-column:1/3;justify-self:end;font-size:18px;padding:7px 10px}
+  .summer-stats strong{font-size:16px}.summer-stats small{font-size:13px}
+  .tweet-ad p{font-size:12px}.tweet-ad b{font-size:13px}
+}
+
+.build-mark{
+  position:absolute;
+  right:18px;
+  bottom:-19px;
+  font-size:9px;
+  font-weight:800;
+  color:#6f8a75;
+  letter-spacing:.08em;
+}
+@media(max-width:460px){
+  .build-mark{right:10px;bottom:-16px;font-size:8px}
+}
+
+
+/* =========================================
+   BUILD 200-B：あいさつとアドの表情を改善
+   ========================================= */
+
+/* 名前を途中で折り返さない */
+.eyebrow{
+  white-space:nowrap;
+  font-size:13px;
+  letter-spacing:-.02em;
+}
+
+/* あいさつ本文の不自然な1文字改行を防ぐ */
+.ad-message{
+  padding-right:122px;
+}
+.ad-message h1{
+  white-space:nowrap;
+  font-size:24px;
+}
+.ad-message p{
+  max-width:100%;
+  font-size:16px;
+  line-height:1.75;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+.ad-message p strong{
+  white-space:nowrap;
+}
+
+/* 同じ全身ポーズをもう一度置かず、顔のメダリオンとして見せる */
+.ad-reaction{
+  right:9px;
+  bottom:12px;
+  width:104px;
+  height:122px;
+  background:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  overflow:visible;
+}
+.ad-face-medallion{
+  position:relative;
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 35% 30%,#ffffff 0 18%,#f2fff0 48%,#d9f4d7 100%);
+  border:4px solid #fff;
+  box-shadow:
+    0 0 0 2px rgba(46,163,73,.26),
+    0 10px 22px rgba(33,95,49,.20);
+}
+.ad-face-medallion img{
+  position:absolute;
+  width:255px;
+  height:360px;
+  max-width:none;
+  object-fit:contain;
+  left:-81px;
+  top:-25px;
+  filter:none;
+}
+.ad-reaction>span{
+  right:0;
+  top:1px;
+  z-index:3;
+  font-size:24px;
+}
+.ad-reaction>small{
+  margin-top:4px;
+  padding:2px 10px;
+  border-radius:99px;
+  color:#08783f;
+  background:rgba(255,255,255,.9);
+  font-size:11px;
+  font-weight:900;
+  box-shadow:0 4px 10px rgba(41,97,54,.10);
+}
+
+/* ビルド番号をバージョンのすぐ下に確実に表示 */
+.build-mark{
+  right:19px;
+  bottom:-17px;
+  display:block;
+  color:#08783f;
+  background:rgba(255,255,255,.92);
+  border-radius:10px;
+  padding:2px 6px;
+  font-size:9px;
+  line-height:1.2;
+  z-index:5;
+}
+
+@media(max-width:720px){
+  .ad-message{padding-right:105px}
+  .ad-message h1{font-size:22px}
+  .ad-message p{font-size:15px}
+  .ad-reaction{width:91px;height:109px;right:6px}
+  .ad-face-medallion{width:80px;height:80px}
+  .ad-face-medallion img{width:228px;height:323px;left:-74px;top:-24px}
+}
+@media(max-width:460px){
+  .eyebrow{font-size:11px}
+  .ad-message{padding-right:78px}
+  .ad-message h1{font-size:19px;white-space:normal}
+  .ad-message p{font-size:13px;line-height:1.65}
+  .ad-reaction{width:71px;height:91px;right:4px;bottom:9px}
+  .ad-face-medallion{width:64px;height:64px;border-width:3px}
+  .ad-face-medallion img{width:190px;height:270px;left:-63px;top:-21px}
+  .ad-reaction>small{font-size:9px;padding:1px 7px}
+  .build-mark{right:10px;bottom:-15px;font-size:8px}
+}

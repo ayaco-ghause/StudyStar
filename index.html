@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a9b4a">
 <title>Study☆Star 正式版2.0</title>
-<link rel="stylesheet" href="styles-official-200.css">
+<link rel="stylesheet" href="styles-official-201.css">
 </head>
 <body>
 <div class="app-shell">
@@ -16,7 +16,7 @@
     <div class="brand-sub">合格を勝ち取る最強の自分へ</div>
   </div>
   <button class="round-btn" id="noticeBtn" aria-label="お知らせ">🔔</button>
-  <span class="version">正式版2.0</span><span class="build-mark">BUILD 200-A</span>
+  <span class="version">正式版2.0</span><span class="build-mark">BUILD 200-B</span>
 </header>
 
 <main>
@@ -24,7 +24,7 @@
   <div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div><div class="hero-glow glow-a"></div><div class="hero-glow glow-b"></div><div class="hero-star star-a">✦</div><div class="hero-star star-b">✦</div><div class="hero-star star-c">✦</div>
   <div class="avatar-stage">
     <div class="spark s1">✦</div><div class="spark s2">✦</div>
-    <img src="kaito-advance-official-200.png" alt="KAITOアドヴァンス">
+    <img src="kaito-advance-official-201.png" alt="KAITOアドヴァンス">
     <div class="ground-shadow"></div>
   </div>
 
@@ -33,8 +33,11 @@
     <h1 id="greetingTitle">おはよう、海翔！</h1>
     <p id="greetingBody">今日も最高の<br><strong>Jump</strong>にしよう！</p>
     <div class="ad-reaction" aria-hidden="true">
-      <img src="kaito-advance-official-200.png" alt="">
+      <div class="ad-face-medallion">
+        <img src="kaito-advance-official-201.png" alt="">
+      </div>
       <span id="reactionMark">✨</span>
+      <small>アド</small>
     </div>
   </div>
 
@@ -95,7 +98,7 @@
       <small id="nextRewardText">次のごほうびまで</small>
       <div class="bank-progress"><span id="bankBar"></span></div>
     </div>
-    <img src="piggy-bank-official-200.svg" alt="豚の貯金箱">
+    <img src="piggy-bank-official-201.svg" alt="豚の貯金箱">
     <div class="reward-link">ごほうびリストを見る <span>›</span></div>
   </button>
 </section>
@@ -104,7 +107,7 @@
   <article class="tweet-card">
     <div class="card-decoration">✦</div>
     <div class="section-head"><h2>💬 つぶやき帳</h2><button id="allTweetsBtn">すべて見る ›</button></div>
-    <div class="tweet-ad"><span class="tweet-face"><img src="kaito-advance-official-200.png" alt=""></span><p>今日はどんな一日だった？<br><b>うれしかったことも、頑張ったことも聞かせてね。</b></p></div>
+    <div class="tweet-ad"><span class="tweet-face"><img src="kaito-advance-official-201.png" alt=""></span><p>今日はどんな一日だった？<br><b>うれしかったことも、頑張ったことも聞かせてね。</b></p></div>
     <button class="tweet-entry" id="tweetBtn"><b>今日のつぶやきを書こう！</b><span>ここをタップして、今日の気持ちを残そう ✎</span></button>
     <div id="recentTweets" class="recent-list"></div>
   </article>
@@ -173,7 +176,7 @@
 <form class="dialog-card tweet-dialog-card" id="tweetForm">
   <div class="dialog-stars">✦　✧　✦</div>
   <div class="dialog-head"><h2>💬 つぶやき帳</h2><button type="button" id="closeTweet" aria-label="閉じる">×</button></div>
-  <div class="tweet-dialog-ad"><span><img src="kaito-advance-official-200.png" alt=""></span><p>今日の気持ちは、今日だけの大切な星だよ。</p></div>
+  <div class="tweet-dialog-ad"><span><img src="kaito-advance-official-201.png" alt=""></span><p>今日の気持ちは、今日だけの大切な星だよ。</p></div>
   <label>今日のつぶやき<textarea id="tweetText" maxlength="160" rows="5" placeholder="今日うれしかったこと、頑張ったことを書いてみよう😊"></textarea></label>
   <div class="dialog-actions"><button type="button" id="backTweet" class="sub">戻る</button><button type="submit" id="saveTweet" class="primary">残す</button></div>
 </form>
@@ -198,6 +201,6 @@
 </dialog>
 
 <div class="toast" id="toast"></div>
-<script src="app-official-200.js"></script>
+<script src="app-official-201.js"></script>
 </body>
 </html>
