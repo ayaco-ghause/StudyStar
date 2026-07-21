@@ -37,9 +37,18 @@ $("recordDate").value=today();$("recordDate").max=today();
 function setGreeting(){
  const h=new Date().getHours();
  const title=h<10?"おはよう、海翔！":h<17?"やぁ、海翔！":h<20?"おかえり、海翔！":"こんばんは、海翔！";
+ const daily=[
+  "今日も最高の\nJumpにしよう！",
+  "昨日の自分を\nひとつ超えよう！",
+  "小さな一歩が\n大きな飛躍になるよ！",
+  "焦らなくて大丈夫。\n今日の星を灯そう！",
+  "ここまで来た自分を信じて、\nよし、始めよう！"
+ ];
  $("greetingTitle").textContent=title;
- const body=state.message||defaultState.message;
+ const dayIndex=Math.floor(new Date().setHours(0,0,0,0)/86400000)%daily.length;
+ const body=state.message||daily[dayIndex];
  $("greetingBody").innerHTML=body.replace("Jump","<strong>Jump</strong>").replace(/\n/g,"<br>");
+ $("reactionMark").textContent=["✨","⭐","💪","🌟","🚀"][dayIndex];
 }
 function renderMission(){
  const key=today(), checks=state.missions[key]||{};
@@ -107,10 +116,14 @@ function renderTweets(){
   state.tweets=state.tweets.filter(t=>t.id!==b.dataset.delTweet);save();renderTweets();
  });
 }
-function renderAll(){setGreeting();renderMission();examCountdown();renderSummer();renderJump();renderBank();renderRecords();renderTweets()}
+function renderAll(){
+ setGreeting();renderMission();examCountdown();renderSummer();renderJump();renderBank();renderRecords();renderTweets();
+ if($("todayDateLabel"))$("todayDateLabel").textContent=dateJP(today());
+}
 renderAll();
 
 $("recordBtn").onclick=$("navRecord").onclick=()=>{$("recordDate").value=today();$("recordDialog").showModal()};
+$("closeRecord").onclick=$("cancelRecord").onclick=()=>$("recordDialog").close();
 $("recordForm").addEventListener("submit",e=>{
  e.preventDefault();
  const date=$("recordDate").value,category=$("recordCategory").value,minutes=Number($("recordMinutes").value),memo=$("recordMemo").value.trim();
@@ -146,6 +159,7 @@ function completeChallenge(){
 }
 
 $("tweetBtn").onclick=$("navTweet").onclick=()=>{$("tweetText").value="";$("tweetDialog").showModal()};
+$("closeTweet").onclick=$("backTweet").onclick=()=>$("tweetDialog").close();
 $("tweetForm").addEventListener("submit",e=>{
  e.preventDefault();const text=$("tweetText").value.trim();if(!text)return;
  state.tweets.push({id:crypto.randomUUID(),date:today(),text,createdAt:Date.now()});save();$("tweetDialog").close();renderTweets();
@@ -163,10 +177,30 @@ $("missionEditBtn").onclick=()=>{
  if(value===null)return;
  state.missionTemplate=value.split("\n").filter(Boolean).map(line=>({icon:"★",text:line,sub:""}));save();renderMission();
 };
-$("messageEdit").onclick=()=>{
- const v=prompt("アドのひとことを入力してください。",state.message);
- if(v!==null&&v.trim()){state.message=v.trim();save();setGreeting()}
+$("menuBtn").onclick=()=>{
+ openList("Study☆Star メニュー",`<p>アドと一緒に、今日の一歩を残そう。</p><button class="primary wide" id="parentOpen">保護者モード</button><p class="rule-note">ポイントルール<br>Challenge45：1・2回目 55P／3回目以降 88P<br>その他の学習：1分＝1P</p>`);
+ setTimeout(()=>{const b=$("parentOpen");if(b)b.onclick=()=>{
+   const pass=prompt("保護者用パスワードを入力してください");
+   if(pass!=="460631")return alert("パスワードが違います");
+   $("listDialog").close();$("parentMessage").value=state.message||"";$("parentDialog").showModal();
+ }},0);
 };
-$("menuBtn").onclick=()=>openList("Study☆Star メニュー",`<p><b>保護者用パスワード：</b>設定変更時に使用します。</p><button class="primary wide" id="parentOpen">保護者モード</button><p class="rule-note">ポイントルール<br>Challenge45：1・2回目 55P／3回目以降 88P<br>その他の学習：1分＝1P</p>`);
 $("noticeBtn").onclick=()=>toast("今日もStudy☆Starへようこそ！");
 $("scheduleBtn").onclick=()=>toast("予定管理は次回アップデートで編集対応予定です");
+
+$("closeParent").onclick=$("cancelParent").onclick=()=>$("parentDialog").close();
+$("parentForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ state.message=$("parentMessage").value.trim();
+ save();setGreeting();$("parentDialog").close();toast("アドのひとことを保存しました");
+});
+
+/* ダイアログの外側を押したときに閉じる */
+["recordDialog","tweetDialog","listDialog","parentDialog"].forEach(id=>{
+ const d=$(id);
+ d.addEventListener("click",e=>{
+  const r=d.getBoundingClientRect();
+  const outside=e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom;
+  if(outside)d.close();
+ });
+});
