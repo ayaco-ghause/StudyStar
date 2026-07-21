@@ -1,75 +1,23 @@
-<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#138c43">
-  <title>Study☆Star v1.6</title>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="styles-v16.css?v=1601">
-</head>
-<body>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#118d43"><title>Study☆Star v2.1</title><link rel="stylesheet" href="styles.css?v=20260722-21"></head><body>
 <main class="app">
-  <div class="version-badge">v1.6</div>
-  <header class="header">
-    <button class="circle-button" aria-label="メニュー">☰</button>
-    <button id="logo" class="logo">Study<span>☆</span>Star<small>合格を勝ち取る最強の自分へ</small></button>
-    <button class="circle-button" aria-label="お知らせ">🔔</button>
-  </header>
-
-  <section class="hero-shell">
-    <div class="avatar-panel"><img src="kaito-advance-v16.png?v=1601" alt="KAITOアドヴァンス"></div>
-    <div class="message-card card">
-      <div class="eyebrow">★ KAITOアドヴァンス</div>
-      <h1 id="greeting">おはよう、海翔！</h1>
-      <p id="adMessage">今日も最高の<br><strong>Jump</strong>にしよう！</p>
-    </div>
-    <div class="countdown-card card"><small>受検まで</small><strong id="days">あと--日</strong></div>
-    <div class="mission-card card">
-      <div class="mission-title">◎ 今日のミッション <span>☀️</span></div>
-      <label><span>🎓 塾（夏期講習）15:50〜18:10</span></label>
-      <label><span>📘 Challenge45</span><input id="mission1" type="checkbox"></label>
-      <label><span>✏️ 読書15分</span><input id="mission2" type="checkbox"></label>
-      <label><span>🌙 手伝い・読書</span><input id="mission3" type="checkbox"></label>
-      <button class="mission-edit" data-title="今日のミッション">✎ ミッションを確認・編集 ›</button>
-    </div>
-  </section>
-
-  <button id="challengeBtn" class="action-card challenge-card">
-    <span class="action-icon">🚀</span><span class="action-copy"><strong>Challenge45を始める</strong><small>本番1回分の集中Jump！</small></span>
-    <span class="go-badge">Go<br>Go！</span><span class="chevron">›</span>
-  </button>
-  <button id="recordBtn" class="action-card record-card">
-    <span class="action-icon">📖</span><span class="action-copy"><strong>学習時間を残す</strong><small>過去の日付もカレンダーから記録できるよ！</small></span><span class="chevron">›</span>
-  </button>
-
-  <section class="summer-card card">
-    <div class="summer-head"><div><small>夏休みミッション</small><h2>300時間チャレンジ</h2></div><span>☀️</span></div>
-    <div class="summer-numbers"><strong id="summerTotal">0時間00分</strong><small id="summerRemain">残り300時間00分</small></div>
-    <div class="progress summer"><span id="summerBar"></span></div><p id="summerRate">達成率 0.0%</p>
-  </section>
-
-  <section class="dashboard-grid">
-    <button class="jump-card card" data-title="Jump Sky"><div class="card-heading">⭐ Jump Sky</div><small>今日の星</small><div id="stars" class="stars">☆ ☆ ☆ ☆ ☆</div><p>今日もよく頑張ったね！<br>星を集めて、夜空をきれいにしよう♪</p><div class="progress dark"><span id="jumpBar"></span></div></button>
-    <button class="bank-card card" data-title="Dream Bank"><div class="card-heading bank-title">🏛 Dream Bank</div><small>現在のポイント</small><strong id="points">0 pt</strong><p>次のごほうびまで</p><div class="progress light"><span id="pointBar"></span></div><small>ごほうびリストを見る ›</small></button>
-  </section>
-  <section class="lower-grid">
-    <button id="historyBtn" class="info-card card"><div class="card-heading green-title">📚 学習記録</div><p id="historySummary">まだ記録がありません</p><small>記録を見る・削除する ›</small></button>
-    <button class="info-card card" data-title="つぶやき帳"><div class="card-heading green-title">🗒 つぶやき帳</div><p>今日のつぶやきを書こう！</p><small>タップして書いてみよう ✎</small></button>
-  </section>
-  <nav class="bottom-nav"><button class="active">⌂<small>ホーム</small></button><button id="navRecord">◷<small>記録</small></button><button data-title="Jump Sky">☆<small>Jump Sky</small></button><button data-title="Dream Bank">🏛<small>Dream Bank</small></button><button data-title="メニュー">♙<small>メニュー</small></button></nav>
+<header class="header"><button class="circle" aria-label="メニュー">☰</button><button id="logo" class="logo">Study<span>☆</span>Star<small>合格を勝ち取る最強の自分へ</small></button><div class="version">v2.1</div></header>
+<section class="hero">
+<div class="avatar"><img src="kaito-advance.png?v=20260722-21" alt="KAITOアドヴァンス"></div>
+<div class="message card"><div class="eyebrow">★ KAITOアドヴァンス</div><h1 id="greeting"></h1><p id="adMessage"></p></div>
+<div class="countdown card"><small>受検まで</small><strong id="days"></strong></div>
+<div class="mission card"><div class="mission-title">◎ 今日のミッション <span>☀️</span></div><label><span>🎓 塾（夏期講習）<br><small>15:50〜18:10</small></span></label><label><span>📘 Challenge45</span><input id="m1" type="checkbox"></label><label><span>✏️ 読書15分</span><input id="m2" type="checkbox"></label><label><span>🌙 手伝い・読書</span><input id="m3" type="checkbox"></label></div>
+</section>
+<button id="challengeBtn" class="action challenge"><span class="icon">🚀</span><span><strong>Challenge45を始める</strong><small>本番1回分の集中Jump！</small></span><b>›</b></button>
+<button id="recordBtn" class="action record"><span class="icon">📖</span><span><strong>学習時間を残す</strong><small>過去の日付もカレンダーから記録できます</small></span><b>›</b></button>
+<section class="summer card"><div class="section-title">☀️ 夏休み300時間チャレンジ</div><div class="summer-numbers"><div><small>累計</small><strong id="summerTotal">0時間</strong></div><div><small>残り</small><strong id="summerRemain">300時間</strong></div><div><small>達成率</small><strong id="summerRate">0%</strong></div></div><div class="progress"><span id="summerBar"></span></div></section>
+<section class="grid"><button class="sky card" id="historyBtn"><div class="section-title">⭐ Jump Sky</div><small>今日のChallenge45</small><div id="stars" class="stars">☆☆☆☆☆</div><p id="todaySummary">今日はまだ記録がありません</p></button><button class="bank card" id="bankBtn"><div class="section-title">🏛 Dream Bank</div><small>現在のポイント</small><strong id="points">0 pt</strong><p id="pointRule">1・2回目 55P / 3回目以降 88P</p></button></section>
+<nav class="nav"><button class="active">⌂<small>ホーム</small></button><button id="navHistory">◷<small>記録</small></button><button>☆<small>Jump Sky</small></button><button>🏛<small>Dream Bank</small></button><button id="parentBtn">♙<small>メニュー</small></button></nav>
 </main>
-
-<dialog id="categoryDialog"><form method="dialog" class="dialog-card"><h2>今回は何に挑戦する？</h2><div id="categoryList" class="category-list"></div><button value="cancel" class="secondary">戻る</button></form></dialog>
-<dialog id="readyDialog"><div class="dialog-card ready-card"><small>選んだ学習</small><h2 id="readyCategory">自由学習</h2><div class="ready-time">45:00</div><p>まだカウントダウンは始まりません。<br>準備ができたらSTARTを押そう。</p><button id="startChallenge" class="start-button">▶ START</button><button id="backToCategory" class="text-button">カテゴリを選び直す</button><button id="closeReady" class="text-button">ホームへ戻る</button></div></dialog>
-<dialog id="timerDialog"><div class="dialog-card"><small id="timerCategory"></small><h2>Challenge45</h2><div id="timer" class="timer">45:00</div><p>深呼吸して、集中Jump！</p><div class="dialog-actions"><button id="pauseTimer" class="secondary">一時停止</button></div><button id="cancelTimer" class="text-button">中止して戻る</button><p class="timer-note">45分終了後、その日の1・2回目は55P、3回目以降は88Pが自動で加算されます。</p></div></dialog>
-
-<dialog id="recordDialog"><form method="dialog" class="dialog-card record-form"><h2>学習時間を残す</h2><p class="form-note">今日だけでなく、過去の日付にもさかのぼって記録できます。</p><label>学習日<input id="recordDate" type="date" required></label><label>カテゴリ<select id="recordCategory"></select></label><label>学習時間<div class="time-inputs"><select id="recordHours"></select><span>時間</span><select id="recordMinutes"><option value="0">0分</option><option value="5">5分</option><option value="10">10分</option><option value="15">15分</option><option value="20">20分</option><option value="30">30分</option><option value="45">45分</option></select></div></label><label>メモ（任意）<textarea id="recordMemo" rows="3" placeholder="取り組んだ内容など"></textarea></label><p class="point-note">※手入力の学習記録にはChallenge45ポイントは付きません。</p><div class="dialog-actions"><button value="cancel" class="secondary">戻る</button><button id="saveRecord">記録する</button></div></form></dialog>
-
-<dialog id="historyDialog"><div class="dialog-card history-dialog"><div class="history-head"><h2>学習記録</h2><button id="closeHistory" class="secondary">閉じる</button></div><div id="historyList" class="history-list"></div></div></dialog>
-<dialog id="messageDialog"><div class="dialog-card"><h2 id="dialogTitle"></h2><p id="dialogText"></p><button id="closeDialog">OK</button></div></dialog>
-<dialog id="parentDialog"><form method="dialog" class="dialog-card"><h2>保護者モード</h2><input id="password" type="password" inputmode="numeric" maxlength="6" placeholder="パスワード"><p id="error" hidden>パスワードが違います。</p><div class="dialog-actions"><button value="cancel" class="secondary">戻る</button><button id="login">開く</button></div></form></dialog>
-<script src="app-v16.js?v=1601"></script>
-</body></html>
+<dialog id="categoryDialog"><div class="dialog"><h2>今回は何に挑戦する？</h2><div id="categoryList" class="category-list"></div><button class="secondary" data-close="categoryDialog">戻る</button></div></dialog>
+<dialog id="readyDialog"><div class="dialog"><small>選んだ学習</small><h2 id="readyCategory"></h2><div class="timer">45:00</div><p>準備ができたらSTARTを押そう。</p><button id="startChallenge" class="primary wide">▶ START</button><button id="chooseAgain" class="text">カテゴリを選び直す</button><button class="text" data-close="readyDialog">ホームへ戻る</button></div></dialog>
+<dialog id="timerDialog"><div class="dialog"><small id="timerCategory"></small><h2>Challenge45</h2><div id="timer" class="timer">45:00</div><p>深呼吸して、集中Jump！</p><div class="actions"><button id="pauseTimer" class="secondary">一時停止</button></div><button id="cancelTimer" class="text">中止して戻る</button><p class="note">45分完了時のみ、学習時間とポイントが自動で記録されます。</p></div></dialog>
+<dialog id="recordDialog"><form id="recordForm" class="dialog"><h2>学習時間を残す</h2><label>学習日<input id="recordDate" type="date" required></label><label>カテゴリ<select id="recordCategory" required></select></label><label>学習時間<select id="recordMinutes"><option value="15">15分</option><option value="30">30分</option><option value="45">45分</option><option value="60">60分</option><option value="90">90分</option><option value="120">120分</option><option value="180">180分</option></select></label><label>メモ（任意）<textarea id="recordMemo" rows="3" placeholder="やったこと・頑張ったこと"></textarea></label><p class="note">手入力の学習時間にはChallenge45ポイントは付きません。</p><div class="actions"><button type="button" class="secondary" data-close="recordDialog">戻る</button><button class="primary">記録する</button></div></form></dialog>
+<dialog id="historyDialog"><div class="dialog history-dialog"><h2>学習記録</h2><div id="historyList"></div><button class="secondary wide" data-close="historyDialog">閉じる</button></div></dialog>
+<dialog id="messageDialog"><div class="dialog"><h2 id="messageTitle"></h2><p id="messageText"></p><button class="primary wide" data-close="messageDialog">OK</button></div></dialog>
+<dialog id="parentDialog"><form id="parentForm" class="dialog"><h2>保護者モード</h2><input id="password" type="password" inputmode="numeric" maxlength="6" placeholder="パスワード"><p id="passwordError" class="error" hidden>パスワードが違います。</p><div class="actions"><button type="button" class="secondary" data-close="parentDialog">戻る</button><button class="primary">開く</button></div></form></dialog>
+<script src="app.js?v=20260722-21"></script></body></html>
