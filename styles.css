@@ -76,3 +76,181 @@ dialog{border:0;padding:0;border-radius:24px;max-width:min(92vw,520px);width:100
  .action-card{padding:14px 13px;grid-template-columns:52px 1fr 14px;border-radius:19px}.big-icon{font-size:40px}.action-card strong{font-size:19px}.action-card small{font-size:11px}.chev{font-size:31px}
  .summer-card,.history-card{padding:14px}.summer-stats strong{font-size:14px}.bank-card{grid-template-columns:1.35fr .8fr}.bank-copy strong{font-size:31px}.record-row{grid-template-columns:61px 1fr auto}.record-row .kind{display:none}
 }
+
+
+/* =========================================
+   正式版1.1 デザイン調整
+   ========================================= */
+
+/* タイトルを元画像の、丸みがあり親しみやすい雰囲気へ */
+.brand-main{
+  font-family:"Arial Rounded MT Bold","Trebuchet MS","Yu Gothic",sans-serif;
+  font-size:46px;
+  font-weight:900;
+  letter-spacing:-2.8px;
+  color:#08723c;
+  text-shadow:
+    0 2px 0 rgba(255,255,255,.95),
+    0 4px 8px rgba(22,91,45,.12);
+}
+.brand-main span{
+  display:inline-block;
+  color:#f2b31a;
+  font-family:"Trebuchet MS",sans-serif;
+  font-size:1.08em;
+  transform:translateY(1px);
+  text-shadow:0 2px 0 #fff,0 0 10px rgba(255,197,34,.24);
+}
+.brand-sub{
+  margin-top:2px;
+  font-size:14px;
+  letter-spacing:.06em;
+}
+
+/* アドの立体感に合わせ、葉っぱ絵文字をやめて光と立体的な背景装飾へ */
+.hero-card{
+  background:
+    radial-gradient(circle at 13% 18%,rgba(255,255,255,.98) 0 8%,transparent 29%),
+    radial-gradient(circle at 25% 78%,rgba(170,235,163,.36),transparent 34%),
+    radial-gradient(circle at 83% 18%,rgba(255,244,169,.22),transparent 23%),
+    linear-gradient(145deg,#fbfff9,#e7f7e7 70%,#effbec);
+}
+.hero-orb{
+  position:absolute;
+  z-index:0;
+  border-radius:50%;
+  filter:blur(.2px);
+  pointer-events:none;
+}
+.orb-a{
+  width:170px;height:170px;
+  left:-52px;top:-48px;
+  background:
+    radial-gradient(circle at 36% 30%,rgba(255,255,255,.95),rgba(139,223,145,.48) 45%,rgba(48,171,80,.10) 72%,transparent 73%);
+  box-shadow:inset -16px -18px 32px rgba(17,142,63,.11),0 14px 32px rgba(35,127,64,.08);
+}
+.orb-b{
+  width:126px;height:126px;
+  right:-36px;bottom:-38px;
+  background:
+    radial-gradient(circle at 34% 28%,rgba(255,255,255,.9),rgba(255,229,119,.34) 48%,rgba(255,191,45,.08) 72%,transparent 73%);
+}
+.hero-star{
+  position:absolute;
+  z-index:1;
+  color:#fff;
+  text-shadow:0 0 8px #fff,0 0 18px rgba(198,255,191,.95);
+  pointer-events:none;
+}
+.star-a{left:3.5%;top:26%;font-size:31px}
+.star-b{left:27%;top:8%;font-size:19px}
+.star-c{right:31%;bottom:9%;font-size:20px;color:#fff7c9}
+
+/* 受検までを読みやすく */
+.count-card{
+  padding:15px 12px 13px;
+}
+.count-card span{
+  display:block;
+  font-size:16px;
+  font-weight:900;
+  color:#324d3a;
+  letter-spacing:.08em;
+}
+.count-card strong{
+  font-size:32px;
+  margin-top:7px;
+}
+
+/* 全体に少し華やかさと奥行きを追加 */
+.hero-card,.summer-card,.history-card,.tweet-card,.schedule-card,
+.jump-card,.bank-card,.action-card{
+  border:1px solid rgba(255,255,255,.8);
+}
+.ad-message:before{
+  content:"";
+  position:absolute;
+  width:72px;height:72px;
+  right:-22px;top:-24px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,225,92,.28),transparent 70%);
+}
+.mission-card{
+  border:1px solid rgba(255,255,255,.9);
+}
+.mission-head{
+  background:
+    radial-gradient(circle at 88% 30%,rgba(255,224,67,.26),transparent 18%),
+    linear-gradient(135deg,#0aa34e,#077a3c);
+}
+.action-card{
+  box-shadow:
+    0 14px 28px rgba(18,85,44,.20),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+.challenge:after,.record:after{
+  content:"✦";
+  position:absolute;
+  right:105px;
+  top:16px;
+  color:rgba(255,255,255,.72);
+  font-size:20px;
+  text-shadow:0 0 10px rgba(255,255,255,.85);
+}
+.record:after{right:64px;top:21px;font-size:16px}
+.summer-card{
+  background:
+    radial-gradient(circle at 92% 18%,rgba(255,224,83,.22),transparent 18%),
+    #fff;
+}
+.bank-card{
+  background:
+    radial-gradient(circle at 90% 18%,rgba(255,211,76,.23),transparent 24%),
+    linear-gradient(145deg,#fffaf0,#fff1d7);
+}
+.tweet-card{
+  background:
+    radial-gradient(circle at 96% 8%,rgba(109,205,126,.13),transparent 20%),
+    #fff;
+}
+.schedule-card{
+  background:
+    radial-gradient(circle at 94% 8%,rgba(255,213,82,.12),transparent 20%),
+    #fff;
+}
+
+/* アドを少しだけ大きく、主役感を強化 */
+.avatar-stage img{
+  width:134%;
+  height:116%;
+  max-height:406px;
+  margin-left:-14%;
+}
+.ground-shadow{
+  left:10%;
+  right:10%;
+  height:20px;
+  background:rgba(28,95,47,.24);
+}
+
+/* PC表示でも左右の余白が寂しく見えにくい */
+body{
+  background:
+    radial-gradient(circle at 10% 12%,rgba(255,255,255,.95) 0 7%,transparent 23%),
+    radial-gradient(circle at 90% 16%,rgba(214,245,211,.65),transparent 28%),
+    linear-gradient(135deg,#edf8ee,#fafff8 52%,#eaf6ed);
+}
+
+@media(max-width:720px){
+  .brand-main{font-size:37px}
+  .count-card span{font-size:15px}
+  .count-card strong{font-size:28px}
+  .avatar-stage img{width:132%;height:115%;margin-left:-18%}
+}
+@media(max-width:460px){
+  .brand-main{font-size:31px;letter-spacing:-2px}
+  .brand-sub{font-size:10px}
+  .count-card span{font-size:14px}
+  .count-card strong{font-size:25px}
+  .avatar-stage img{width:142%;height:116%;margin-left:-25%}
+}
