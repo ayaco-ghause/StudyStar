@@ -3,87 +3,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#118443">
+  <meta name="theme-color" content="#138c43">
   <title>Study☆Star</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="app">
     <header class="header">
-      <button class="round">☰</button>
-      <button id="logo" class="logo">Study<span>☆</span>Star<small>合格を勝ち取る最強の自分へ</small></button>
-      <button class="round">🔔</button>
+      <button class="circle-button" aria-label="メニュー">☰</button>
+      <button id="logo" class="logo" aria-label="Study Star">
+        Study<span>☆</span>Star
+        <small>合格を勝ち取る最強の自分へ</small>
+      </button>
+      <button class="circle-button" aria-label="お知らせ">🔔</button>
     </header>
 
-    <section class="hero">
-      <div class="leaf leaf1">🍃</div><div class="leaf leaf2">🍃</div>
-      <div class="avatar-wrap"><img src="kaito-advance.jpg" alt="KAITOアドヴァンス"></div>
-
-      <div class="message card">
-        <small>★ KAITOアドヴァンス</small>
-        <h1 id="greeting">おはよう、海翔！</h1>
-        <p id="adMessage">今日も最高の<br><b>Jump</b>にしよう！</p>
+    <section class="hero-shell">
+      <div class="sparkle s1">✦</div><div class="sparkle s2">✧</div><div class="sparkle s3">✦</div>
+      <div class="avatar-panel">
+        <img src="kaito-advance.jpg" alt="KAITOアドヴァンス">
       </div>
 
-      <div class="count card">
+      <div class="message-card card">
+        <div class="eyebrow">★ KAITOアドヴァンス</div>
+        <h1 id="greeting">おはよう、海翔！</h1>
+        <p id="adMessage">今日も最高の<br><strong>Jump</strong>にしよう！</p>
+      </div>
+
+      <div class="countdown-card card">
         <small>受検まで</small>
         <strong id="days">あと--日</strong>
       </div>
 
-      <div class="mission card">
-        <div class="mission-head">◎ 今日のミッション <span>☀️</span></div>
+      <div class="mission-card card">
+        <div class="mission-title">◎ 今日のミッション <span>☀️</span></div>
         <label><span>🎓 塾（夏期講習）15:50〜18:10</span></label>
-        <label><span>📘 Challenge45</span><input id="m1" type="checkbox"></label>
-        <label><span>✏️ 読書15分</span><input id="m2" type="checkbox"></label>
-        <label><span>🌙 手伝い・読書</span><input id="m3" type="checkbox"></label>
-        <button class="mission-edit">✎ ミッションを確認・編集 ›</button>
+        <label><span>📘 Challenge45</span><input id="mission1" type="checkbox"></label>
+        <label><span>✏️ 読書15分</span><input id="mission2" type="checkbox"></label>
+        <label><span>🌙 手伝い・読書</span><input id="mission3" type="checkbox"></label>
+        <button class="mission-edit" data-title="今日のミッション">✎ ミッションを確認・編集 ›</button>
       </div>
     </section>
 
-    <button id="challengeBtn" class="big green">
-      <span class="big-icon">🚀</span>
-      <span><strong>Challenge45を始める</strong><small>本番1回分の集中Jump！</small></span>
-      <b>よし<br>行こう！</b><i>›</i>
+    <button id="challengeBtn" class="action-card challenge-card">
+      <span class="action-icon rocket">🚀</span>
+      <span class="action-copy">
+        <strong>Challenge45を始める</strong>
+        <small>本番1回分の集中Jump！</small>
+      </span>
+      <span class="go-badge">よし<br>行こう！</span>
+      <span class="chevron">›</span>
     </button>
 
-    <button id="recordBtn" class="big blue">
-      <span class="big-icon">📖</span>
-      <span><strong>学習時間を残す</strong><small>Challenge45以外の学習を記録しよう！</small></span><i>›</i>
+    <button id="recordBtn" class="action-card record-card">
+      <span class="action-icon">📖</span>
+      <span class="action-copy">
+        <strong>学習時間を残す</strong>
+        <small>Challenge45以外の学習を記録しよう！</small>
+      </span>
+      <span class="chevron">›</span>
     </button>
 
-    <section class="twocol">
-      <button class="sky card" data-title="Jump Sky">
-        <div class="section-title">⭐ Jump Sky</div>
+    <section class="dashboard-grid">
+      <button class="jump-card card" data-title="Jump Sky">
+        <div class="card-heading">⭐ Jump Sky</div>
         <small>今日の星</small>
         <div id="stars" class="stars">☆ ☆ ☆ ☆ ☆</div>
         <p>今日もよく頑張ったね！<br>星を集めて、夜空をきれいにしよう♪</p>
-        <div class="bar"><span id="skyBar"></span></div>
+        <div class="progress dark"><span id="jumpBar"></span></div>
       </button>
 
-      <button class="bank card" data-title="Dream Bank">
-        <div class="section-title">🏛 Dream Bank</div>
+      <button class="bank-card card" data-title="Dream Bank">
+        <div class="card-heading bank-title">🏛 Dream Bank</div>
         <small>現在のポイント</small>
         <strong id="points">0 pt</strong>
-        <p>目標まであと</p>
-        <div class="bar light"><span id="bankBar"></span></div>
+        <p>次のごほうびまで</p>
+        <div class="progress light"><span id="pointBar"></span></div>
         <small>ごほうびリストを見る ›</small>
       </button>
     </section>
 
-    <section class="twocol">
-      <button id="tweetBtn" class="panel card">
-        <div class="section-title">🗒 つぶやき帳</div>
+    <section class="lower-grid">
+      <button id="tweetBtn" class="info-card card">
+        <div class="card-heading green-title">🗒 つぶやき帳</div>
         <p id="tweetPreview">今日のつぶやきを書こう！</p>
         <small>タップして書いてみよう ✎</small>
       </button>
-      <button class="panel card" data-title="今後の予定">
-        <div class="section-title">🗓 今後の予定</div>
+
+      <button class="info-card card" data-title="今後の予定">
+        <div class="card-heading green-title">🗓 今後の予定</div>
         <p>夏期講習や模試の予定を確認</p>
         <small>すべて見る ›</small>
       </button>
     </section>
 
-    <nav>
+    <nav class="bottom-nav">
       <button class="active">⌂<small>ホーム</small></button>
       <button data-title="記録">◷<small>記録</small></button>
       <button data-title="Jump Sky">☆<small>Jump Sky</small></button>
@@ -96,7 +110,7 @@
     <form method="dialog" class="dialog-card">
       <h2>今回は何に挑戦する？</h2>
       <div id="categoryList" class="category-list"></div>
-      <button value="cancel" class="sub">戻る</button>
+      <button value="cancel" class="secondary">戻る</button>
     </form>
   </dialog>
 
@@ -106,11 +120,11 @@
       <h2>Challenge45</h2>
       <div id="timer" class="timer">45:00</div>
       <p>深呼吸して、集中Jump！</p>
-      <div class="actions">
-        <button id="pauseTimer" class="sub">一時停止</button>
+      <div class="dialog-actions">
+        <button id="pauseTimer" class="secondary">一時停止</button>
         <button id="finishTimer">完了にする</button>
       </div>
-      <button id="cancelTimer" class="text">中止して戻る</button>
+      <button id="cancelTimer" class="text-button">中止して戻る</button>
     </div>
   </dialog>
 
@@ -118,8 +132,15 @@
     <form method="dialog" class="dialog-card">
       <h2>学習時間を残す</h2>
       <label>カテゴリ<select id="recordCategory"></select></label>
-      <label>学習時間<select id="recordMinutes"><option>15</option><option>30</option><option>45</option><option>60</option><option>90</option><option>120</option></select>分</label>
-      <div class="actions"><button value="cancel" class="sub">戻る</button><button id="saveRecord">記録する</button></div>
+      <label>学習時間<select id="recordMinutes">
+        <option value="15">15分</option><option value="30">30分</option>
+        <option value="45">45分</option><option value="60">60分</option>
+        <option value="90">90分</option><option value="120">120分</option>
+      </select></label>
+      <div class="dialog-actions">
+        <button value="cancel" class="secondary">戻る</button>
+        <button id="saveRecord">記録する</button>
+      </div>
     </form>
   </dialog>
 
@@ -128,7 +149,10 @@
       <h2>今日のつぶやき</h2>
       <textarea id="tweetText" maxlength="100" placeholder="今日の気持ちを、ひとこと。"></textarea>
       <label class="secret"><input id="secretTweet" type="checkbox">秘密モード</label>
-      <div class="actions"><button value="cancel" class="sub">戻る</button><button id="saveTweet">残す</button></div>
+      <div class="dialog-actions">
+        <button value="cancel" class="secondary">戻る</button>
+        <button id="saveTweet">残す</button>
+      </div>
     </form>
   </dialog>
 
@@ -141,7 +165,10 @@
       <h2>保護者モード</h2>
       <input id="password" type="password" inputmode="numeric" maxlength="6" placeholder="パスワード">
       <p id="error" hidden>パスワードが違います。</p>
-      <div class="actions"><button value="cancel" class="sub">戻る</button><button id="login">開く</button></div>
+      <div class="dialog-actions">
+        <button value="cancel" class="secondary">戻る</button>
+        <button id="login">開く</button>
+      </div>
     </form>
   </dialog>
 
