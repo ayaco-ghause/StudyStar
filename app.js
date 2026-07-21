@@ -1,6 +1,6 @@
 (()=> {
   const $ = id => document.getElementById(id);
-  const KEY = "studyStarHomeV10";
+  const KEY = "studyStarHomeV11";
   const EXAM = new Date("2027-02-03T00:00:00");
   const categories = ["理系宿題","文系宿題","塾での学習","過去問","模試解き直し","苦手克服","自由学習"];
 
@@ -72,11 +72,18 @@
   }
   $("closeDialog").onclick = () => messageDialog.close();
 
+  let selectedCategory = "";
+
   categories.forEach(cat => {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = cat;
-    button.onclick = () => { $("categoryDialog").close(); startTimer(cat); };
+    button.onclick = () => {
+      selectedCategory = cat;
+      $("categoryDialog").close();
+      $("readyCategory").textContent = cat;
+      $("readyDialog").showModal();
+    };
     $("categoryList").appendChild(button);
 
     const option = document.createElement("option");
@@ -85,6 +92,10 @@
   });
 
   $("challengeBtn").onclick = () => $("categoryDialog").showModal();
+  $("backToCategory").onclick = () => {
+    $("readyDialog").close();
+    $("categoryDialog").showModal();
+  };
 
   let remaining = 2700;
   let interval = null;
@@ -96,19 +107,26 @@
       String(remaining%60).padStart(2,"0");
   }
 
-  function startTimer(category){
+  function beginCountdown(){
     remaining = 2700;
     paused = false;
-    $("timerCategory").textContent = category;
+    $("timerCategory").textContent = selectedCategory;
     $("pauseTimer").textContent = "一時停止";
     drawTimer();
+    $("readyDialog").close();
     $("timerDialog").showModal();
+
     clearInterval(interval);
     interval = setInterval(() => {
-      if (!paused && remaining > 0) { remaining--; drawTimer(); }
+      if (!paused && remaining > 0) {
+        remaining--;
+        drawTimer();
+      }
       if (remaining <= 0) completeChallenge();
     },1000);
   }
+
+  $("startChallenge").onclick = beginCountdown;
 
   function completeChallenge(){
     clearInterval(interval);
@@ -127,7 +145,10 @@
     $("pauseTimer").textContent = paused ? "再開" : "一時停止";
   };
   $("finishTimer").onclick = completeChallenge;
-  $("cancelTimer").onclick = () => { clearInterval(interval); $("timerDialog").close(); };
+  $("cancelTimer").onclick = () => {
+    clearInterval(interval);
+    $("timerDialog").close();
+  };
 
   $("recordBtn").onclick = () => $("recordDialog").showModal();
   $("saveRecord").onclick = e => {
@@ -138,7 +159,7 @@
     save();
     render();
     $("recordDialog").close();
-    show("記録できたよ！", $("recordCategory").value + "を" + mins + "分、学習時間に加えました。");
+    show("記録できたよ！", $("recordCategory").value + "を" + mins + "、学習時間に加えました。");
   };
 
   $("tweetBtn").onclick = () => $("tweetDialog").showModal();
@@ -156,7 +177,10 @@
   };
 
   ["mission1","mission2","mission3"].forEach((id,i)=>{
-    $(id).onchange = () => { state.missions[i] = $(id).checked; save(); };
+    $(id).onchange = () => {
+      state.missions[i] = $(id).checked;
+      save();
+    };
   });
 
   document.querySelectorAll("[data-title]").forEach(button => {
