@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#25a46f">
+  <title>Study☆Star</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <button id="logo" class="logo">
+        <span>Study<span>☆</span>Star</span>
+        <small>合格を勝ち取る最強の自分へ</small>
+      </button>
+      <div class="countdown"><small>受検まで</small><strong id="days">あと--日</strong></div>
+    </header>
+
+    <section class="hero">
+      <div class="ad">
+        <div class="head"><i></i><b></b><em></em></div>
+        <div class="body"><span>★</span></div>
+        <div class="leg l"></div><div class="leg r"></div>
+        <div class="shoe sl"></div><div class="shoe sr"></div>
+      </div>
+      <div class="message">
+        <h1 id="greeting">おかえり、カイト！</h1>
+        <p id="adMessage">今日もここから、一歩ずつ。</p>
+      </div>
+    </section>
+
+    <section class="today">
+      <div class="heading"><div><small>TODAY</small><h2>今日の記録</h2></div><span id="date"></span></div>
+      <div class="stats">
+        <div><span>⏱</span><small>Challenge45</small><strong id="challenge">0回</strong></div>
+        <div><span>📚</span><small>学習時間</small><strong id="time">0分</strong></div>
+        <div><span>⭐</span><small>ドリポン</small><strong id="points">0pt</strong></div>
+      </div>
+    </section>
+
+    <button id="challengeBtn" class="challenge">
+      <small>今回は何に挑戦する？</small>
+      <strong>Challenge45</strong>
+      <span>→</span>
+    </button>
+
+    <section class="menu">
+      <button data-title="成長の木" data-text="昨日の自分とだけ比べる、静かな成長画面を準備しています。">🌳<span><strong>成長の木</strong><small>昨日の自分より、少し前へ</small></span></button>
+      <button data-title="ドリポン交換所" data-text="ご褒美アイスやコミックなどの交換機能を準備しています。">🎁<span><strong>ドリポン交換所</strong><small>がんばりを楽しみに変えよう</small></span></button>
+      <button class="wide" data-title="カイトのつぶやき" data-text="通常モードと秘密モードを準備しています。">💭<span><strong>カイトのつぶやき</strong><small>今日の気持ちを、ひとこと残そう。</small></span></button>
+    </section>
+  </main>
+
+  <dialog id="dialog">
+    <div>
+      <span class="dialogStar">☆</span>
+      <h3 id="dialogTitle"></h3>
+      <p id="dialogText"></p>
+      <button id="closeDialog">OK</button>
+    </div>
+  </dialog>
+
+  <dialog id="parent">
+    <form method="dialog">
+      <h3>🔐 保護者モード</h3>
+      <input id="password" type="password" inputmode="numeric" maxlength="6" placeholder="パスワード">
+      <p id="error" hidden>パスワードが違います。</p>
+      <button value="cancel" class="sub">キャンセル</button>
+      <button id="login">開く</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
