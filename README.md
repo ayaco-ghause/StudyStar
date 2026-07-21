@@ -1,12 +1,9 @@
-# Study☆Star v0.2
+# Study☆Star v0.3
 
-追加内容：
-- アドの自然な動き
-- ボタンとカードのアニメーション
-- 学習カテゴリ選択
-- 45分タイマー
-- 一時停止・再開・完了
-- 完了時50pt付与
-- Jump SkyとDream Bankへの反映
+完成イメージを正式基準にして、ホーム画面の配置・色・余白・カード構成を近づけた更新版です。
 
-GitHubへは index.html / styles.css / app.js / kaito-advance.jpg をアップロードしてください。
+GitHubへアップロードするファイル：
+- index.html
+- styles.css
+- app.js
+- kaito-advance.jpg
