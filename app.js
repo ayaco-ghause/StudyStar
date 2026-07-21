@@ -4,7 +4,13 @@ const $=id=>document.getElementById(id), KEY='studyStarV20', EXAM='2027-02-03', 
 const cats=['理系宿題','文系宿題','塾での学習','過去問','模試解き直し','苦手克服','自由学習'];
 const defaultState={points:0,records:[],challengeCounts:{},missions:{},openCount:0};
 let s={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')};
-s.records=Array.isArray(s.records)?s.records:[];s.challengeCounts=s.challengeCounts||{};s.missions=s.missions||{};s.openCount=(s.openCount||0)+1;save();
+s.records=Array.isArray(s.records)?s.records:[];s.challengeCounts=s.challengeCounts||{};s.missions=s.missions||{};
+if(!s.manualPointMigrationV24){
+  s.records.forEach(r=>{if(r.type==='manual')r.points=Number(r.minutes)||0});
+  s.points=s.records.reduce((sum,r)=>sum+(Number(r.points)||0),0);
+  s.manualPointMigrationV24=true;
+}
+s.openCount=(s.openCount||0)+1;save();
 const localDate=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const today=localDate();
 function save(){localStorage.setItem(KEY,JSON.stringify(s))}
@@ -32,10 +38,10 @@ $('startChallenge').onclick=()=>{if(running)return;remaining=2700;paused=false;r
 function finish(){if(!running)return;clearInterval(timer);running=false;const point=challengePointFor(today);s.challengeCounts[today]=(s.challengeCounts[today]||0)+1;s.points+=point;s.records.push({id:crypto.randomUUID(),date:today,category:chosen,minutes:45,memo:'Challenge45 完了',type:'challenge',points:point,createdAt:Date.now()});s.missions[today]=s.missions[today]||{};s.missions[today][0]=true;save();render();$('timerDialog').close();message('よし、チャージ完了！',`45分やり切ったね。スターエナジーを${point}P獲得！ カイトもひと休憩しよう😊`)}
 $('pauseTimer').onclick=()=>{if(!running)return;paused=!paused;$('pauseTimer').textContent=paused?'再開':'一時停止'};$('cancelTimer').onclick=()=>{clearInterval(timer);running=false;paused=false;$('timerDialog').close();message('Challenge45を中止しました','途中では学習時間もポイントも加算されません。')};
 $('recordBtn').onclick=()=>{$('recordDate').value=today;$('recordDate').max=today;$('recordDialog').showModal()};
-$('recordForm').onsubmit=e=>{e.preventDefault();const date=$('recordDate').value,minutes=Number($('recordMinutes').value),category=$('recordCategory').value,memo=$('recordMemo').value.trim();if(!date||!minutes)return;s.records.push({id:crypto.randomUUID(),date,category,minutes,memo,type:'manual',points:0,createdAt:Date.now()});save();render();$('recordForm').reset();$('recordDialog').close();message('記録できたよ！',`${dateJP(date)}の${category}を${minutesText(minutes)}、学習時間に加えました。`)};
-function renderHistory(){const list=$('historyList');list.innerHTML='';const records=[...s.records].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);if(!records.length){list.innerHTML='<div class="empty">まだ記録がありません。</div>';return}for(const r of records){const d=document.createElement('article');d.className='history-item';d.innerHTML=`<header><strong>${dateJP(r.date)}　${r.category}</strong><button class="delete" data-id="${r.id}">削除</button></header><p>${minutesText(r.minutes)}${r.type==='challenge'?`　+${r.points}P`:''}</p>${r.memo?`<small>${r.memo}</small>`:''}`;list.appendChild(d)}list.querySelectorAll('.delete').forEach(b=>b.onclick=()=>{if(!confirm('この記録を削除しますか？'))return;const r=s.records.find(x=>x.id===b.dataset.id);if(r?.type==='challenge'){s.points=Math.max(0,s.points-(r.points||0));s.challengeCounts[r.date]=Math.max(0,(s.challengeCounts[r.date]||0)-1)}s.records=s.records.filter(x=>x.id!==b.dataset.id);save();render();renderHistory()})}
+$('recordForm').onsubmit=e=>{e.preventDefault();const date=$('recordDate').value,minutes=Number($('recordMinutes').value),category=$('recordCategory').value,memo=$('recordMemo').value.trim();if(!date||!minutes)return;const point=minutes;s.points+=point;s.records.push({id:crypto.randomUUID(),date,category,minutes,memo,type:'manual',points:point,createdAt:Date.now()});save();render();$('recordForm').reset();$('recordDialog').close();message('記録できたよ！',`${dateJP(date)}の${category}を${minutesText(minutes)}、学習時間に加えました。Dream Bankに${point}P貯まったよ！`)};
+function renderHistory(){const list=$('historyList');list.innerHTML='';const records=[...s.records].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);if(!records.length){list.innerHTML='<div class="empty">まだ記録がありません。</div>';return}for(const r of records){const d=document.createElement('article');d.className='history-item';d.innerHTML=`<header><strong>${dateJP(r.date)}　${r.category}</strong><button class="delete" data-id="${r.id}">削除</button></header><p>${minutesText(r.minutes)}　+${r.points||0}P</p>${r.memo?`<small>${r.memo}</small>`:''}`;list.appendChild(d)}list.querySelectorAll('.delete').forEach(b=>b.onclick=()=>{if(!confirm('この記録を削除しますか？'))return;const r=s.records.find(x=>x.id===b.dataset.id);if(r){s.points=Math.max(0,s.points-(r.points||0));if(r.type==='challenge')s.challengeCounts[r.date]=Math.max(0,(s.challengeCounts[r.date]||0)-1)}s.records=s.records.filter(x=>x.id!==b.dataset.id);save();render();renderHistory()})}
 function openHistory(){renderHistory();$('historyDialog').showModal()}$('historyBtn').onclick=openHistory;$('navHistory').onclick=openHistory;
-$('bankBtn').onclick=()=>message('Dream Bank',`現在 ${s.points}P です。\n1・2回目は55P、3回目以降は88Pで固定されています。`);
+$('bankBtn').onclick=()=>message('Dream Bank',`現在 ${s.points}P です。\nChallenge45は1・2回目55P、3回目以降88P。\nChallenge45以外の学習は1分につき1Pです。`);
 $('parentBtn').onclick=()=>$('parentDialog').showModal();$('parentForm').onsubmit=e=>{e.preventDefault();if($('password').value==='460631'){$('parentDialog').close();message('保護者モード','認証できました。設定機能は次の更新で追加します。')}else $('passwordError').hidden=false};
 render();
 })();
