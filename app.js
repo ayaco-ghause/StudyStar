@@ -1,47 +1,172 @@
-(()=>{
-'use strict';
-const $=id=>document.getElementById(id), KEY='studyStarV20', EXAM='2027-02-03', SUMMER_START='2026-07-18', SUMMER_END='2026-08-31';
-const cats=['理系宿題','文系宿題','塾での学習','過去問','模試解き直し','苦手克服','自由学習'];
-const defaultState={points:0,records:[],challengeCounts:{},missions:{},openCount:0};
-let s={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')};
-s.records=Array.isArray(s.records)?s.records:[];s.challengeCounts=s.challengeCounts||{};s.missions=s.missions||{};
-if(!s.manualPointMigrationV24){
-  s.records.forEach(r=>{if(r.type==='manual')r.points=Number(r.minutes)||0});
-  s.points=s.records.reduce((sum,r)=>sum+(Number(r.points)||0),0);
-  s.manualPointMigrationV24=true;
+
+"use strict";
+const $=id=>document.getElementById(id);
+const CATEGORIES=["理系宿題","文系宿題","塾での学習","過去問","模試解き直し","苦手克服","自由学習"];
+const REWARDS=[
+ {name:"お菓子またはコンビニ軽食",points:200},
+ {name:"ご褒美アイス",points:300},
+ {name:"コミック",points:800},
+ {name:"映画",points:1500},
+ {name:"外食",points:2500}
+];
+const defaultState={
+ records:[],tweets:[],points:0,challengeCounts:{},missions:{},
+ message:"今日も最高のJumpにしよう！",
+ missionTemplate:[
+  {icon:"🎓",text:"塾（夏期講習）",sub:"15:50〜18:10"},
+  {icon:"📘",text:"Challenge45",sub:""},
+  {icon:"✏️",text:"読書15分",sub:""},
+  {icon:"🌙",text:"手伝い・読書",sub:""}
+ ]
+};
+let state;
+try{state={...defaultState,...JSON.parse(localStorage.getItem("studystar_official_1")||"{}")}}catch{state={...defaultState}}
+state.records=Array.isArray(state.records)?state.records:[];
+state.tweets=Array.isArray(state.tweets)?state.tweets:[];
+state.challengeCounts=state.challengeCounts||{};
+state.missions=state.missions||{};
+function save(){localStorage.setItem("studystar_official_1",JSON.stringify(state))}
+function today(){return new Date().toLocaleDateString("sv-SE")}
+function dateJP(d){const x=new Date(d+"T00:00:00");return `${x.getMonth()+1}/${x.getDate()}`}
+function minText(m){m=Number(m)||0;return m>=60?`${Math.floor(m/60)}時間${String(m%60).padStart(2,"0")}分`:`${m}分`}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2400)}
+function fillSelect(id){$(id).innerHTML=CATEGORIES.map(c=>`<option>${c}</option>`).join("")}
+fillSelect("recordCategory");fillSelect("challengeCategory");
+$("recordDate").value=today();$("recordDate").max=today();
+
+function setGreeting(){
+ const h=new Date().getHours();
+ const title=h<10?"おはよう、海翔！":h<17?"やぁ、海翔！":h<20?"おかえり、海翔！":"こんばんは、海翔！";
+ $("greetingTitle").textContent=title;
+ const body=state.message||defaultState.message;
+ $("greetingBody").innerHTML=body.replace("Jump","<strong>Jump</strong>").replace(/\n/g,"<br>");
 }
-s.openCount=(s.openCount||0)+1;save();
-const localDate=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-const today=localDate();
-function save(){localStorage.setItem(KEY,JSON.stringify(s))}
-function minutesText(m){return m%60?`${Math.floor(m/60)}時間${m%60}分`:`${m/60}時間`}
-function dateJP(x){const d=new Date(x+'T00:00:00');return `${d.getMonth()+1}月${d.getDate()}日`}
-function challengePointFor(date){return (s.challengeCounts[date]||0)<2?55:88}
-function render(){
- const a=new Date(today+'T00:00:00'),b=new Date(EXAM+'T00:00:00');$('days').textContent='あと'+Math.max(0,Math.ceil((b-a)/86400000))+'日';
- $('points').textContent=s.points+' pt';
- const c=s.challengeCounts[today]||0;$('stars').textContent='★'.repeat(Math.min(5,c))+'☆'.repeat(Math.max(0,5-Math.min(5,c)));
- const todayMin=s.records.filter(r=>r.date===today).reduce((n,r)=>n+r.minutes,0);$('todaySummary').textContent=todayMin?`今日の学習 ${minutesText(todayMin)} / Challenge45 ${c}回`:'今日はまだ記録がありません';
- const summer=s.records.filter(r=>r.date>=SUMMER_START&&r.date<=SUMMER_END).reduce((n,r)=>n+r.minutes,0),goal=18000,remain=Math.max(0,goal-summer),rate=Math.min(100,summer/goal*100);
- $('summerTotal').textContent=minutesText(summer);$('summerRemain').textContent=minutesText(remain);$('summerRate').textContent=rate.toFixed(1)+'%';$('summerBar').style.width=rate+'%';
- const h=new Date().getHours();let g,m;if(s.openCount>1){g='また会えたね、海翔！';m='戻ってきたことも、ちゃんと前進だよ。'}else if(h<9){g='おはよう、海翔！';m='今日も最高の <strong>Jump</strong> にしよう！'}else if(h<12){g='やぁ、海翔！';m='今日はどんな自分に会えるかな。'}else if(h<18){g='こんにちは、海翔！';m='まず一つ、始めよう。'}else{g='おかえり、海翔！';m='今日も会えたね。'}$('greeting').textContent=g;$('adMessage').innerHTML=m;
- ['m1','m2','m3'].forEach((id,i)=>{$(id).checked=!!s.missions[today]?.[i]});
+function renderMission(){
+ const key=today(), checks=state.missions[key]||{};
+ $("missionList").innerHTML=state.missionTemplate.map((m,i)=>`
+ <label class="mission-item"><span>${m.icon} ${m.text}${m.sub?`<br><small>${m.sub}</small>`:""}</span>
+ <input type="checkbox" data-mission="${i}" ${checks[i]?"checked":""}></label>`).join("");
+ document.querySelectorAll("[data-mission]").forEach(el=>el.onchange=()=>{
+  state.missions[key]=state.missions[key]||{};
+  state.missions[key][el.dataset.mission]=el.checked;save();renderJump();
+ });
 }
-function message(title,text){$('messageTitle').textContent=title;$('messageText').textContent=text;$('messageDialog').showModal()}
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).close());
-['m1','m2','m3'].forEach((id,i)=>$(id).onchange=e=>{s.missions[today]=s.missions[today]||{};s.missions[today][i]=e.target.checked;save()});
-for(const c of cats){const b=document.createElement('button');b.type='button';b.textContent=c;b.onclick=()=>{chosen=c;$('readyCategory').textContent=c;$('categoryDialog').close();setTimeout(()=>$('readyDialog').showModal(),30)};$('categoryList').appendChild(b);const o=document.createElement('option');o.value=o.textContent=c;$('recordCategory').appendChild(o)}
-let chosen='自由学習',remaining=2700,timer=null,paused=false,running=false;
-$('challengeBtn').onclick=()=>$('categoryDialog').showModal();$('chooseAgain').onclick=()=>{$('readyDialog').close();setTimeout(()=>$('categoryDialog').showModal(),30)};
-function draw(){$('timer').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
-$('startChallenge').onclick=()=>{if(running)return;remaining=2700;paused=false;running=true;$('timerCategory').textContent=chosen;$('pauseTimer').textContent='一時停止';draw();$('readyDialog').close();setTimeout(()=>$('timerDialog').showModal(),30);clearInterval(timer);timer=setInterval(()=>{if(!paused&&remaining>0){remaining--;draw()}if(remaining===0)finish()},1000)};
-function finish(){if(!running)return;clearInterval(timer);running=false;const point=challengePointFor(today);s.challengeCounts[today]=(s.challengeCounts[today]||0)+1;s.points+=point;s.records.push({id:crypto.randomUUID(),date:today,category:chosen,minutes:45,memo:'Challenge45 完了',type:'challenge',points:point,createdAt:Date.now()});s.missions[today]=s.missions[today]||{};s.missions[today][0]=true;save();render();$('timerDialog').close();message('よし、チャージ完了！',`45分やり切ったね。スターエナジーを${point}P獲得！ カイトもひと休憩しよう😊`)}
-$('pauseTimer').onclick=()=>{if(!running)return;paused=!paused;$('pauseTimer').textContent=paused?'再開':'一時停止'};$('cancelTimer').onclick=()=>{clearInterval(timer);running=false;paused=false;$('timerDialog').close();message('Challenge45を中止しました','途中では学習時間もポイントも加算されません。')};
-$('recordBtn').onclick=()=>{$('recordDate').value=today;$('recordDate').max=today;$('recordDialog').showModal()};
-$('recordForm').onsubmit=e=>{e.preventDefault();const date=$('recordDate').value,minutes=Number($('recordMinutes').value),category=$('recordCategory').value,memo=$('recordMemo').value.trim();if(!date||!minutes)return;const point=minutes;s.points+=point;s.records.push({id:crypto.randomUUID(),date,category,minutes,memo,type:'manual',points:point,createdAt:Date.now()});save();render();$('recordForm').reset();$('recordDialog').close();message('記録できたよ！',`${dateJP(date)}の${category}を${minutesText(minutes)}、学習時間に加えました。Dream Bankに${point}P貯まったよ！`)};
-function renderHistory(){const list=$('historyList');list.innerHTML='';const records=[...s.records].sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);if(!records.length){list.innerHTML='<div class="empty">まだ記録がありません。</div>';return}for(const r of records){const d=document.createElement('article');d.className='history-item';d.innerHTML=`<header><strong>${dateJP(r.date)}　${r.category}</strong><button class="delete" data-id="${r.id}">削除</button></header><p>${minutesText(r.minutes)}　+${r.points||0}P</p>${r.memo?`<small>${r.memo}</small>`:''}`;list.appendChild(d)}list.querySelectorAll('.delete').forEach(b=>b.onclick=()=>{if(!confirm('この記録を削除しますか？'))return;const r=s.records.find(x=>x.id===b.dataset.id);if(r){s.points=Math.max(0,s.points-(r.points||0));if(r.type==='challenge')s.challengeCounts[r.date]=Math.max(0,(s.challengeCounts[r.date]||0)-1)}s.records=s.records.filter(x=>x.id!==b.dataset.id);save();render();renderHistory()})}
-function openHistory(){renderHistory();$('historyDialog').showModal()}$('historyBtn').onclick=openHistory;$('navHistory').onclick=openHistory;
-$('bankBtn').onclick=()=>message('Dream Bank',`現在 ${s.points}P です。\nChallenge45は1・2回目55P、3回目以降88P。\nChallenge45以外の学習は1分につき1Pです。`);
-$('parentBtn').onclick=()=>$('parentDialog').showModal();$('parentForm').onsubmit=e=>{e.preventDefault();if($('password').value==='460631'){$('parentDialog').close();message('保護者モード','認証できました。設定機能は次の更新で追加します。')}else $('passwordError').hidden=false};
-render();
-})();
+function examCountdown(){
+ const target=new Date("2027-02-03T00:00:00");
+ const now=new Date();now.setHours(0,0,0,0);
+ const days=Math.max(0,Math.ceil((target-now)/86400000));
+ $("examCountdown").textContent=`あと${days}日`;
+}
+function totals(){
+ const all=state.records.reduce((a,r)=>a+(Number(r.minutes)||0),0);
+ const td=state.records.filter(r=>r.date===today()).reduce((a,r)=>a+(Number(r.minutes)||0),0);
+ return {all,td};
+}
+function renderSummer(){
+ const {all,td}=totals(), goal=18000, remain=Math.max(0,goal-all), pct=Math.min(100,all/goal*100);
+ $("summerTotal").textContent=minText(all);
+ $("summerRemain").textContent=minText(remain);
+ $("todayTotal").textContent=minText(td);
+ $("summerPercent").textContent=`${pct.toFixed(1)}%`;
+ $("summerBar").style.width=`${pct}%`;
+}
+function renderJump(){
+ const count=state.challengeCounts[today()]||0;
+ const stars=Math.min(5,count);
+ $("todayStars").textContent="★".repeat(stars)+"☆".repeat(5-stars);
+ $("jumpBar").style.width=`${stars/5*100}%`;
+ $("jumpMessage").textContent=count?`今日もよく頑張ったね！ ${count}回チャージ完了`:"今日はまだ記録がありません";
+ $("challengeSub").textContent=`本番${count+1}回目の集中Jump！`;
+}
+function renderBank(){
+ $("points").innerHTML=`${state.points||0} <em>pt</em>`;
+ const next=REWARDS.find(r=>r.points>state.points)||REWARDS.at(-1);
+ const before=Math.max(0,next.points-state.points);
+ $("nextRewardText").textContent=before?`${next.name}まであと ${before}P`:`${next.name}に交換できます`;
+ $("bankBar").style.width=`${Math.min(100,state.points/next.points*100)}%`;
+}
+function renderRecords(){
+ const rows=[...state.records].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+ $("recentRecords").innerHTML=rows.length?rows.map(r=>`
+ <div class="record-row">
+ <span>${dateJP(r.date)}</span><div><strong>${r.category}</strong><small>${r.memo||""}</small></div>
+ <span class="kind">${minText(r.minutes)} / +${r.points||0}P</span>
+ <button data-delete-record="${r.id}">削除</button></div>`).join(""):'<div class="empty">まだ学習記録がありません</div>';
+ document.querySelectorAll("[data-delete-record]").forEach(b=>b.onclick=()=>{
+  const r=state.records.find(x=>x.id===b.dataset.deleteRecord);
+  if(!r||!confirm("この記録を削除しますか？"))return;
+  state.points=Math.max(0,state.points-(r.points||0));
+  if(r.type==="challenge")state.challengeCounts[r.date]=Math.max(0,(state.challengeCounts[r.date]||0)-1);
+  state.records=state.records.filter(x=>x.id!==r.id);save();renderAll();toast("記録を削除しました");
+ });
+}
+function renderTweets(){
+ const rows=[...state.tweets].sort((a,b)=>b.createdAt-a.createdAt).slice(0,3);
+ $("recentTweets").innerHTML=rows.length?rows.map(t=>`<div class="recent-row"><span>${dateJP(t.date)}</span><span>${t.text}</span><button data-del-tweet="${t.id}">×</button></div>`).join(""):'<div class="empty">まだつぶやきはありません</div>';
+ document.querySelectorAll("[data-del-tweet]").forEach(b=>b.onclick=()=>{
+  state.tweets=state.tweets.filter(t=>t.id!==b.dataset.delTweet);save();renderTweets();
+ });
+}
+function renderAll(){setGreeting();renderMission();examCountdown();renderSummer();renderJump();renderBank();renderRecords();renderTweets()}
+renderAll();
+
+$("recordBtn").onclick=$("navRecord").onclick=()=>{$("recordDate").value=today();$("recordDialog").showModal()};
+$("recordForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const date=$("recordDate").value,category=$("recordCategory").value,minutes=Number($("recordMinutes").value),memo=$("recordMemo").value.trim();
+ if(!date||!category||!minutes)return;
+ const points=minutes;
+ state.points+=points;
+ state.records.push({id:crypto.randomUUID(),date,category,minutes,memo,type:"manual",points,createdAt:Date.now()});
+ save();$("recordForm").reset();$("recordDate").value=today();$("recordDialog").close();renderAll();
+ toast(`${minutes}分を記録。Dream Bankに${points}P！`);
+});
+
+let timer=null,remaining=2700,paused=false;
+$("challengeBtn").onclick=()=>{$("challengeReady").hidden=false;$("challengeRunning").hidden=true;$("challengeDialog").showModal()};
+$("closeChallenge").onclick=()=>{if(timer)return alert("進行中はキャンセルボタンを使ってください");$("challengeDialog").close()};
+$("startChallenge").onclick=()=>{
+ remaining=2700;paused=false;$("challengeReady").hidden=true;$("challengeRunning").hidden=false;
+ $("timerCategory").textContent=$("challengeCategory").value;updateTimer();timer=setInterval(tick,1000);
+};
+function updateTimer(){const m=Math.floor(remaining/60),s=remaining%60;$("timerText").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function tick(){if(paused)return;remaining--;updateTimer();if(remaining<=0)completeChallenge()}
+$("pauseChallenge").onclick=()=>{paused=!paused;$("pauseChallenge").textContent=paused?"再開":"一時停止"};
+$("cancelChallenge").onclick=()=>{
+ if(!confirm("Challenge45をキャンセルしますか？ポイントは付きません。"))return;
+ clearInterval(timer);timer=null;remaining=2700;$("challengeDialog").close();toast("Challenge45をキャンセルしました");
+};
+function completeChallenge(){
+ clearInterval(timer);timer=null;
+ const date=today(),count=state.challengeCounts[date]||0,points=count<2?55:88,category=$("challengeCategory").value;
+ state.challengeCounts[date]=count+1;state.points+=points;
+ state.records.push({id:crypto.randomUUID(),date,category,minutes:45,memo:"Challenge45 完了",type:"challenge",points,createdAt:Date.now()});
+ save();$("challengeDialog").close();renderAll();
+ alert(`よし、チャージ完了！\nカイトもひと休憩しよう😊\n\nDream Bankに ${points}P 貯まりました。`);
+}
+
+$("tweetBtn").onclick=$("navTweet").onclick=()=>{$("tweetText").value="";$("tweetDialog").showModal()};
+$("tweetForm").addEventListener("submit",e=>{
+ e.preventDefault();const text=$("tweetText").value.trim();if(!text)return;
+ state.tweets.push({id:crypto.randomUUID(),date:today(),text,createdAt:Date.now()});save();$("tweetDialog").close();renderTweets();
+ toast("つぶやきを残したよ。アド：今日の気持ちも大切な一歩だね！");
+});
+function openList(title,html){$("listTitle").textContent=title;$("listContent").innerHTML=html;$("listDialog").showModal()}
+$("closeList").onclick=()=>$("listDialog").close();
+$("allTweetsBtn").onclick=()=>openList("つぶやき帳",state.tweets.length?[...state.tweets].sort((a,b)=>b.createdAt-a.createdAt).map(t=>`<div class="recent-row"><span>${dateJP(t.date)}</span><span>${t.text}</span></div>`).join(""):'<div class="empty">まだつぶやきはありません</div>');
+$("historyBtn").onclick=()=>openList("学習記録",state.records.length?[...state.records].sort((a,b)=>b.createdAt-a.createdAt).map(r=>`<div class="record-row"><span>${dateJP(r.date)}</span><div><strong>${r.category}</strong><small>${r.memo||""}</small></div><span>${minText(r.minutes)} / +${r.points||0}P</span></div>`).join(""):'<div class="empty">まだ学習記録はありません</div>');
+$("bankBtn").onclick=$("navBank").onclick=()=>openList("ごほうびリスト",REWARDS.map(r=>`<div class="record-row"><span>${r.points}P</span><strong>${r.name}</strong><span>${state.points>=r.points?"交換できます":"あと "+(r.points-state.points)+"P"}</span></div>`).join(""));
+$("jumpBtn").onclick=$("navJump").onclick=()=>openList("Jump Sky",`<p>Challenge45を1回完了するごとに、今日の空に星が1つ灯ります。</p><div class="stars">${$("todayStars").textContent}</div><p>${$("jumpMessage").textContent}</p>`);
+$("missionEditBtn").onclick=()=>{
+ const current=state.missionTemplate.map(m=>`${m.icon} ${m.text}${m.sub?" "+m.sub:""}`).join("\n");
+ const value=prompt("ミッションを1行ずつ入力してください。先頭の絵文字も入力できます。",current);
+ if(value===null)return;
+ state.missionTemplate=value.split("\n").filter(Boolean).map(line=>({icon:"★",text:line,sub:""}));save();renderMission();
+};
+$("messageEdit").onclick=()=>{
+ const v=prompt("アドのひとことを入力してください。",state.message);
+ if(v!==null&&v.trim()){state.message=v.trim();save();setGreeting()}
+};
+$("menuBtn").onclick=()=>openList("Study☆Star メニュー",`<p><b>保護者用パスワード：</b>設定変更時に使用します。</p><button class="primary wide" id="parentOpen">保護者モード</button><p class="rule-note">ポイントルール<br>Challenge45：1・2回目 55P／3回目以降 88P<br>その他の学習：1分＝1P</p>`);
+$("noticeBtn").onclick=()=>toast("今日もStudy☆Starへようこそ！");
+$("scheduleBtn").onclick=()=>toast("予定管理は次回アップデートで編集対応予定です");
