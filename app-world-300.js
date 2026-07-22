@@ -57,7 +57,10 @@ function setGreeting(){
    .replace(/。(?=.)/g,"。<br>")
    .replace(/\n/g,"<br>");
  $("greetingBody").innerHTML=safe;
-$("reactionMark").textContent=["✨","⭐","💪","🌟","🚀"][dayIndex];
+ const reaction = $("reactionMark");
+ if(reaction){
+   reaction.textContent=["✨","⭐","💪","🌟","🚀"][dayIndex];
+ }
 }
 function renderMission(){
  const key=today(), checks=state.missions[key]||{};

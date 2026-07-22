@@ -964,3 +964,61 @@ body.theme-night .ambient-sky i:nth-child(2){background:radial-gradient(circle,#
   .exam-road{width:94%}
   .summer-message{font-size:13px}
 }
+
+
+/* =========================================
+   WORLD 300-A mobile greeting safety patch
+   丸いアドを削除したホーム画面用。
+   既存カード・機能・世界観には触れず、
+   スマホでアドのセリフがつぶれないよう調整。
+   ========================================= */
+.ad-message{
+  padding-right:24px;
+}
+.ad-message p{
+  max-width:none;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  line-height:1.65;
+}
+@media(max-width:720px){
+  .ad-message{
+    padding:18px 16px;
+    padding-right:16px;
+    min-width:0;
+  }
+  .ad-message h1{
+    white-space:normal;
+    overflow-wrap:anywhere;
+    line-height:1.35;
+  }
+  .ad-message p{
+    max-width:none;
+    font-size:14px;
+    line-height:1.65;
+  }
+  .ad-message strong{
+    display:inline;
+  }
+}
+@media(max-width:460px){
+  .hero-card{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  }
+  .ad-message{
+    padding:14px 12px;
+    min-height:196px;
+  }
+  .ad-message h1{
+    font-size:18px;
+    line-height:1.35;
+  }
+  .ad-message p{
+    max-width:none;
+    font-size:13px;
+    line-height:1.7;
+  }
+  .ad-message strong{
+    font-size:20px;
+  }
+}
