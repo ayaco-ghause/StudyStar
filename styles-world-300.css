@@ -1049,3 +1049,18 @@ body.theme-night .ambient-sky i:nth-child(2){background:radial-gradient(circle,#
 @keyframes reactionPop{0%{opacity:0;transform:translate(-50%,8px) scale(.65)}18%,70%{opacity:1;transform:translate(-50%,-4px) scale(1)}100%{opacity:0;transform:translate(-50%,-14px) scale(.9)}}
 @media(max-width:560px){.today-status{gap:4px;padding:9px 7px}.today-status small{font-size:10px}.today-status strong{font-size:14px}.glint-left{left:45%;top:28%}.glint-right{left:57%;top:28%}}
 @media (prefers-reduced-motion: reduce){.avatar-stage.ad-jump,.avatar-stage.ad-celebrate,.avatar-stage.ad-guts,.avatar-stage.eye-shine .eye-glint,.ad-reaction.show{animation:none!important}.eye-glint,.ad-reaction{display:none}}
+
+/* === Study☆Star v1.1.1：スマホのホーム配置調整 ===
+   「今日の達成具合」を横幅いっぱいにし、
+   「受検まで」をアドの一言の下のコンパクトな位置へ移動。 */
+@media(max-width:720px){
+  .ad-message{grid-column:2;grid-row:1}
+  .count-card{grid-column:2;grid-row:2;min-width:0}
+  .mission-card{grid-column:1/3;grid-row:3}
+  .today-status{grid-column:1/3;grid-row:4;margin-top:0}
+}
+@media(max-width:560px){
+  .today-status{gap:8px;padding:11px 9px}
+  .today-status small{font-size:11px}
+  .today-status strong{font-size:16px}
+}
