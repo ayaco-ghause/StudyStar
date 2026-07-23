@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#0a9b4a" name="theme-color"/>
+<title>Study☆Star v1.1.2</title>
+<link href="styles-world-300.css?v=home-1-1-2" rel="stylesheet"/>
+</head>
+<body>
+<div aria-hidden="true" class="ambient-sky"><i></i><i></i><i></i></div><div class="app-shell">
+<header class="topbar">
+<button aria-label="メニュー" class="round-btn" id="menuBtn">☰</button>
+<div class="brand">
+<div class="brand-main">Study<span>☆</span>Star</div>
+<div class="brand-sub">合格を勝ち取る最強の自分へ</div>
+</div>
+<button aria-label="お知らせ" class="round-btn" id="noticeBtn">🔔</button>
+<span class="version">v1.1.2</span><span class="build-mark">HOME JUMP</span>
+</header>
+<main>
+<section class="hero-card">
+<div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div><div class="hero-glow glow-a"></div><div class="hero-glow glow-b"></div><div class="hero-star star-a">✦</div><div class="hero-star star-b">✦</div><div class="hero-star star-c">✦</div>
+<div class="avatar-stage">
+<div class="spark s1">✦</div><div class="spark s2">✦</div>
+<div aria-hidden="true" class="eye-glint glint-left">✦</div><div aria-hidden="true" class="eye-glint glint-right">✦</div>
+<div aria-hidden="true" class="ad-reaction" id="adReaction">ぴょーん！</div>
+<img alt="KAITOアドヴァンス" src="kaito-advance-world-300.png"/>
+<div class="ground-shadow"></div>
+</div>
+<div class="ad-message glass">
+<div class="eyebrow">★ KAITOアドヴァンス</div>
+<h1 id="greetingTitle">おはよう、海翔！</h1>
+<p id="greetingBody">今日も最高の<br/><strong>Jump</strong>にしよう！</p>
+
+</div>
+<div class="today-status glass" aria-label="今日の記録">
+<div><small>今日の学習</small><strong id="homeTodayStudy">0分</strong></div>
+<div><small>Challenge45</small><strong id="homeTodayChallenge">0回</strong></div>
+<div><small>今日のポイント</small><strong id="homeTodayPoints">0P</strong></div>
+</div>
+<div class="count-card glass">
+<span>受検まで</span>
+<strong id="examCountdown">あと196日</strong>
+<div aria-hidden="true" class="exam-road">
+<div class="road-line"><span id="examRoadProgress"></span></div>
+<div class="road-kaito" id="roadKaito">★</div>
+<div class="road-goal">🏫</div>
+</div>
+<small id="examEncourage">今日も一歩、前へ。</small>
+</div>
+<div class="mission-card">
+<div class="mission-head"><span>◎ 今日のミッション</span><b id="missionWeather">☀</b></div>
+<p class="mission-whisper" id="missionWhisper">今日の一歩を、アドと一緒に。</p>
+<div id="missionList"></div>
+<button class="mission-edit" id="missionEditBtn">＋ 予定を登録する <span>›</span></button>
+</div>
+</section>
+<button class="action-card challenge" id="challengeBtn">
+<div class="big-icon">🚀</div>
+<div><strong>Challenge45を始める</strong><small id="challengeSub">本番1回分の集中Jump！</small></div>
+<div class="glow-pill">よし、<br/>行こう！</div><span class="chev">›</span>
+</button>
+<button class="action-card record" id="recordBtn">
+<div class="big-icon">📖</div>
+<div><strong>学習時間を残す</strong><small>Challenge45以外の学習も記録しよう！</small></div>
+<span class="chev">›</span>
+</button>
+<section class="summer-card">
+<div class="summer-banner">
+<div class="summer-sun">☀</div>
+<div><small>この夏、最高の自分へ</small><h2>夏休み300時間チャレンジ</h2></div>
+<strong id="summerPercent">0.0%</strong>
+</div>
+<div class="summer-stats">
+<div><small>累計</small><strong id="summerTotal">0時間00分</strong></div>
+<div><small>残り</small><strong id="summerRemain">300時間00分</strong></div>
+<div><small>今日</small><strong id="todayTotal">0分</strong></div>
+</div>
+<div class="summer-journey">
+<span>START</span><b>🌻</b><b>🍉</b><b>⭐</b><b>🎆</b><span>300h</span>
+</div>
+<div class="progress"><span id="summerBar"></span></div>
+<p class="summer-message" id="summerMessage">夏の冒険は、ここから始まる！</p>
+</section>
+<section class="dashboard-grid">
+<button class="jump-card" id="jumpBtn">
+<div class="sky-spark sky-spark-a">✦</div><div class="sky-spark sky-spark-b">✦</div>
+<div class="shooting-star"></div>
+<div class="section-head"><h2>★ Jump Sky</h2><span>ⓘ</span></div>
+<small>今日の星</small>
+<div class="stars" id="todayStars">☆☆☆☆☆</div>
+<p id="jumpMessage">今日はまだ記録がありません</p>
+<div class="jump-progress"><span id="jumpBar"></span></div>
+</button>
+<button class="bank-card" id="bankBtn">
+<div class="bank-copy">
+<div class="section-head"><h2>🏛 Dream Bank</h2></div>
+<small>現在のポイント</small>
+<strong id="points">0 <em>pt</em></strong>
+<small id="nextRewardText">次のごほうびまで</small>
+<div class="bank-progress"><span id="bankBar"></span></div>
+</div>
+<div class="pig-stage"><img alt="豚の貯金箱" id="pigImage" src="piggy-bank-world-300.svg"/><span id="pigMood">わくわく♪</span></div>
+<div class="reward-link">ごほうびリストを見る <span>›</span></div>
+</button>
+</section>
+<section class="lower-grid">
+<article class="tweet-card">
+<div class="card-decoration">✦</div>
+<div class="section-head"><h2>💬 つぶやき帳</h2><button id="allTweetsBtn">すべて見る ›</button></div>
+<div class="tweet-ad"><span class="tweet-face"><img alt="" src="kaito-advance-world-300.png"/></span><p>今日はどんな一日だった？<br/><b>うれしかったことも、頑張ったことも聞かせてね。</b></p></div>
+<button class="tweet-entry" id="tweetBtn"><b>今日のつぶやきを書こう！</b><span>ここをタップして、今日の気持ちを残そう ✎</span></button>
+<div class="recent-list" id="recentTweets"></div>
+</article>
+<article class="schedule-card">
+<div class="schedule-sun">☀</div>
+<div class="section-head"><h2>📅 今日の予定</h2><button id="scheduleBtn">すべて見る ›</button></div>
+<div class="today-feature">
+<div class="today-date"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
+<div class="today-plan" id="todayPlan"></div>
+</div>
+<div class="schedule-row" id="scheduleRow"></div>
+</article>
+</section>
+<section class="history-card">
+<div class="section-head"><h2>最近の学習記録</h2><button id="historyBtn">すべて見る ›</button></div>
+<div class="record-list" id="recentRecords"></div>
+</section>
+</main>
+<nav class="bottom-nav">
+<button class="active" data-tab="home">⌂<span>ホーム</span></button>
+<button id="navRecord">◷<span>記録</span></button>
+<button id="navJump">☆<span>Jump Sky</span></button>
+<button id="navBank">▰<span>Dream Bank</span></button>
+<button id="navTweet">♟<span>つぶやき</span></button>
+</nav>
+</div>
+<dialog id="recordDialog">
+<form class="dialog-card" id="recordForm">
+<div class="dialog-head"><h2>学習時間を残す</h2><button id="closeRecord" type="button">×</button></div>
+<label>学習日<input id="recordDate" required="" type="date"/></label>
+<label>カテゴリ<select id="recordCategory" required=""></select></label>
+<label>学習時間（分）<input id="recordMinutes" max="720" min="1" placeholder="例：45" required="" step="1" type="number"/></label>
+<label>memo<textarea id="recordMemo" placeholder="今日できたこと、次に頑張ること" rows="3"></textarea></label>
+<div class="rule-note">Challenge45以外の学習は <b>1分＝1P</b> でDream Bankに貯まります。</div>
+<div class="dialog-actions"><button class="sub" id="cancelRecord" type="button">キャンセル</button><button class="primary" id="saveRecord" type="submit">記録する</button></div>
+</form>
+</dialog>
+<dialog id="challengeDialog">
+<div class="dialog-card timer-dialog">
+<div class="dialog-head"><h2>Challenge45</h2><button id="closeChallenge">×</button></div>
+<div id="challengeReady">
+<p class="center-copy">今回は何に挑戦する？</p>
+<select id="challengeCategory"></select>
+<div class="ready-badge">READY</div>
+<button class="primary wide" id="startChallenge">START</button>
+</div>
+<div hidden="" id="challengeRunning">
+<div class="timer" id="timerText">45:00</div>
+<p id="timerCategory"></p>
+<div class="timer-actions"><button class="sub" id="pauseChallenge">一時停止</button><button class="danger" id="cancelChallenge">キャンセル</button></div>
+</div>
+</div>
+</dialog>
+<dialog id="tweetDialog">
+<form class="dialog-card tweet-dialog-card" id="tweetForm">
+<div class="dialog-stars">✦　✧　✦</div>
+<div class="dialog-head"><h2>💬 つぶやき帳</h2><button aria-label="閉じる" id="closeTweet" type="button">×</button></div>
+<div class="tweet-dialog-ad"><span><img alt="" src="kaito-advance-world-300.png"/></span><p>今日の気持ちは、今日だけの大切な星だよ。</p></div>
+<label>今日のつぶやき<textarea id="tweetText" maxlength="160" placeholder="今日うれしかったこと、頑張ったことを書いてみよう😊" rows="5"></textarea></label>
+<div class="dialog-actions"><button class="sub" id="backTweet" type="button">戻る</button><button class="primary" id="saveTweet" type="submit">残す</button></div>
+</form>
+</dialog>
+
+<dialog id="scheduleDialog">
+<form class="dialog-card schedule-dialog-card" id="scheduleForm">
+<div class="dialog-head"><h2>📅 予定を登録</h2><button id="closeSchedule" type="button">×</button></div>
+<label>日付<input id="scheduleDate" required type="date"/></label>
+<label>種類<select id="scheduleType" required>
+<option value="塾">塾</option><option value="模試">模試</option><option value="学校行事">学校行事</option><option value="その他">その他</option>
+</select></label>
+<label>予定名<input id="scheduleTitle" maxlength="40" placeholder="例：夏期講習" required type="text"/></label>
+<div class="schedule-time-grid"><label>開始時刻<input id="scheduleStart" type="time"/></label><label>終了時刻<input id="scheduleEnd" type="time"/></label></div>
+<div class="dialog-actions"><button class="sub" id="cancelSchedule" type="button">キャンセル</button><button class="primary" type="submit">登録する</button></div>
+<div class="schedule-editor-list" id="scheduleEditorList"></div>
+</form>
+</dialog>
+<dialog id="listDialog">
+<div class="dialog-card list-dialog">
+<div class="dialog-head"><h2 id="listTitle">一覧</h2><button id="closeList">×</button></div>
+<div id="listContent"></div>
+</div>
+</dialog>
+<dialog id="parentDialog">
+<form class="dialog-card parent-dialog-card" id="parentForm">
+<div class="dialog-head"><h2>保護者モード</h2><button id="closeParent" type="button">×</button></div>
+<p class="rule-note">この画面は海翔くんには見せず、アドの世界観を守るための保護者専用設定です。</p>
+<label>アドのひとこと
+    <textarea id="parentMessage" maxlength="100" rows="4"></textarea>
+</label>
+<div class="dialog-actions"><button class="sub" id="cancelParent" type="button">戻る</button><button class="primary" type="submit">保存</button></div>
+</form>
+</dialog>
+<div class="toast" id="toast"></div>
+<script src="app-world-300.js?v=home-1-1-2"></script>
+</body>
+</html>
