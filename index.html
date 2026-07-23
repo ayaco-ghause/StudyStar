@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0a9b4a" name="theme-color"/>
-<title>Study☆Star 世界観完成版</title>
-<link href="styles-world-300.css?v=challenge45-1" rel="stylesheet"/>
+<title>Study☆Star v1.1</title>
+<link href="styles-world-300.css?v=home-1-1" rel="stylesheet"/>
 </head>
 <body>
 <div aria-hidden="true" class="ambient-sky"><i></i><i></i><i></i></div><div class="app-shell">
@@ -17,13 +17,15 @@
 <div class="brand-sub">合格を勝ち取る最強の自分へ</div>
 </div>
 <button aria-label="お知らせ" class="round-btn" id="noticeBtn">🔔</button>
-<span class="version">世界観完成版</span><span class="build-mark">WORLD 300-A</span>
+<span class="version">v1.1</span><span class="build-mark">HOME JUMP</span>
 </header>
 <main>
 <section class="hero-card">
 <div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div><div class="hero-glow glow-a"></div><div class="hero-glow glow-b"></div><div class="hero-star star-a">✦</div><div class="hero-star star-b">✦</div><div class="hero-star star-c">✦</div>
 <div class="avatar-stage">
 <div class="spark s1">✦</div><div class="spark s2">✦</div>
+<div aria-hidden="true" class="eye-glint glint-left">✦</div><div aria-hidden="true" class="eye-glint glint-right">✦</div>
+<div aria-hidden="true" class="ad-reaction" id="adReaction">ぴょーん！</div>
 <img alt="KAITOアドヴァンス" src="kaito-advance-world-300.png"/>
 <div class="ground-shadow"></div>
 </div>
@@ -32,6 +34,11 @@
 <h1 id="greetingTitle">おはよう、海翔！</h1>
 <p id="greetingBody">今日も最高の<br/><strong>Jump</strong>にしよう！</p>
 
+</div>
+<div class="today-status glass" aria-label="今日の記録">
+<div><small>今日の学習</small><strong id="homeTodayStudy">0分</strong></div>
+<div><small>Challenge45</small><strong id="homeTodayChallenge">0回</strong></div>
+<div><small>今日のポイント</small><strong id="homeTodayPoints">0P</strong></div>
 </div>
 <div class="count-card glass">
 <span>受検まで</span>
@@ -188,6 +195,6 @@
 </form>
 </dialog>
 <div class="toast" id="toast"></div>
-<script src="app-world-300.js?v=challenge45-3"></script>
+<script src="app-world-300.js?v=home-1-1"></script>
 </body>
 </html>

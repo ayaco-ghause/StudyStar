@@ -34,34 +34,104 @@ function fillSelect(id){$(id).innerHTML=CATEGORIES.map(c=>`<option>${c}</option>
 fillSelect("recordCategory");fillSelect("challengeCategory");
 $("recordDate").value=today();$("recordDate").max=today();
 
+const VISIT_KEY="studystar_home_visits_v1";
+const VISIT_SESSION_KEY="studystar_home_session_v1";
+const VISIT_GAP_MS=10*60*1000;
+let currentVisitInfo={count:1,isReturn:false};
+
+function readVisitData(){
+ try{return JSON.parse(localStorage.getItem(VISIT_KEY)||"{}")||{}}catch{return {}}
+}
+function registerVisit(force=false){
+ const now=Date.now(),key=today();
+ const data=readVisitData();
+ const session=Number(sessionStorage.getItem(VISIT_SESSION_KEY)||0);
+ const last=Number(data.lastActiveAt||0);
+ const newVisit=force||!session||(now-Math.max(session,last)>VISIT_GAP_MS);
+ if(data.date!==key){data.date=key;data.count=0;data.lastActiveAt=0}
+ if(newVisit){data.count=(Number(data.count)||0)+1}
+ data.lastActiveAt=now;
+ localStorage.setItem(VISIT_KEY,JSON.stringify(data));
+ sessionStorage.setItem(VISIT_SESSION_KEY,String(now));
+ currentVisitInfo={count:Math.max(1,Number(data.count)||1),isReturn:(Number(data.count)||1)>=2&&newVisit};
+ return currentVisitInfo;
+}
+function touchVisit(){
+ const now=Date.now();
+ sessionStorage.setItem(VISIT_SESSION_KEY,String(now));
+ const data=readVisitData();data.lastActiveAt=now;localStorage.setItem(VISIT_KEY,JSON.stringify(data));
+}
+function timeGreetingTitle(h){
+ return h<10?"おはよう、海翔！":h<17?"やぁ、海翔！":h<20?"おかえり、海翔！":"こんばんは、海翔！";
+}
+function todaySummary(){
+ const rows=state.records.filter(r=>r.date===today());
+ return {
+  minutes:rows.reduce((a,r)=>a+(Number(r.minutes)||0),0),
+  points:rows.reduce((a,r)=>a+(Number(r.points)||0),0),
+  challenges:Number(state.challengeCounts[today()]||0)
+ };
+}
+function adSituationalMessage(){
+ const {minutes,challenges}=todaySummary();
+ const missions=state.missions[today()]||{};
+ const hasJuku=(state.missionTemplate||[]).some((m,i)=>/塾/.test(m.text||"")&&!missions[i]);
+ if(challenges===2)return "あとChallenge45を1回で、今日の3回目！ここからは88Pだよ！";
+ if(challenges===1)return "Challenge45をもう1回できたら、今日の集中がもっと大きな星になるよ！";
+ if(challenges>=3)return `今日はChallenge45を${challenges}回達成！海翔の本気、アドにも伝わっているよ！`;
+ if(minutes>=180)return "今日はもう3時間以上！大きな飛躍になっているね！";
+ if(minutes>=90)return "今日の積み重ね、しっかり力になっているよ！";
+ if(hasJuku)return "今日は塾だね！終わったら、頑張った時間も残そう！";
+ if(minutes>0)return "今日も一歩進んでいるね。次は何に挑戦する？";
+ return "今日は何から始める？最初の一歩をアドと一緒に！";
+}
+function animateAd(kind="jump",text="ぴょーん！",shine=true){
+ const stage=document.querySelector(".avatar-stage"),reaction=$("adReaction");
+ if(!stage)return;
+ stage.classList.remove("ad-jump","ad-celebrate","ad-guts","eye-shine");
+ void stage.offsetWidth;
+ stage.classList.add(kind==="celebrate"?"ad-celebrate":kind==="guts"?"ad-guts":"ad-jump");
+ if(shine)stage.classList.add("eye-shine");
+ if(reaction){reaction.textContent=text;reaction.classList.remove("show");void reaction.offsetWidth;reaction.classList.add("show")}
+ setTimeout(()=>stage.classList.remove("ad-jump","ad-celebrate","ad-guts","eye-shine"),1800);
+}
 function setGreeting(){
  const h=new Date().getHours();
- const title=h<10?"おはよう、海翔！":h<17?"やぁ、海翔！":h<20?"おかえり、海翔！":"こんばんは、海翔！";
- const daily=[
+ const firstDaily=[
   "今日も最高のJumpにしよう！",
   "昨日の自分を、ひとつ超えよう！",
   "小さな一歩が、大きな飛躍になるよ！",
   "焦らなくて大丈夫。今日の星を灯そう！",
   "ここまで来た自分を信じて、始めよう！"
  ];
+ const returnLines=[
+  "また会えたね！今日はやる気がいつも以上だね！",
+  "おかえり！もう一度開いたその気持ち、かっこいいぞ！",
+  "また来てくれた！今日の海翔、いい流れだね！",
+  "再び登場！その一歩が大きな飛躍につながるよ！",
+  "また会えたね。アドの目もキラリと輝いているよ！"
+ ];
  const legacy=["カイトおはよう","カイト おはよう","カイト、おはよう","カイトおはよう。"];
- if(legacy.includes((state.message||"").trim())){
-   state.message="";
-   save();
+ if(legacy.includes((state.message||"").trim())){state.message="";save()}
+ let title=timeGreetingTitle(h),body;
+ const dayIndex=Math.floor(new Date().setHours(0,0,0,0)/86400000)%firstDaily.length;
+ if(currentVisitInfo.count>=2){
+  title=h<10?"また会えたね、海翔！":h<17?"また来てくれたね、海翔！":"おかえり、海翔！";
+  body=returnLines[(currentVisitInfo.count-2)%returnLines.length]+"\n"+adSituationalMessage();
+ }else{
+  body=((state.message||firstDaily[dayIndex]).trim())+"\n"+adSituationalMessage();
  }
  $("greetingTitle").textContent=title;
- const dayIndex=Math.floor(new Date().setHours(0,0,0,0)/86400000)%daily.length;
- const body=(state.message||daily[dayIndex]).trim();
- const safe=body
-   .replace("Jump","<strong>Jump</strong>")
-   .replace(/。(?=.)/g,"。<br>")
-   .replace(/\n/g,"<br>");
+ const safe=body.replace("Jump","<strong>Jump</strong>").replace(/。(?=.)/g,"。<br>").replace(/\n/g,"<br>");
  $("greetingBody").innerHTML=safe;
- const reaction = $("reactionMark");
- if(reaction){
-   reaction.textContent=["✨","⭐","💪","🌟","🚀"][dayIndex];
- }
 }
+function renderHomeToday(){
+ const x=todaySummary();
+ if($("homeTodayStudy"))$("homeTodayStudy").textContent=minText(x.minutes);
+ if($("homeTodayChallenge"))$("homeTodayChallenge").textContent=`${x.challenges}回`;
+ if($("homeTodayPoints"))$("homeTodayPoints").textContent=`${x.points}P`;
+}
+
 function renderMission(){
  const key=today(), checks=state.missions[key]||{};
  $("missionList").innerHTML=state.missionTemplate.map((m,i)=>`
@@ -184,10 +254,12 @@ function renderBankWorld(){
 function renderAll(){
  applyTimeTheme();
  setGreeting();renderMission();examCountdown();renderSummer();renderJump();renderBank();renderRecords();renderTweets();
- renderExamRoad();renderMissionWorld();renderSummerWorld();renderBankWorld();
+ renderExamRoad();renderMissionWorld();renderSummerWorld();renderBankWorld();renderHomeToday();
  if($("todayDateLabel"))$("todayDateLabel").textContent=dateJP(today());
 }
+registerVisit();
 renderAll();
+setTimeout(()=>{if(currentVisitInfo.isReturn)animateAd("jump","ぴょーん！",true);else animateAd("guts","今日もいこう！",true)},450);
 
 $("recordBtn").onclick=$("navRecord").onclick=()=>{$("recordDate").value=today();$("recordDialog").showModal()};
 $("closeRecord").onclick=$("cancelRecord").onclick=()=>$("recordDialog").close();
@@ -199,6 +271,7 @@ $("recordForm").addEventListener("submit",e=>{
  state.points+=points;
  state.records.push({id:crypto.randomUUID(),date,category,minutes,memo,type:"manual",points,createdAt:Date.now()});
  save();$("recordForm").reset();$("recordDate").value=today();$("recordDialog").close();renderAll();
+ animateAd("celebrate","やったね！",true);
  toast(`${minutes}分を記録。Dream Bankに${points}P！`);
 });
 
@@ -357,6 +430,7 @@ function completeChallenge(){
  state.records.push({id:crypto.randomUUID(),date,category,minutes:45,memo:"Challenge45 完了",type:"challenge",points,createdAt:Date.now()});
  challengeSession=null;saveChallengeSession();save();
  if($("challengeDialog").open)$("challengeDialog").close();renderAll();
+ animateAd("celebrate","ばんざーい！",true);
  challengeBeep(3);
  const adMessage=randomChallengeMessage();
  alert(`よし、チャージ完了！\n\nアド：${adMessage}\n\nDream Bankに ${points}P 貯まりました。\nカイトもひと休憩しよう😊`);
@@ -368,13 +442,18 @@ function resumeChallengeSafely(){
  if(document.visibilityState&&document.visibilityState!=="visible")return;
  syncChallengeFromStorage();
 }
-document.addEventListener("visibilitychange",()=>{
- if(document.visibilityState==="visible")resumeChallengeSafely();
-});
-window.addEventListener("pageshow",resumeChallengeSafely);
-window.addEventListener("focus",resumeChallengeSafely);
-document.addEventListener("pointerdown",resumeChallengeSafely,{passive:true});
-document.addEventListener("touchstart",resumeChallengeSafely,{passive:true});
+function handleAppReturn(){
+ if(document.visibilityState&&document.visibilityState!=="visible")return;
+ const before=currentVisitInfo.count;
+ const info=registerVisit();
+ resumeChallengeSafely();
+ if(info.isReturn&&info.count!==before){setGreeting();animateAd("jump","また会えた！",true)}
+}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")handleAppReturn()});
+window.addEventListener("pageshow",handleAppReturn);
+window.addEventListener("focus",handleAppReturn);
+document.addEventListener("pointerdown",()=>{touchVisit();resumeChallengeSafely()},{passive:true});
+document.addEventListener("touchstart",()=>{touchVisit();resumeChallengeSafely()},{passive:true});
 
 $("tweetBtn").onclick=$("navTweet").onclick=()=>{$("tweetText").value="";$("tweetDialog").showModal()};
 $("closeTweet").onclick=$("backTweet").onclick=()=>$("tweetDialog").close();

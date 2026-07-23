@@ -1022,3 +1022,30 @@ body.theme-night .ambient-sky i:nth-child(2){background:radial-gradient(circle,#
     font-size:20px;
   }
 }
+
+/* === Study☆Star v1.1：毎日帰ってきたくなるホーム === */
+.today-status{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  padding:10px 12px;margin-top:8px;text-align:center;
+}
+.today-status div{min-width:0;border-right:1px solid rgba(255,255,255,.38)}
+.today-status div:last-child{border-right:0}
+.today-status small{display:block;font-size:11px;opacity:.84;white-space:nowrap}
+.today-status strong{display:block;margin-top:2px;font-size:16px;white-space:nowrap}
+.avatar-stage{transform-origin:50% 90%;will-change:transform}
+.avatar-stage.ad-jump{animation:adJump 1.15s cubic-bezier(.2,.8,.25,1)}
+.avatar-stage.ad-celebrate{animation:adCelebrate 1.45s cubic-bezier(.2,.8,.25,1)}
+.avatar-stage.ad-guts{animation:adGuts .9s ease-out}
+@keyframes adJump{0%,100%{transform:translateY(0) scale(1)}28%{transform:translateY(-30px) scale(1.03)}50%{transform:translateY(-36px) scale(1.04)}72%{transform:translateY(-8px) scale(.99)}}
+@keyframes adCelebrate{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-24px) rotate(-3deg) scale(1.04)}42%{transform:translateY(-34px) rotate(3deg) scale(1.06)}64%{transform:translateY(-14px) rotate(-2deg) scale(1.03)}82%{transform:translateY(-5px) rotate(1deg)}}
+@keyframes adGuts{0%,100%{transform:scale(1)}35%{transform:scale(1.06) rotate(-2deg)}65%{transform:scale(1.03) rotate(2deg)}}
+.eye-glint{position:absolute;z-index:5;opacity:0;pointer-events:none;font-size:20px;filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 8px #ffe95b);transform:scale(.2) rotate(-15deg)}
+.glint-left{left:46%;top:27%}.glint-right{left:57%;top:27%;font-size:14px}
+.avatar-stage.eye-shine .eye-glint{animation:eyeShine 1.35s ease-out}
+.avatar-stage.eye-shine .glint-right{animation-delay:.12s}
+@keyframes eyeShine{0%,18%{opacity:0;transform:scale(.2) rotate(-15deg)}38%{opacity:1;transform:scale(1.25) rotate(12deg)}58%{opacity:.95;transform:scale(.8) rotate(30deg)}100%{opacity:0;transform:scale(.15) rotate(55deg)}}
+.ad-reaction{position:absolute;z-index:6;left:50%;top:3%;transform:translate(-50%,-4px) scale(.7);background:rgba(255,255,255,.94);color:#06743c;font-weight:900;border-radius:999px;padding:5px 12px;box-shadow:0 6px 18px rgba(0,0,0,.15);opacity:0;white-space:nowrap;pointer-events:none}
+.ad-reaction.show{animation:reactionPop 1.65s ease-out}
+@keyframes reactionPop{0%{opacity:0;transform:translate(-50%,8px) scale(.65)}18%,70%{opacity:1;transform:translate(-50%,-4px) scale(1)}100%{opacity:0;transform:translate(-50%,-14px) scale(.9)}}
+@media(max-width:560px){.today-status{gap:4px;padding:9px 7px}.today-status small{font-size:10px}.today-status strong{font-size:14px}.glint-left{left:45%;top:28%}.glint-right{left:57%;top:28%}}
+@media (prefers-reduced-motion: reduce){.avatar-stage.ad-jump,.avatar-stage.ad-celebrate,.avatar-stage.ad-guts,.avatar-stage.eye-shine .eye-glint,.ad-reaction.show{animation:none!important}.eye-glint,.ad-reaction{display:none}}
