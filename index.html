@@ -6,7 +6,7 @@
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0a9b4a" name="theme-color"/>
 <title>Study☆Star v1.1.2</title>
-<link href="styles-world-300.css?v=home-1-1-2" rel="stylesheet"/>
+<link href="styles-world-300.css?v=home-1-1-2-clean" rel="stylesheet"/>
 </head>
 <body>
 <div aria-hidden="true" class="ambient-sky"><i></i><i></i><i></i></div><div class="app-shell">
@@ -17,7 +17,7 @@
 <div class="brand-sub">合格を勝ち取る最強の自分へ</div>
 </div>
 <button aria-label="お知らせ" class="round-btn" id="noticeBtn">🔔</button>
-<span class="version">v1.1.2</span><span class="build-mark">HOME JUMP</span>
+<span class="version">v1.1.2</span><span class="build-mark">HOME CLEAN</span>
 </header>
 <main>
 <section class="hero-card">
@@ -35,11 +35,6 @@
 <p id="greetingBody">今日も最高の<br/><strong>Jump</strong>にしよう！</p>
 
 </div>
-<div class="today-status glass" aria-label="今日の記録">
-<div><small>今日の学習</small><strong id="homeTodayStudy">0分</strong></div>
-<div><small>Challenge45</small><strong id="homeTodayChallenge">0回</strong></div>
-<div><small>今日のポイント</small><strong id="homeTodayPoints">0P</strong></div>
-</div>
 <div class="count-card glass">
 <span>受検まで</span>
 <strong id="examCountdown">あと196日</strong>
@@ -50,6 +45,15 @@
 </div>
 <small id="examEncourage">今日も一歩、前へ。</small>
 </div>
+<article class="schedule-card home-schedule-card">
+<div class="schedule-sun">☀</div>
+<div class="section-head"><h2>📅 今日の予定</h2><button id="scheduleBtn" type="button">予定を編集 ›</button></div>
+<div class="today-feature">
+<div class="today-date"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
+<div class="today-plan" id="todayPlan"></div>
+</div>
+<div class="schedule-row" id="scheduleRow"></div>
+</article>
 <div class="mission-card">
 <div class="mission-head"><span>◎ 今日のミッション</span><b id="missionWeather">☀</b></div>
 <p class="mission-whisper" id="missionWhisper">今日の一歩を、アドと一緒に。</p>
@@ -67,6 +71,14 @@
 <div><strong>学習時間を残す</strong><small>Challenge45以外の学習も記録しよう！</small></div>
 <span class="chev">›</span>
 </button>
+<section class="today-result-card" aria-label="今日の結果">
+<div class="section-head"><h2>📊 今日の結果</h2></div>
+<div class="today-status glass">
+<div><small>今日の学習時間</small><strong id="homeTodayStudy">0分</strong></div>
+<div><small>Challenge45</small><strong id="homeTodayChallenge">0回</strong></div>
+<div><small>今日のポイント</small><strong id="homeTodayPoints">0P</strong></div>
+</div>
+</section>
 <section class="summer-card">
 <div class="summer-banner">
 <div class="summer-sun">☀</div>
@@ -114,15 +126,7 @@
 <button class="tweet-entry" id="tweetBtn"><b>今日のつぶやきを書こう！</b><span>ここをタップして、今日の気持ちを残そう ✎</span></button>
 <div class="recent-list" id="recentTweets"></div>
 </article>
-<article class="schedule-card">
-<div class="schedule-sun">☀</div>
-<div class="section-head"><h2>📅 今日の予定</h2><button id="scheduleBtn" type="button">予定を編集 ›</button></div>
-<div class="today-feature">
-<div class="today-date"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
-<div class="today-plan" id="todayPlan"></div>
-</div>
-<div class="schedule-row" id="scheduleRow"></div>
-</article>
+
 </section>
 <section class="history-card">
 <div class="section-head"><h2>最近の学習記録</h2><button id="historyBtn">すべて見る ›</button></div>
@@ -217,6 +221,6 @@
 </form>
 </dialog>
 <div class="toast" id="toast"></div>
-<script src="app-world-300.js?v=home-1-1-2"></script>
+<script src="app-world-300.js?v=home-1-1-2-clean"></script>
 </body>
 </html>

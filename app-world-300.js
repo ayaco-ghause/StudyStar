@@ -13,7 +13,8 @@ const defaultState={
  records:[],tweets:[],points:0,challengeCounts:{},missions:{},schedules:{},
  pointSettings:{challengeFirstTwo:55,challengeThirdPlus:88,manualPerMinute:1},
  rewards:DEFAULT_REWARDS.map(r=>({...r})),
- message:"今日も最高のJumpにしよう！"
+ message:"今日も最高のJumpにしよう！",
+ missionTemplate:["Challenge45","読書15分","苦手克服","学習時間を記録する"]
 };
 let state;
 try{state={...defaultState,...JSON.parse(localStorage.getItem("studystar_official_1")||"{}")}}catch{state={...defaultState}}
@@ -22,6 +23,7 @@ state.tweets=Array.isArray(state.tweets)?state.tweets:[];
 state.challengeCounts=state.challengeCounts||{};
 state.missions=state.missions||{};
 state.schedules=state.schedules||{};
+state.missionTemplate=Array.isArray(state.missionTemplate)&&state.missionTemplate.length?state.missionTemplate:defaultState.missionTemplate.slice();
 state.pointSettings={...defaultState.pointSettings,...(state.pointSettings||{})};
 state.rewards=Array.isArray(state.rewards)&&state.rewards.length?state.rewards:DEFAULT_REWARDS.map(r=>({...r}));
 function rewards(){return [...state.rewards].sort((a,b)=>Number(a.points)-Number(b.points))}
@@ -140,18 +142,15 @@ function scheduleTimeText(plan){
 }
 function plansFor(date){return Array.isArray(state.schedules[date])?state.schedules[date]:[]}
 function renderMission(){
- const key=today(), checks=state.missions[key]||{}, plans=plansFor(key);
- if(!plans.length){
-  $("missionList").innerHTML='<div class="mission-empty">今日登録されている予定はありません</div>';
-  renderMissionWorld();
-  return;
- }
- $("missionList").innerHTML=plans.map(plan=>`
- <label class="mission-item"><span>${scheduleIcon(plan.type)} ${plan.title}<br><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></span>
- <input type="checkbox" data-mission="${plan.id}" ${checks[plan.id]?"checked":""}></label>`).join("");
+ const key=today(), checks=state.missions[key]||{};
+ const icons=["🚀","📚","💪","📖"];
+ $("missionList").innerHTML=state.missionTemplate.map((text,index)=>{
+  const id=`mission-${index}`;
+  return `<label class="mission-item"><span>${icons[index]||"★"} ${text}</span><input type="checkbox" data-mission="${id}" ${checks[id]?"checked":""}></label>`;
+ }).join("");
  document.querySelectorAll("[data-mission]").forEach(el=>el.onchange=()=>{
   state.missions[key]=state.missions[key]||{};
-  state.missions[key][el.dataset.mission]=el.checked;save();renderJump();renderMissionWorld();
+  state.missions[key][el.dataset.mission]=el.checked;save();renderMissionWorld();
  });
 }
 function examCountdown(){
@@ -503,7 +502,6 @@ function renderScheduleEditor(){
  $("scheduleEditorList").innerHTML=plans.length?`<h3>${dateJP(date)}の登録予定</h3>`+plans.map(plan=>`<div class="schedule-editor-item"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></div><button type="button" data-delete-plan="${plan.id}">削除</button></div>`).join(""):'<p class="schedule-editor-empty">この日の予定はまだありません。</p>';
  document.querySelectorAll("[data-delete-plan]").forEach(btn=>btn.onclick=()=>{
   state.schedules[date]=plans.filter(plan=>plan.id!==btn.dataset.deletePlan);
-  if(state.missions[date])delete state.missions[date][btn.dataset.deletePlan];
   save();renderScheduleEditor();renderAll();
  });
 }
