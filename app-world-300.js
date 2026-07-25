@@ -2,7 +2,7 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const CATEGORIES=["理系宿題","文系宿題","塾での学習","過去問","模試解き直し","苦手克服","自由学習"];
-const REWARDS=[
+const DEFAULT_REWARDS=[
  {name:"お菓子またはコンビニ軽食",points:200},
  {name:"ご褒美アイス",points:300},
  {name:"コミック",points:800},
@@ -10,14 +10,10 @@ const REWARDS=[
  {name:"外食",points:2500}
 ];
 const defaultState={
- records:[],tweets:[],points:0,challengeCounts:{},missions:{},
- message:"今日も最高のJumpにしよう！",
- missionTemplate:[
-  {icon:"🎓",text:"塾（夏期講習）",sub:"15:50〜18:10"},
-  {icon:"📘",text:"Challenge45",sub:""},
-  {icon:"✏️",text:"読書15分",sub:""},
-  {icon:"🌙",text:"手伝い・読書",sub:""}
- ]
+ records:[],tweets:[],points:0,challengeCounts:{},missions:{},schedules:{},
+ pointSettings:{challengeFirstTwo:55,challengeThirdPlus:88,manualPerMinute:1},
+ rewards:DEFAULT_REWARDS.map(r=>({...r})),
+ message:"今日も最高のJumpにしよう！"
 };
 let state;
 try{state={...defaultState,...JSON.parse(localStorage.getItem("studystar_official_1")||"{}")}}catch{state={...defaultState}}
@@ -25,6 +21,10 @@ state.records=Array.isArray(state.records)?state.records:[];
 state.tweets=Array.isArray(state.tweets)?state.tweets:[];
 state.challengeCounts=state.challengeCounts||{};
 state.missions=state.missions||{};
+state.schedules=state.schedules||{};
+state.pointSettings={...defaultState.pointSettings,...(state.pointSettings||{})};
+state.rewards=Array.isArray(state.rewards)&&state.rewards.length?state.rewards:DEFAULT_REWARDS.map(r=>({...r}));
+function rewards(){return [...state.rewards].sort((a,b)=>Number(a.points)-Number(b.points))}
 function save(){localStorage.setItem("studystar_official_1",JSON.stringify(state))}
 function today(){return new Date().toLocaleDateString("sv-SE")}
 function dateJP(d){const x=new Date(d+"T00:00:00");return `${x.getMonth()+1}/${x.getDate()}`}
@@ -74,9 +74,9 @@ function todaySummary(){
 }
 function adSituationalMessage(){
  const {minutes,challenges}=todaySummary();
- const missions=state.missions[today()]||{};
- const hasJuku=(state.missionTemplate||[]).some((m,i)=>/塾/.test(m.text||"")&&!missions[i]);
- if(challenges===2)return "あとChallenge45を1回で、今日の3回目！ここからは88Pだよ！";
+ const todayPlans=Array.isArray(state.schedules[today()])?state.schedules[today()]:[];
+ const hasJuku=todayPlans.some(plan=>plan.type==="塾");
+ if(challenges===2)return `あとChallenge45を1回で、今日の3回目！ここからは${state.pointSettings.challengeThirdPlus}Pだよ！`;
  if(challenges===1)return "Challenge45をもう1回できたら、今日の集中がもっと大きな星になるよ！";
  if(challenges>=3)return `今日はChallenge45を${challenges}回達成！海翔の本気、アドにも伝わっているよ！`;
  if(minutes>=180)return "今日はもう3時間以上！大きな飛躍になっているね！";
@@ -132,11 +132,23 @@ function renderHomeToday(){
  if($("homeTodayPoints"))$("homeTodayPoints").textContent=`${x.points}P`;
 }
 
+function scheduleIcon(type){return type==="塾"?"🏫":type==="模試"?"📝":type==="学校行事"?"🎒":"📌"}
+function scheduleTimeText(plan){
+ if(plan.start&&plan.end)return `${plan.start}〜${plan.end}`;
+ if(plan.start)return `${plan.start}〜`;
+ return "";
+}
+function plansFor(date){return Array.isArray(state.schedules[date])?state.schedules[date]:[]}
 function renderMission(){
- const key=today(), checks=state.missions[key]||{};
- $("missionList").innerHTML=state.missionTemplate.map((m,i)=>`
- <label class="mission-item"><span>${m.icon} ${m.text}${m.sub?`<br><small>${m.sub}</small>`:""}</span>
- <input type="checkbox" data-mission="${i}" ${checks[i]?"checked":""}></label>`).join("");
+ const key=today(), checks=state.missions[key]||{}, plans=plansFor(key);
+ if(!plans.length){
+  $("missionList").innerHTML='<div class="mission-empty">今日登録されている予定はありません</div>';
+  renderMissionWorld();
+  return;
+ }
+ $("missionList").innerHTML=plans.map(plan=>`
+ <label class="mission-item"><span>${scheduleIcon(plan.type)} ${plan.title}<br><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></span>
+ <input type="checkbox" data-mission="${plan.id}" ${checks[plan.id]?"checked":""}></label>`).join("");
  document.querySelectorAll("[data-mission]").forEach(el=>el.onchange=()=>{
   state.missions[key]=state.missions[key]||{};
   state.missions[key][el.dataset.mission]=el.checked;save();renderJump();renderMissionWorld();
@@ -171,7 +183,7 @@ function renderJump(){
 }
 function renderBank(){
  $("points").innerHTML=`${state.points||0} <em>pt</em>`;
- const next=REWARDS.find(r=>r.points>state.points)||REWARDS.at(-1);
+ const list=rewards(), next=list.find(r=>r.points>state.points)||list.at(-1);
  const before=Math.max(0,next.points-state.points);
  $("nextRewardText").textContent=before?`${next.name}まであと ${before}P`:`${next.name}に交換できます`;
  $("bankBar").style.width=`${Math.min(100,state.points/next.points*100)}%`;
@@ -199,6 +211,11 @@ function renderTweets(){
  });
 }
 
+
+function updatePointRuleText(){
+ const el=$("manualPointRule");
+ if(el)el.innerHTML=`Challenge45以外の学習は <b>1分＝${state.pointSettings.manualPerMinute}P</b> でDream Bankに貯まります。`;
+}
 function applyTimeTheme(){
  const h=new Date().getHours();
  document.body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
@@ -251,12 +268,12 @@ function renderBankWorld(){
  $("pigMood").textContent=p>=2500?"夢がいっぱい！":p>=800?"すごい！キラキラだね":p>=300?"うれしいな♪":"一緒に貯めよう♪";
 }
 
-function renderAll(){
+function renderAll(){updatePointRuleText();
  applyTimeTheme();
  setGreeting();renderMission();examCountdown();renderSummer();renderJump();renderBank();renderRecords();renderTweets();
  renderExamRoad();renderMissionWorld();renderSummerWorld();renderBankWorld();renderHomeToday();
  if($("todayDateLabel"))$("todayDateLabel").textContent=dateJP(today());
-}
+renderSchedule();}
 registerVisit();
 renderAll();
 setTimeout(()=>{if(currentVisitInfo.isReturn)animateAd("jump","ぴょーん！",true);else animateAd("guts","今日もいこう！",true)},450);
@@ -267,7 +284,7 @@ $("recordForm").addEventListener("submit",e=>{
  e.preventDefault();
  const date=$("recordDate").value,category=$("recordCategory").value,minutes=Number($("recordMinutes").value),memo=$("recordMemo").value.trim();
  if(!date||!category||!minutes)return;
- const points=minutes;
+ const points=Math.round(minutes*Number(state.pointSettings.manualPerMinute||0));
  state.points+=points;
  state.records.push({id:crypto.randomUUID(),date,category,minutes,memo,type:"manual",points,createdAt:Date.now()});
  save();$("recordForm").reset();$("recordDate").value=today();$("recordDialog").close();renderAll();
@@ -425,7 +442,7 @@ function completeChallenge(){
  if(challengeCompleting||!challengeSession)return;
  challengeCompleting=true;clearChallengeTimer();
  const session=challengeSession;
- const date=session.dateStarted||today(),count=state.challengeCounts[date]||0,points=count<2?55:88,category=session.category||$("challengeCategory").value;
+ const date=session.dateStarted||today(),count=state.challengeCounts[date]||0,points=count<2?Number(state.pointSettings.challengeFirstTwo||0):Number(state.pointSettings.challengeThirdPlus||0),category=session.category||$("challengeCategory").value;
  state.challengeCounts[date]=count+1;state.points+=points;
  state.records.push({id:crypto.randomUUID(),date,category,minutes:45,memo:"Challenge45 完了",type:"challenge",points,createdAt:Date.now()});
  challengeSession=null;saveChallengeSession();save();
@@ -466,34 +483,86 @@ function openList(title,html){$("listTitle").textContent=title;$("listContent").
 $("closeList").onclick=()=>$("listDialog").close();
 $("allTweetsBtn").onclick=()=>openList("つぶやき帳",state.tweets.length?[...state.tweets].sort((a,b)=>b.createdAt-a.createdAt).map(t=>`<div class="recent-row"><span>${dateJP(t.date)}</span><span>${t.text}</span></div>`).join(""):'<div class="empty">まだつぶやきはありません</div>');
 $("historyBtn").onclick=()=>openList("学習記録",state.records.length?[...state.records].sort((a,b)=>b.createdAt-a.createdAt).map(r=>`<div class="record-row"><span>${dateJP(r.date)}</span><div><strong>${r.category}</strong><small>${r.memo||""}</small></div><span>${minText(r.minutes)} / +${r.points||0}P</span></div>`).join(""):'<div class="empty">まだ学習記録はありません</div>');
-$("bankBtn").onclick=$("navBank").onclick=()=>openList("ごほうびリスト",REWARDS.map(r=>`<div class="record-row"><span>${r.points}P</span><strong>${r.name}</strong><span>${state.points>=r.points?"交換できます":"あと "+(r.points-state.points)+"P"}</span></div>`).join(""));
+$("bankBtn").onclick=$("navBank").onclick=()=>openList("ごほうびリスト",rewards().map(r=>`<div class="record-row"><span>${r.points}P</span><strong>${r.name}</strong><span>${state.points>=r.points?"交換できます":"あと "+(r.points-state.points)+"P"}</span></div>`).join(""));
 $("jumpBtn").onclick=$("navJump").onclick=()=>openList("Jump Sky",`<p>Challenge45を1回完了するごとに、今日の空に星が1つ灯ります。</p><div class="stars">${$("todayStars").textContent}</div><p>${$("jumpMessage").textContent}</p>`);
-$("missionEditBtn").onclick=()=>{
- const current=state.missionTemplate.map(m=>`${m.icon} ${m.text}${m.sub?" "+m.sub:""}`).join("\n");
- const value=prompt("ミッションを1行ずつ入力してください。先頭の絵文字も入力できます。",current);
- if(value===null)return;
- state.missionTemplate=value.split("\n").filter(Boolean).map(line=>({icon:"★",text:line,sub:""}));save();renderMission();
-};
+function openDialog(dialog){
+ if(typeof dialog.showModal==="function"){if(!dialog.open)dialog.showModal()}else dialog.setAttribute("open","");
+}
+function closeDialog(dialog){if(typeof dialog.close==="function"&&dialog.open)dialog.close();else dialog.removeAttribute("open")}
+function openScheduleDialog(date=today()){
+ $("scheduleDate").value=date;
+ $("scheduleType").value="塾";
+ $("scheduleTitle").value="";
+ $("scheduleStart").value="";
+ $("scheduleEnd").value="";
+ renderScheduleEditor();
+ openDialog($("scheduleDialog"));
+}
+function renderScheduleEditor(){
+ const date=$("scheduleDate").value||today(), plans=plansFor(date);
+ $("scheduleEditorList").innerHTML=plans.length?`<h3>${dateJP(date)}の登録予定</h3>`+plans.map(plan=>`<div class="schedule-editor-item"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></div><button type="button" data-delete-plan="${plan.id}">削除</button></div>`).join(""):'<p class="schedule-editor-empty">この日の予定はまだありません。</p>';
+ document.querySelectorAll("[data-delete-plan]").forEach(btn=>btn.onclick=()=>{
+  state.schedules[date]=plans.filter(plan=>plan.id!==btn.dataset.deletePlan);
+  if(state.missions[date])delete state.missions[date][btn.dataset.deletePlan];
+  save();renderScheduleEditor();renderAll();
+ });
+}
+function renderSchedule(){
+ const key=today(), plans=plansFor(key);
+ $("todayDateLabel").textContent=dateJP(key);
+ $("todayPlan").innerHTML=plans.length?plans.map(plan=>`<div class="today-plan-line"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></div></div>`).join(""):'<div class="today-plan-empty">今日は登録された予定はありません</div>';
+ const dates=Object.keys(state.schedules).filter(date=>date>=key&&plansFor(date).length).sort().slice(0,4);
+ $("scheduleRow").innerHTML=dates.length?dates.map(date=>`<div class="day ${date===key?"today":""}"><b>${dateJP(date)}</b><span>${plansFor(date).map(plan=>`${scheduleIcon(plan.type)} ${plan.title}`).join("<br>")}</span></div>`).join(""):'<div class="schedule-empty-wide">予定を登録すると、ここに表示されます</div>';
+}
+$("missionEditBtn").onclick=()=>openScheduleDialog(today());
+$("scheduleBtn").onclick=()=>openScheduleDialog(today());
+$("closeSchedule").onclick=$("cancelSchedule").onclick=()=>closeDialog($("scheduleDialog"));
+$("scheduleDate").onchange=renderScheduleEditor;
+$("scheduleType").onchange=()=>{if(!$("scheduleTitle").value.trim())$("scheduleTitle").value=$("scheduleType").value};
+$("scheduleForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const date=$("scheduleDate").value, type=$("scheduleType").value, title=$("scheduleTitle").value.trim();
+ if(!date||!title)return;
+ const plan={id:crypto.randomUUID(),type,title,start:$("scheduleStart").value,end:$("scheduleEnd").value};
+ state.schedules[date]=plansFor(date).concat(plan);
+ save();renderScheduleEditor();renderAll();
+ $("scheduleTitle").value="";$("scheduleStart").value="";$("scheduleEnd").value="";
+ toast("予定を登録しました");
+});
 $("menuBtn").onclick=()=>{
- openList("Study☆Star メニュー",`<p>アドと一緒に、今日の一歩を残そう。</p><button class="primary wide" id="parentOpen">保護者モード</button><p class="rule-note">ポイントルール<br>Challenge45：1・2回目 55P／3回目以降 88P<br>その他の学習：1分＝1P</p>`);
+ openList("Study☆Star メニュー",`<p>アドと一緒に、今日の一歩を残そう。</p><button class="primary wide" id="parentOpen">保護者モード</button><p class="rule-note">現在のポイントルール<br>Challenge45：1・2回目 ${state.pointSettings.challengeFirstTwo}P／3回目以降 ${state.pointSettings.challengeThirdPlus}P<br>その他の学習：1分＝${state.pointSettings.manualPerMinute}P</p>`);
  setTimeout(()=>{const b=$("parentOpen");if(b)b.onclick=()=>{
    const pass=prompt("保護者用パスワードを入力してください");
    if(pass!=="460631")return alert("パスワードが違います");
-   $("listDialog").close();$("parentMessage").value=state.message||"";$("parentDialog").showModal();
+   $("listDialog").close();
+   $("parentMessage").value=state.message||"";
+   $("pointFirstTwo").value=state.pointSettings.challengeFirstTwo;
+   $("pointThirdPlus").value=state.pointSettings.challengeThirdPlus;
+   $("pointPerMinute").value=state.pointSettings.manualPerMinute;
+   $("rewardSettingList").innerHTML=state.rewards.map((r,i)=>`<label class="reward-setting-row"><span>${r.name}</span><input data-reward-index="${i}" min="0" max="999999" step="10" type="number" value="${Number(r.points)||0}"><b>P</b></label>`).join("");
+   openDialog($("parentDialog"));
  }},0);
 };
 $("noticeBtn").onclick=()=>toast("今日もStudy☆Starへようこそ！");
-$("scheduleBtn").onclick=()=>toast("予定管理は次回アップデートで編集対応予定です");
 
-$("closeParent").onclick=$("cancelParent").onclick=()=>$("parentDialog").close();
+$("closeParent").onclick=$("cancelParent").onclick=()=>closeDialog($("parentDialog"));
 $("parentForm").addEventListener("submit",e=>{
  e.preventDefault();
  state.message=$("parentMessage").value.trim();
- save();setGreeting();$("parentDialog").close();toast("アドのひとことを保存しました");
+ state.pointSettings={
+  challengeFirstTwo:Math.max(0,Number($("pointFirstTwo").value)||0),
+  challengeThirdPlus:Math.max(0,Number($("pointThirdPlus").value)||0),
+  manualPerMinute:Math.max(0,Number($("pointPerMinute").value)||0)
+ };
+ document.querySelectorAll("[data-reward-index]").forEach(input=>{
+  const item=state.rewards[Number(input.dataset.rewardIndex)];
+  if(item)item.points=Math.max(0,Math.round(Number(input.value)||0));
+ });
+ save();setGreeting();renderBank();updatePointRuleText();closeDialog($("parentDialog"));toast("ポイント設定を保存しました");
 });
 
 /* ダイアログの外側を押したときに閉じる */
-["recordDialog","tweetDialog","listDialog","parentDialog"].forEach(id=>{
+["recordDialog","tweetDialog","scheduleDialog","listDialog","parentDialog"].forEach(id=>{
  const d=$(id);
  d.addEventListener("click",e=>{
   const r=d.getBoundingClientRect();

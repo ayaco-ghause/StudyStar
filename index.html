@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0a9b4a" name="theme-color"/>
-<title>Study☆Star v1.1</title>
-<link href="styles-world-300.css?v=home-1-1-1" rel="stylesheet"/>
+<title>Study☆Star v1.1.2</title>
+<link href="styles-world-300.css?v=home-1-1-2" rel="stylesheet"/>
 </head>
 <body>
 <div aria-hidden="true" class="ambient-sky"><i></i><i></i><i></i></div><div class="app-shell">
@@ -17,7 +17,7 @@
 <div class="brand-sub">合格を勝ち取る最強の自分へ</div>
 </div>
 <button aria-label="お知らせ" class="round-btn" id="noticeBtn">🔔</button>
-<span class="version">v1.1.1</span><span class="build-mark">HOME JUMP</span>
+<span class="version">v1.1.2</span><span class="build-mark">HOME JUMP</span>
 </header>
 <main>
 <section class="hero-card">
@@ -54,7 +54,7 @@
 <div class="mission-head"><span>◎ 今日のミッション</span><b id="missionWeather">☀</b></div>
 <p class="mission-whisper" id="missionWhisper">今日の一歩を、アドと一緒に。</p>
 <div id="missionList"></div>
-<button class="mission-edit" id="missionEditBtn">✎ ミッションを確認・編集 <span>›</span></button>
+<button class="mission-edit" id="missionEditBtn" type="button">＋ 予定を登録する <span>›</span></button>
 </div>
 </section>
 <button class="action-card challenge" id="challengeBtn">
@@ -116,17 +116,12 @@
 </article>
 <article class="schedule-card">
 <div class="schedule-sun">☀</div>
-<div class="section-head"><h2>📅 今日の予定</h2><button id="scheduleBtn">すべて見る ›</button></div>
+<div class="section-head"><h2>📅 今日の予定</h2><button id="scheduleBtn" type="button">予定を編集 ›</button></div>
 <div class="today-feature">
-<div class="today-date"><small>今日</small><strong id="todayDateLabel">7/22</strong></div>
-<div class="today-plan"><span>🏫</span><div><b>塾（夏期講習）</b><small>15:50〜18:10</small></div></div>
+<div class="today-date"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
+<div class="today-plan" id="todayPlan"></div>
 </div>
-<div class="schedule-row">
-<div class="day"><b>7/24</b><span>🏫 塾</span></div>
-<div class="day"><b>7/27</b><span>🤸 体操</span></div>
-<div class="day"><b>7/29</b><span>🏫 塾</span></div>
-<div class="day"><b>7/31</b><span>📚 塾</span></div>
-</div>
+<div class="schedule-row" id="scheduleRow"></div>
 </article>
 </section>
 <section class="history-card">
@@ -149,7 +144,7 @@
 <label>カテゴリ<select id="recordCategory" required=""></select></label>
 <label>学習時間（分）<input id="recordMinutes" max="720" min="1" placeholder="例：45" required="" step="1" type="number"/></label>
 <label>memo<textarea id="recordMemo" placeholder="今日できたこと、次に頑張ること" rows="3"></textarea></label>
-<div class="rule-note">Challenge45以外の学習は <b>1分＝1P</b> でDream Bankに貯まります。</div>
+<div class="rule-note" id="manualPointRule">Challenge45以外の学習ポイントは保護者モードで設定できます。</div>
 <div class="dialog-actions"><button class="sub" id="cancelRecord" type="button">キャンセル</button><button class="primary" id="saveRecord" type="submit">記録する</button></div>
 </form>
 </dialog>
@@ -178,6 +173,20 @@
 <div class="dialog-actions"><button class="sub" id="backTweet" type="button">戻る</button><button class="primary" id="saveTweet" type="submit">残す</button></div>
 </form>
 </dialog>
+
+<dialog id="scheduleDialog">
+<form class="dialog-card schedule-dialog-card" id="scheduleForm">
+<div class="dialog-head"><h2>📅 予定を登録</h2><button id="closeSchedule" type="button">×</button></div>
+<label>日付<input id="scheduleDate" required type="date"/></label>
+<label>種類<select id="scheduleType" required>
+<option value="塾">塾</option><option value="模試">模試</option><option value="学校行事">学校行事</option><option value="その他">その他</option>
+</select></label>
+<label>予定名<input id="scheduleTitle" maxlength="40" placeholder="例：夏期講習" required type="text"/></label>
+<div class="schedule-time-grid"><label>開始時刻<input id="scheduleStart" type="time"/></label><label>終了時刻<input id="scheduleEnd" type="time"/></label></div>
+<div class="dialog-actions"><button class="sub" id="cancelSchedule" type="button">キャンセル</button><button class="primary" type="submit">登録する</button></div>
+<div class="schedule-editor-list" id="scheduleEditorList"></div>
+</form>
+</dialog>
 <dialog id="listDialog">
 <div class="dialog-card list-dialog">
 <div class="dialog-head"><h2 id="listTitle">一覧</h2><button id="closeList">×</button></div>
@@ -191,10 +200,23 @@
 <label>アドのひとこと
     <textarea id="parentMessage" maxlength="100" rows="4"></textarea>
 </label>
-<div class="dialog-actions"><button class="sub" id="cancelParent" type="button">戻る</button><button class="primary" type="submit">保存</button></div>
+<section class="parent-settings-section">
+<h3>ポイント設定</h3>
+<div class="point-setting-grid">
+<label>Challenge45 1・2回目<input id="pointFirstTwo" min="0" max="9999" step="1" type="number"/></label>
+<label>Challenge45 3回目以降<input id="pointThirdPlus" min="0" max="9999" step="1" type="number"/></label>
+<label>通常学習 1分あたり<input id="pointPerMinute" min="0" max="100" step="0.1" type="number"/></label>
+</div>
+<p class="rule-note">すでに記録済みのポイントは変更せず、保存後の新しい学習記録から適用します。</p>
+</section>
+<section class="parent-settings-section">
+<h3>ごほうびに必要なポイント</h3>
+<div class="reward-setting-list" id="rewardSettingList"></div>
+</section>
+<div class="dialog-actions"><button class="sub" id="cancelParent" type="button">戻る</button><button class="primary" type="submit">設定を保存</button></div>
 </form>
 </dialog>
 <div class="toast" id="toast"></div>
-<script src="app-world-300.js?v=home-1-1-1"></script>
+<script src="app-world-300.js?v=home-1-1-2"></script>
 </body>
 </html>
