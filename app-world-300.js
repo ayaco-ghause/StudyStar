@@ -508,11 +508,21 @@ function renderScheduleEditor(){
 function renderSchedule(){
  const key=today(), plans=plansFor(key);
  $("todayDateLabel").textContent=dateJP(key);
- $("todayPlan").innerHTML=plans.length?plans.map(plan=>`<div class="today-plan-line"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></div></div>`).join(""):'<div class="today-plan-empty">今日は登録された予定はありません</div>';
+ $("todayPlan").innerHTML=plans.length?plans.map(plan=>`<div class="today-plan-line"><span>${scheduleIcon(plan.type)}</span><b>${plan.title}</b><time>${scheduleTimeText(plan)||"時刻未設定"}</time></div>`).join(""):'<div class="today-plan-empty">今日は登録された予定はありません</div>';
  const dates=Object.keys(state.schedules).filter(date=>date>=key&&plansFor(date).length).sort().slice(0,4);
- $("scheduleRow").innerHTML=dates.length?dates.map(date=>`<div class="day ${date===key?"today":""}"><b>${dateJP(date)}</b><span>${plansFor(date).map(plan=>`${scheduleIcon(plan.type)} ${plan.title}`).join("<br>")}</span></div>`).join(""):'<div class="schedule-empty-wide">予定を登録すると、ここに表示されます</div>';
+ $("scheduleRow").innerHTML=dates.length?dates.map(date=>`<div class="day ${date===key?"today":""}"><b>${dateJP(date)}</b><div>${plansFor(date).map(plan=>`<span class="day-plan"><em>${scheduleIcon(plan.type)} ${plan.title}</em><time>${scheduleTimeText(plan)||""}</time></span>`).join("")}</div></div>`).join(""):'<div class="schedule-empty-wide">予定を登録すると、ここに表示されます</div>';
 }
-$("missionEditBtn").onclick=()=>openScheduleDialog(today());
+$("missionEditBtn").onclick=()=>{
+ $("missionTemplateInput").value=state.missionTemplate.join("\n");
+ openDialog($("missionDialog"));
+};
+$("closeMission").onclick=$("cancelMission").onclick=()=>closeDialog($("missionDialog"));
+$("missionForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const items=$("missionTemplateInput").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,8);
+ if(!items.length)return alert("ミッションを1つ以上入力してください");
+ state.missionTemplate=items;save();renderMission();renderMissionWorld();closeDialog($("missionDialog"));toast("今日のミッションを保存しました");
+});
 $("scheduleBtn").onclick=()=>openScheduleDialog(today());
 $("closeSchedule").onclick=$("cancelSchedule").onclick=()=>closeDialog($("scheduleDialog"));
 $("scheduleDate").onchange=renderScheduleEditor;

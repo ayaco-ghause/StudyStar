@@ -1152,3 +1152,36 @@ body.theme-night .ambient-sky i:nth-child(2){background:radial-gradient(circle,#
   .schedule-dialog-card{width:calc(100vw - 16px);padding:14px;border-radius:18px}
   .schedule-dialog-card input,.schedule-dialog-card select{font-size:16px;padding:11px 10px}
 }
+
+
+/* v1.1.2.2 実機確認修正 */
+.schedule-sun{display:none!important}
+.schedule-edit-button{
+  position:relative;z-index:3;min-width:190px;min-height:52px;padding:8px 16px!important;
+  display:inline-flex!important;align-items:center;justify-content:center;gap:10px;
+  border:1px solid rgba(235,177,30,.38)!important;border-radius:999px!important;
+  background:linear-gradient(180deg,#fffdf2,#fff6c9)!important;
+  box-shadow:0 5px 14px rgba(112,84,14,.12);font-size:15px!important;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer;
+}
+.schedule-edit-button span{font-size:22px;line-height:1;pointer-events:none}
+.schedule-edit-button b{pointer-events:none;white-space:nowrap}
+.schedule-edit-button:active{transform:scale(.98)}
+.today-plan-line{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;padding:7px 0}
+.today-plan-line b{min-width:0;overflow-wrap:anywhere}
+.today-plan-line time,.day-plan time{font-variant-numeric:tabular-nums;white-space:nowrap;color:#567060;font-weight:800}
+.day>div{display:grid;gap:7px;margin-top:9px}
+.day-plan{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;margin:0!important;text-align:left}
+.day-plan em{font-style:normal;min-width:0;overflow-wrap:anywhere}
+.mission-dialog-card{width:min(92vw,560px)}
+.mission-dialog-card textarea{width:100%;box-sizing:border-box;resize:vertical}
+@media(max-width:560px){
+ .home-schedule-card .section-head{align-items:flex-start;gap:8px}
+ .home-schedule-card .section-head h2{padding-top:11px}
+ .schedule-edit-button{min-width:166px;min-height:50px;padding:7px 11px!important;gap:7px;font-size:14px!important}
+ .schedule-edit-button span{font-size:20px}
+}
+@media(max-width:390px){
+ .home-schedule-card .section-head{display:grid;grid-template-columns:1fr}
+ .schedule-edit-button{width:100%}
+}

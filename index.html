@@ -46,8 +46,7 @@
 <small id="examEncourage">今日も一歩、前へ。</small>
 </div>
 <article class="schedule-card home-schedule-card">
-<div class="schedule-sun">☀</div>
-<div class="section-head"><h2>📅 今日の予定</h2><button id="scheduleBtn" type="button">予定を編集 ›</button></div>
+<div class="section-head"><h2>📅 今日の予定</h2><button class="schedule-edit-button" id="scheduleBtn" type="button"><span>☀️</span><b>予定を編集</b><span>☀️</span></button></div>
 <div class="today-feature">
 <div class="today-date"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
 <div class="today-plan" id="todayPlan"></div>
@@ -58,7 +57,7 @@
 <div class="mission-head"><span>◎ 今日のミッション</span><b id="missionWeather">☀</b></div>
 <p class="mission-whisper" id="missionWhisper">今日の一歩を、アドと一緒に。</p>
 <div id="missionList"></div>
-<button class="mission-edit" id="missionEditBtn" type="button">＋ 予定を登録する <span>›</span></button>
+<button class="mission-edit" id="missionEditBtn" type="button">＋ ミッションを編集する <span>›</span></button>
 </div>
 </section>
 <button class="action-card challenge" id="challengeBtn">
@@ -175,6 +174,16 @@
 <div class="tweet-dialog-ad"><span><img alt="" src="kaito-advance-world-300.png"/></span><p>今日の気持ちは、今日だけの大切な星だよ。</p></div>
 <label>今日のつぶやき<textarea id="tweetText" maxlength="160" placeholder="今日うれしかったこと、頑張ったことを書いてみよう😊" rows="5"></textarea></label>
 <div class="dialog-actions"><button class="sub" id="backTweet" type="button">戻る</button><button class="primary" id="saveTweet" type="submit">残す</button></div>
+</form>
+</dialog>
+
+
+<dialog id="missionDialog">
+<form class="dialog-card mission-dialog-card" id="missionForm">
+<div class="dialog-head"><h2>◎ 今日のミッションを編集</h2><button id="closeMission" type="button">×</button></div>
+<p class="rule-note">今日取り組むことを1行ずつ入力してください。</p>
+<label>ミッション<textarea id="missionTemplateInput" maxlength="240" rows="7" placeholder="Challenge45\n読書15分\n苦手克服\n学習時間を記録する"></textarea></label>
+<div class="dialog-actions"><button class="sub" id="cancelMission" type="button">キャンセル</button><button class="primary" type="submit">保存する</button></div>
 </form>
 </dialog>
 
