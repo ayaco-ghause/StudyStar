@@ -1078,3 +1078,29 @@ body.theme-night .ambient-sky i:nth-child(2){background:radial-gradient(circle,#
 .schedule-editor-list{margin-top:20px;padding-top:14px;border-top:1px solid #dbe8de}.schedule-editor-list h3{margin:0 0 10px;color:var(--deep)}
 .schedule-editor-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:11px 4px;border-bottom:1px solid #e5eee7}.schedule-editor-item>span{font-size:23px}.schedule-editor-item b,.schedule-editor-item small{display:block}.schedule-editor-item small{margin-top:3px;color:#68766d}.schedule-editor-item button{border:0;border-radius:10px;padding:8px 10px;background:#fff0f0;color:#b83d3d;font-weight:800}.schedule-editor-empty{text-align:center;color:#607568}
 @media(max-width:560px){.schedule-time-grid{grid-template-columns:1fr}.schedule-row{grid-template-columns:repeat(2,1fr)}}
+
+
+/* v1.1.3 ポイント設定・スマホ予定編集 */
+.schedule-card{display:block!important}
+.schedule-card .section-head button,.mission-edit{touch-action:manipulation;cursor:pointer}
+.parent-settings-section{margin-top:18px;padding-top:14px;border-top:1px solid #dce8df}
+.parent-settings-section h3{margin:0 0 12px;color:var(--deep)}
+.point-setting-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.reward-setting-list{display:grid;gap:8px}
+.reward-setting-row{display:grid!important;grid-template-columns:1fr minmax(90px,130px) auto;gap:8px;align-items:center;margin:0!important}
+.reward-setting-row input{text-align:right}
+#scheduleDialog[open],#parentDialog[open]{display:flex;align-items:center;justify-content:center}
+@media(max-width:700px){
+ .lower-grid{display:grid!important;grid-template-columns:1fr!important}
+ .schedule-card{display:block!important;padding:14px}
+ .schedule-row{grid-template-columns:1fr 1fr!important}
+ .today-feature{grid-template-columns:auto 1fr;gap:10px}
+ .schedule-dialog-card{width:min(94vw,520px);max-height:88vh;padding:16px;overflow:auto}
+ .point-setting-grid{grid-template-columns:1fr}
+ .reward-setting-row{grid-template-columns:1fr 100px auto}
+}
+@media(max-width:420px){
+ .schedule-row{grid-template-columns:1fr!important}
+ .today-feature{grid-template-columns:1fr}
+ .today-date{text-align:left}
+}
