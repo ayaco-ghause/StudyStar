@@ -1185,3 +1185,34 @@ body.theme-night .ambient-sky i:nth-child(2){background:radial-gradient(circle,#
  .home-schedule-card .section-head{display:grid;grid-template-columns:1fr}
  .schedule-edit-button{width:100%}
 }
+
+
+/* =========================================
+   Study☆Star v1.2.0 スケジュール機能
+   ========================================= */
+.home-day-block{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:start;padding:12px 0;border-top:1px solid #e2ece4}
+.home-day-block:first-of-type{border-top:0}
+.home-day-label{text-align:center;padding:8px 6px;border-radius:15px;background:linear-gradient(145deg,#eff9ef,#fff8dc)}
+.home-day-label small,.home-day-label strong{display:block}.home-day-label small{font-size:12px;color:#58705f}.home-day-label strong{font-size:18px;color:var(--deep);margin-top:2px}
+.tomorrow-block{margin-top:2px}
+.schedule-view-button{width:100%;margin-top:10px;border:1px solid #b9d9c0;border-radius:15px;padding:13px 16px;background:#f3fbf4;color:var(--deep);font-weight:900;display:flex;justify-content:center;align-items:center;gap:8px}
+.schedule-view-button span{font-size:22px}
+.time-select-field{margin:14px 0 0;padding:10px 12px 12px;border:1px solid #cbdccf;border-radius:14px;min-width:0}
+.time-select-field legend{padding:0 5px;font-weight:900;color:#355b40}
+.custom-time-row{display:grid;grid-template-columns:minmax(64px,1fr) auto minmax(64px,1fr) auto;gap:7px;align-items:center}
+.custom-time-row select{width:100%;margin:0!important;padding:12px 8px!important;text-align:center;font-size:18px;font-weight:800;background:#fbfffb}
+.schedule-item-actions{display:flex;gap:6px}.schedule-editor-item .edit-plan{background:#edf8ef;color:#08783f}
+.schedule-list-dialog-card{width:min(94vw,620px);max-height:88vh;overflow:auto}
+.schedule-full-list{margin:12px 0 18px}.schedule-date-group{margin:0 0 15px;border:1px solid #dbe9dd;border-radius:16px;overflow:hidden;background:#fff}
+.schedule-date-group h3{display:flex;align-items:center;gap:8px;margin:0;padding:10px 13px;background:#eff8ef;color:var(--deep)}
+.schedule-date-group h3 small{font-size:12px;background:#fff4c9;color:#806100;border-radius:99px;padding:3px 8px}
+.full-schedule-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:12px;border-top:1px solid #e7eee8}
+.full-schedule-item:first-of-type{border-top:0}.full-schedule-item>span{font-size:23px}.full-schedule-item b,.full-schedule-item small{display:block}.full-schedule-item small{color:#68766d;margin-top:2px}.full-schedule-item time{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:800;color:#567060}
+.full-schedule-item button{border:0;border-radius:9px;padding:7px 9px;font-weight:800;background:#edf8ef;color:#08783f}.full-schedule-item button:last-child{background:#fff0f0;color:#b83d3d}
+.schedule-list-empty{text-align:center;padding:28px 12px;color:#607568}
+@media(max-width:560px){
+ .home-day-block{grid-template-columns:62px minmax(0,1fr);gap:9px}.home-day-label strong{font-size:16px}
+ .schedule-time-grid{grid-template-columns:1fr 1fr!important}.custom-time-row{grid-template-columns:minmax(52px,1fr) auto minmax(52px,1fr) auto;gap:4px}.custom-time-row select{font-size:16px;padding:10px 4px!important}
+ .full-schedule-item{grid-template-columns:auto minmax(0,1fr) auto;gap:7px}.full-schedule-item time{grid-column:3}.full-schedule-item button{grid-row:2}.full-schedule-item button:nth-last-child(2){grid-column:2}.full-schedule-item button:last-child{grid-column:3}
+}
+@media(max-width:390px){.schedule-time-grid{grid-template-columns:1fr!important}.full-schedule-item time{font-size:13px}}

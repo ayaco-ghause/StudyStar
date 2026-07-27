@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0a9b4a" name="theme-color"/>
-<title>Study☆Star v1.1.2</title>
-<link href="styles-world-300.css?v=home-1-1-2-clean" rel="stylesheet"/>
+<title>Study☆Star v1.2.0</title>
+<link href="styles-world-300.css?v=1.1.2.3" rel="stylesheet"/>
 </head>
 <body>
 <div aria-hidden="true" class="ambient-sky"><i></i><i></i><i></i></div><div class="app-shell">
@@ -17,7 +17,7 @@
 <div class="brand-sub">合格を勝ち取る最強の自分へ</div>
 </div>
 <button aria-label="お知らせ" class="round-btn" id="noticeBtn">🔔</button>
-<span class="version">v1.1.2</span><span class="build-mark">HOME CLEAN</span>
+<span class="version">v1.2.0</span><span class="build-mark">SCHEDULE</span>
 </header>
 <main>
 <section class="hero-card">
@@ -46,12 +46,16 @@
 <small id="examEncourage">今日も一歩、前へ。</small>
 </div>
 <article class="schedule-card home-schedule-card">
-<div class="section-head"><h2>📅 今日の予定</h2><button class="schedule-edit-button" id="scheduleBtn" type="button"><span>☀️</span><b>予定を編集</b><span>☀️</span></button></div>
-<div class="today-feature">
-<div class="today-date"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
+<div class="section-head"><h2>📅 今日と明日の予定</h2><button class="schedule-edit-button" id="scheduleBtn" type="button"><span>＋</span><b>予定を登録</b></button></div>
+<div class="home-day-block">
+<div class="home-day-label"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
 <div class="today-plan" id="todayPlan"></div>
 </div>
-<div class="schedule-row" id="scheduleRow"></div>
+<div class="home-day-block tomorrow-block">
+<div class="home-day-label"><small>明日</small><strong id="tomorrowDateLabel">--/--</strong></div>
+<div class="today-plan" id="tomorrowPlan"></div>
+</div>
+<button class="schedule-view-button" id="scheduleViewBtn" type="button">📅 スケジュールを見る <span>›</span></button>
 </article>
 <div class="mission-card">
 <div class="mission-head"><span>◎ 今日のミッション</span><b id="missionWeather">☀</b></div>
@@ -195,10 +199,24 @@
 <option value="塾">塾</option><option value="模試">模試</option><option value="学校行事">学校行事</option><option value="その他">その他</option>
 </select></label>
 <label>予定名<input id="scheduleTitle" maxlength="40" placeholder="例：夏期講習" required type="text"/></label>
-<div class="schedule-time-grid"><label>開始時刻<input id="scheduleStart" type="time"/></label><label>終了時刻<input id="scheduleEnd" type="time"/></label></div>
-<div class="dialog-actions"><button class="sub" id="cancelSchedule" type="button">キャンセル</button><button class="primary" type="submit">登録する</button></div>
+<div class="schedule-time-grid">
+<fieldset class="time-select-field"><legend>開始時刻</legend><div class="custom-time-row"><select id="scheduleStartHour" aria-label="開始時刻の時"></select><span>時</span><select id="scheduleStartMinute" aria-label="開始時刻の分"></select><span>分</span></div></fieldset>
+<fieldset class="time-select-field"><legend>終了時刻</legend><div class="custom-time-row"><select id="scheduleEndHour" aria-label="終了時刻の時"></select><span>時</span><select id="scheduleEndMinute" aria-label="終了時刻の分"></select><span>分</span></div></fieldset>
+</div>
+<input id="scheduleEditingId" type="hidden"/>
+<input id="scheduleEditingDate" type="hidden"/>
+<div class="dialog-actions"><button class="sub" id="cancelSchedule" type="button">キャンセル</button><button class="primary" id="saveScheduleBtn" type="submit">登録する</button></div>
 <div class="schedule-editor-list" id="scheduleEditorList"></div>
 </form>
+</dialog>
+
+<dialog id="scheduleListDialog">
+<div class="dialog-card schedule-list-dialog-card">
+<div class="dialog-head"><h2>📅 スケジュール</h2><button id="closeScheduleList" type="button">×</button></div>
+<p class="rule-note">登録した先の予定を、日付順に確認できます。</p>
+<div id="scheduleFullList" class="schedule-full-list"></div>
+<button class="primary wide" id="addScheduleFromList" type="button">＋ 予定を登録する</button>
+</div>
 </dialog>
 <dialog id="listDialog">
 <div class="dialog-card list-dialog">
@@ -230,6 +248,6 @@
 </form>
 </dialog>
 <div class="toast" id="toast"></div>
-<script src="app-world-300.js?v=home-1-1-2-clean"></script>
+<script src="app-world-300.js?v=1.1.2.3"></script>
 </body>
 </html>

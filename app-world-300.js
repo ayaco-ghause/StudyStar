@@ -488,54 +488,91 @@ function openDialog(dialog){
  if(typeof dialog.showModal==="function"){if(!dialog.open)dialog.showModal()}else dialog.setAttribute("open","");
 }
 function closeDialog(dialog){if(typeof dialog.close==="function"&&dialog.open)dialog.close();else dialog.removeAttribute("open")}
-function openScheduleDialog(date=today()){
- $("scheduleDate").value=date;
- $("scheduleType").value="塾";
- $("scheduleTitle").value="";
- $("scheduleStart").value="";
- $("scheduleEnd").value="";
- renderScheduleEditor();
- openDialog($("scheduleDialog"));
+function addDays(dateString,days){
+ const d=new Date(dateString+"T00:00:00");d.setDate(d.getDate()+days);return d.toLocaleDateString("sv-SE");
+}
+function fillTimeSelects(){
+ const hourOptions='<option value="">--</option>'+Array.from({length:24},(_,i)=>`<option value="${String(i).padStart(2,"0")}">${String(i).padStart(2,"0")}</option>`).join("");
+ const minuteOptions='<option value="">--</option>'+[0,10,20,30,40,50].map(i=>`<option value="${String(i).padStart(2,"0")}">${String(i).padStart(2,"0")}</option>`).join("");
+ ["scheduleStartHour","scheduleEndHour"].forEach(id=>$(id).innerHTML=hourOptions);
+ ["scheduleStartMinute","scheduleEndMinute"].forEach(id=>$(id).innerHTML=minuteOptions);
+}
+fillTimeSelects();
+function setTimeFields(prefix,value=""){
+ const [h="",m=""]=value.split(":");
+ $(prefix+"Hour").value=h;$(prefix+"Minute").value=m;
+}
+function getTimeFields(prefix){
+ const h=$(prefix+"Hour").value,m=$(prefix+"Minute").value;
+ return h!==""&&m!==""?`${h}:${m}`:"";
+}
+function resetScheduleForm(date=today()){
+ $("scheduleDate").value=date;$("scheduleType").value="塾";$("scheduleTitle").value="";
+ setTimeFields("scheduleStart");setTimeFields("scheduleEnd");
+ $("scheduleEditingId").value="";$("scheduleEditingDate").value="";
+ $("saveScheduleBtn").textContent="登録する";
+}
+function openScheduleDialog(date=today(),plan=null){
+ resetScheduleForm(date);
+ if(plan){
+  $("scheduleDate").value=date;$("scheduleType").value=plan.type;$("scheduleTitle").value=plan.title;
+  setTimeFields("scheduleStart",plan.start||"");setTimeFields("scheduleEnd",plan.end||"");
+  $("scheduleEditingId").value=plan.id;$("scheduleEditingDate").value=date;
+  $("saveScheduleBtn").textContent="変更を保存";
+ }
+ renderScheduleEditor();openDialog($("scheduleDialog"));
 }
 function renderScheduleEditor(){
  const date=$("scheduleDate").value||today(), plans=plansFor(date);
- $("scheduleEditorList").innerHTML=plans.length?`<h3>${dateJP(date)}の登録予定</h3>`+plans.map(plan=>`<div class="schedule-editor-item"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></div><button type="button" data-delete-plan="${plan.id}">削除</button></div>`).join(""):'<p class="schedule-editor-empty">この日の予定はまだありません。</p>';
+ $("scheduleEditorList").innerHTML=plans.length?`<h3>${dateJP(date)}の登録予定</h3>`+plans.map(plan=>`<div class="schedule-editor-item"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}${scheduleTimeText(plan)?`　${scheduleTimeText(plan)}`:""}</small></div><div class="schedule-item-actions"><button type="button" class="edit-plan" data-edit-plan="${plan.id}">編集</button><button type="button" data-delete-plan="${plan.id}">削除</button></div></div>`).join(""):'<p class="schedule-editor-empty">この日の予定はまだありません。</p>';
+ document.querySelectorAll("[data-edit-plan]").forEach(btn=>btn.onclick=()=>openScheduleDialog(date,plans.find(p=>p.id===btn.dataset.editPlan)));
  document.querySelectorAll("[data-delete-plan]").forEach(btn=>btn.onclick=()=>{
-  state.schedules[date]=plans.filter(plan=>plan.id!==btn.dataset.deletePlan);
-  save();renderScheduleEditor();renderAll();
+  if(!confirm("この予定を削除しますか？"))return;
+  state.schedules[date]=plans.filter(plan=>plan.id!==btn.dataset.deletePlan);save();renderScheduleEditor();renderAll();renderFullSchedule();
  });
 }
+function renderPlanLines(plans,emptyText){
+ return plans.length?plans.map(plan=>`<div class="today-plan-line"><span>${scheduleIcon(plan.type)}</span><b>${plan.title}</b><time>${scheduleTimeText(plan)||"時刻未設定"}</time></div>`).join(""):`<div class="today-plan-empty">${emptyText}</div>`;
+}
 function renderSchedule(){
- const key=today(), plans=plansFor(key);
- $("todayDateLabel").textContent=dateJP(key);
- $("todayPlan").innerHTML=plans.length?plans.map(plan=>`<div class="today-plan-line"><span>${scheduleIcon(plan.type)}</span><b>${plan.title}</b><time>${scheduleTimeText(plan)||"時刻未設定"}</time></div>`).join(""):'<div class="today-plan-empty">今日は登録された予定はありません</div>';
- const dates=Object.keys(state.schedules).filter(date=>date>=key&&plansFor(date).length).sort().slice(0,4);
- $("scheduleRow").innerHTML=dates.length?dates.map(date=>`<div class="day ${date===key?"today":""}"><b>${dateJP(date)}</b><div>${plansFor(date).map(plan=>`<span class="day-plan"><em>${scheduleIcon(plan.type)} ${plan.title}</em><time>${scheduleTimeText(plan)||""}</time></span>`).join("")}</div></div>`).join(""):'<div class="schedule-empty-wide">予定を登録すると、ここに表示されます</div>';
+ const key=today(),tomorrow=addDays(key,1);
+ $("todayDateLabel").textContent=dateJP(key);$("tomorrowDateLabel").textContent=dateJP(tomorrow);
+ $("todayPlan").innerHTML=renderPlanLines(plansFor(key),"今日の予定はありません");
+ $("tomorrowPlan").innerHTML=renderPlanLines(plansFor(tomorrow),"明日の予定はありません");
+}
+function renderFullSchedule(){
+ const container=$("scheduleFullList");if(!container)return;
+ const dates=Object.keys(state.schedules).filter(date=>date>=today()&&plansFor(date).length).sort();
+ container.innerHTML=dates.length?dates.map(date=>`<section class="schedule-date-group"><h3><span>${dateJP(date)}</span><small>${date===today()?"今日":date===addDays(today(),1)?"明日":""}</small></h3>${plansFor(date).map(plan=>`<div class="full-schedule-item"><span>${scheduleIcon(plan.type)}</span><div><b>${plan.title}</b><small>${plan.type}</small></div><time>${scheduleTimeText(plan)||"時刻未設定"}</time><button type="button" data-full-edit="${date}|${plan.id}">編集</button><button type="button" data-full-delete="${date}|${plan.id}">削除</button></div>`).join("")}</section>`).join(""):'<div class="schedule-list-empty">先の予定はまだ登録されていません。</div>';
+ document.querySelectorAll("[data-full-edit]").forEach(btn=>btn.onclick=()=>{const [date,id]=btn.dataset.fullEdit.split("|");closeDialog($("scheduleListDialog"));openScheduleDialog(date,plansFor(date).find(p=>p.id===id));});
+ document.querySelectorAll("[data-full-delete]").forEach(btn=>btn.onclick=()=>{const [date,id]=btn.dataset.fullDelete.split("|");if(!confirm("この予定を削除しますか？"))return;state.schedules[date]=plansFor(date).filter(p=>p.id!==id);save();renderFullSchedule();renderAll();});
 }
 $("missionEditBtn").onclick=()=>{
- $("missionTemplateInput").value=state.missionTemplate.join("\n");
- openDialog($("missionDialog"));
+ $("missionTemplateInput").value=state.missionTemplate.join("\n");openDialog($("missionDialog"));
 };
 $("closeMission").onclick=$("cancelMission").onclick=()=>closeDialog($("missionDialog"));
 $("missionForm").addEventListener("submit",e=>{
- e.preventDefault();
- const items=$("missionTemplateInput").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,8);
+ e.preventDefault();const items=$("missionTemplateInput").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,8);
  if(!items.length)return alert("ミッションを1つ以上入力してください");
  state.missionTemplate=items;save();renderMission();renderMissionWorld();closeDialog($("missionDialog"));toast("今日のミッションを保存しました");
 });
 $("scheduleBtn").onclick=()=>openScheduleDialog(today());
+$("scheduleViewBtn").onclick=()=>{renderFullSchedule();openDialog($("scheduleListDialog"));};
+$("closeScheduleList").onclick=()=>closeDialog($("scheduleListDialog"));
+$("addScheduleFromList").onclick=()=>{closeDialog($("scheduleListDialog"));openScheduleDialog(today());};
 $("closeSchedule").onclick=$("cancelSchedule").onclick=()=>closeDialog($("scheduleDialog"));
-$("scheduleDate").onchange=renderScheduleEditor;
+$("scheduleDate").onchange=()=>{if(!$("scheduleEditingId").value)renderScheduleEditor();};
 $("scheduleType").onchange=()=>{if(!$("scheduleTitle").value.trim())$("scheduleTitle").value=$("scheduleType").value};
 $("scheduleForm").addEventListener("submit",e=>{
- e.preventDefault();
- const date=$("scheduleDate").value, type=$("scheduleType").value, title=$("scheduleTitle").value.trim();
+ e.preventDefault();const date=$("scheduleDate").value,type=$("scheduleType").value,title=$("scheduleTitle").value.trim();
  if(!date||!title)return;
- const plan={id:crypto.randomUUID(),type,title,start:$("scheduleStart").value,end:$("scheduleEnd").value};
- state.schedules[date]=plansFor(date).concat(plan);
- save();renderScheduleEditor();renderAll();
- $("scheduleTitle").value="";$("scheduleStart").value="";$("scheduleEnd").value="";
- toast("予定を登録しました");
+ const start=getTimeFields("scheduleStart"),end=getTimeFields("scheduleEnd");
+ if((start&&!end)||(!start&&end))return alert("開始時刻と終了時刻は、両方選んでください。");
+ if(start&&end&&end<=start)return alert("終了時刻は開始時刻より後にしてください。");
+ const editId=$("scheduleEditingId").value,oldDate=$("scheduleEditingDate").value;
+ const plan={id:editId||crypto.randomUUID(),type,title,start,end};
+ if(editId){state.schedules[oldDate]=plansFor(oldDate).filter(p=>p.id!==editId)}
+ state.schedules[date]=plansFor(date).concat(plan);save();renderAll();closeDialog($("scheduleDialog"));toast(editId?"予定を変更しました":"予定を登録しました");
 });
 $("menuBtn").onclick=()=>{
  openList("Study☆Star メニュー",`<p>アドと一緒に、今日の一歩を残そう。</p><button class="primary wide" id="parentOpen">保護者モード</button><p class="rule-note">現在のポイントルール<br>Challenge45：1・2回目 ${state.pointSettings.challengeFirstTwo}P／3回目以降 ${state.pointSettings.challengeThirdPlus}P<br>その他の学習：1分＝${state.pointSettings.manualPerMinute}P</p>`);
@@ -570,7 +607,7 @@ $("parentForm").addEventListener("submit",e=>{
 });
 
 /* ダイアログの外側を押したときに閉じる */
-["recordDialog","tweetDialog","scheduleDialog","listDialog","parentDialog"].forEach(id=>{
+["recordDialog","tweetDialog","scheduleDialog","scheduleListDialog","listDialog","parentDialog"].forEach(id=>{
  const d=$(id);
  d.addEventListener("click",e=>{
   const r=d.getBoundingClientRect();
