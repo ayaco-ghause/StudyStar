@@ -493,7 +493,7 @@ function addDays(dateString,days){
 }
 function fillTimeSelects(){
  const hourOptions='<option value="">--</option>'+Array.from({length:24},(_,i)=>`<option value="${String(i).padStart(2,"0")}">${String(i).padStart(2,"0")}</option>`).join("");
- const minuteOptions='<option value="">--</option>'+[0,10,20,30,40,50].map(i=>`<option value="${String(i).padStart(2,"0")}">${String(i).padStart(2,"0")}</option>`).join("");
+ const minuteOptions='<option value="">--</option>'+Array.from({length:12},(_,i)=>i*5).map(i=>`<option value="${String(i).padStart(2,"0")}">${String(i).padStart(2,"0")}</option>`).join("");
  ["scheduleStartHour","scheduleEndHour"].forEach(id=>$(id).innerHTML=hourOptions);
  ["scheduleStartMinute","scheduleEndMinute"].forEach(id=>$(id).innerHTML=minuteOptions);
 }
