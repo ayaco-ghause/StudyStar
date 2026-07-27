@@ -343,16 +343,7 @@ function updateTimer(){
 }
 function processChallengeThresholds(){
  if(!challengeSession||challengeSession.status!=="running")return;
- const ms=currentRemainingMs();
- if(ms<=0){completeChallenge();return}
- // スリープ中に両方を通過した場合は、その時点で近い方だけを知らせます。
- if(ms<=5*60*1000&&!challengeSession.alerted5){
-  challengeSession.alerted10=true;challengeSession.alerted5=true;saveChallengeSession();
-  showChallengeAlert("あと5分。一緒にいこう。",2);
- }else if(ms<=10*60*1000&&!challengeSession.alerted10){
-  challengeSession.alerted10=true;saveChallengeSession();
-  showChallengeAlert("残り10分だよ。",1);
- }
+ if(currentRemainingMs()<=0)completeChallenge();
 }
 function tick(){updateTimer();processChallengeThresholds()}
 function startChallengeClock(){
@@ -403,15 +394,27 @@ function restoreChallenge(){syncChallengeFromStorage()}
 $("challengeBtn").onclick=()=>{
  challengeSession=readChallengeSession();
  if(challengeSession){showRunningChallenge();if(challengeSession.status==="running")startChallengeClock()}
- else{$("challengeReady").hidden=false;$("challengeRunning").hidden=true;remaining=CHALLENGE_SECONDS;updateTimer()}
+ else{$("challengeReady").hidden=false;$("challengeSendoff").hidden=true;$("challengeRunning").hidden=true;remaining=CHALLENGE_SECONDS;updateTimer()}
  $("challengeDialog").showModal();
 };
-$("closeChallenge").onclick=()=>{if(challengeSession)return alert("進行中はキャンセルボタンを使ってください");$("challengeDialog").close()};
+$("closeChallenge").onclick=()=>{if(challengeSession||challengeStarting)return alert("開始中・進行中は閉じられません");$("challengeDialog").close()};
+let challengeStarting=false;
 $("startChallenge").onclick=()=>{
- ensureChallengeAudio();
- const now=Date.now(),category=$("challengeCategory").value;
- challengeSession={status:"running",category,dateStarted:today(),startedAt:now,endAt:now+CHALLENGE_SECONDS*1000,pausedRemainingMs:null,alerted10:false,alerted5:false};
- saveChallengeSession();showRunningChallenge();startChallengeClock();
+ if(challengeStarting)return;
+ challengeStarting=true;
+ const category=$("challengeCategory").value;
+ $("challengeReady").hidden=true;
+ $("challengeRunning").hidden=true;
+ $("challengeSendoff").hidden=false;
+ setTimeout(()=>{
+  const now=Date.now();
+  challengeSession={status:"running",category,dateStarted:today(),startedAt:now,endAt:now+CHALLENGE_SECONDS*1000,pausedRemainingMs:null};
+  saveChallengeSession();
+  $("challengeSendoff").hidden=true;
+  showRunningChallenge();
+  startChallengeClock();
+  challengeStarting=false;
+ },1700);
 };
 $("pauseChallenge").onclick=()=>{
  if(!challengeSession)return;
@@ -437,19 +440,32 @@ const CHALLENGE_COMPLETE_MESSAGES=[
 function randomChallengeMessage(){
  return CHALLENGE_COMPLETE_MESSAGES[Math.floor(Math.random()*CHALLENGE_COMPLETE_MESSAGES.length)];
 }
+function showChallengeComplete({count,points,message,isReturn}){
+ const card=$("challengeCompleteCard");
+ card.classList.toggle("third-plus",count>=3);
+ $("completeWelcome").textContent=isReturn?"おかえり！":"やったね！";
+ $("completeMessage").textContent=message;
+ $("completeCount").textContent=`今日${count}回目のChallenge45`;
+ $("completePoints").textContent=`+${points}P`;
+ openDialog($("challengeCompleteDialog"));
+ challengeBeep(count>=3?4:3);
+}
+$("closeChallengeComplete").onclick=()=>closeDialog($("challengeCompleteDialog"));
+
 function completeChallenge(){
  if(challengeCompleting||!challengeSession)return;
  challengeCompleting=true;clearChallengeTimer();
  const session=challengeSession;
- const date=session.dateStarted||today(),count=state.challengeCounts[date]||0,points=count<2?Number(state.pointSettings.challengeFirstTwo||0):Number(state.pointSettings.challengeThirdPlus||0),category=session.category||$("challengeCategory").value;
- state.challengeCounts[date]=count+1;state.points+=points;
+ const finishedWhileAway=Number(session.endAt)>0&&Date.now()-Number(session.endAt)>900;
+ const date=session.dateStarted||today(),previousCount=state.challengeCounts[date]||0,completedCount=previousCount+1;
+ const points=previousCount<2?Number(state.pointSettings.challengeFirstTwo||0):Number(state.pointSettings.challengeThirdPlus||0),category=session.category||$("challengeCategory").value;
+ state.challengeCounts[date]=completedCount;state.points+=points;
  state.records.push({id:crypto.randomUUID(),date,category,minutes:45,memo:"Challenge45 完了",type:"challenge",points,createdAt:Date.now()});
  challengeSession=null;saveChallengeSession();save();
  if($("challengeDialog").open)$("challengeDialog").close();renderAll();
- animateAd("celebrate","ばんざーい！",true);
- challengeBeep(3);
- const adMessage=randomChallengeMessage();
- alert(`よし、チャージ完了！\n\nアド：${adMessage}\n\nDream Bankに ${points}P 貯まりました。\nカイトもひと休憩しよう😊`);
+ animateAd("celebrate",completedCount>=3?`${points}P GET！`:"おかえり！",true);
+ const message=completedCount>=3?"45分をやり切ったね！3回目からは特別な88P！":"45分、最後までよく頑張ったね！";
+ showChallengeComplete({count:completedCount,points,message,isReturn:finishedWhileAway});
  challengeCompleting=false;
 }
 

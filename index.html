@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <meta content="#0a9b4a" name="theme-color"/>
-<title>Study☆Star v1.2.1</title>
-<link href="styles-world-300.css?v=1.2.1" rel="stylesheet"/>
+<title>Study☆Star v1.2.2</title>
+<link href="styles-world-300.css?v=1.2.2" rel="stylesheet"/>
 </head>
 <body>
 <div aria-hidden="true" class="ambient-sky"><i></i><i></i><i></i></div><div class="app-shell">
@@ -17,7 +17,7 @@
 <div class="brand-sub">合格を勝ち取る最強の自分へ</div>
 </div>
 <button aria-label="お知らせ" class="round-btn" id="noticeBtn">🔔</button>
-<span class="version">v1.2.1</span><span class="build-mark">SCHEDULE</span>
+<span class="version">v1.2.2</span><span class="build-mark">SCHEDULE</span>
 </header>
 <main>
 <section class="hero-card">
@@ -46,14 +46,14 @@
 <small id="examEncourage">今日も一歩、前へ。</small>
 </div>
 <article class="schedule-card home-schedule-card">
-<div class="section-head"><h2>📅 今日と明日の予定</h2><button class="schedule-edit-button" id="scheduleBtn" type="button"><span>＋</span><b>予定を登録</b></button></div>
+<div class="section-head"><h2>📅 今日の予定</h2><button class="schedule-edit-button" id="scheduleBtn" type="button"><span>＋</span><b>予定を登録</b></button></div>
 <div class="home-day-block">
 <div class="home-day-label"><small>今日</small><strong id="todayDateLabel">--/--</strong></div>
 <div class="today-plan" id="todayPlan"></div>
 </div>
 <div class="home-day-block tomorrow-block">
-<div class="home-day-label"><small>明日</small><strong id="tomorrowDateLabel">--/--</strong></div>
-<div class="today-plan" id="tomorrowPlan"></div>
+<div class="tomorrow-subhead"><span>🌱 明日の予定</span><strong id="tomorrowDateLabel">--/--</strong></div>
+<div class="today-plan tomorrow-plan" id="tomorrowPlan"></div>
 </div>
 <button class="schedule-view-button" id="scheduleViewBtn" type="button">📅 スケジュールを見る <span>›</span></button>
 </article>
@@ -164,11 +164,30 @@
 <div class="ready-badge">READY</div>
 <button class="primary wide" id="startChallenge">START</button>
 </div>
+<div hidden="" id="challengeSendoff" class="challenge-sendoff" aria-live="polite">
+<div class="sendoff-ad">⭐</div>
+<p><strong>いってらっしゃい！</strong><br/>45分後に待ってるよ！</p>
+</div>
 <div hidden="" id="challengeRunning">
 <div class="timer" id="timerText">45:00</div>
 <p id="timerCategory"></p>
 <div class="timer-actions"><button class="sub" id="pauseChallenge">一時停止</button><button class="danger" id="cancelChallenge">キャンセル</button></div>
 </div>
+</div>
+</dialog>
+
+<dialog id="challengeCompleteDialog">
+<div class="dialog-card challenge-complete-card" id="challengeCompleteCard">
+<div class="confetti" aria-hidden="true">
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+</div>
+<div class="complete-stars" aria-hidden="true">✦ ⭐ ✦</div>
+<p class="complete-label">Challenge Complete!</p>
+<h2 id="completeWelcome">おかえり！</h2>
+<p class="complete-message" id="completeMessage">45分、最後までよく頑張ったね！</p>
+<div class="complete-count" id="completeCount">今日1回目のChallenge45</div>
+<div class="complete-points"><strong id="completePoints">+55P</strong><span>Dream Bankへ</span></div>
+<button class="primary wide" id="closeChallengeComplete" type="button">ホームへ戻る</button>
 </div>
 </dialog>
 <dialog id="tweetDialog">
@@ -248,6 +267,6 @@
 </form>
 </dialog>
 <div class="toast" id="toast"></div>
-<script src="app-world-300.js?v=1.2.1"></script>
+<script src="app-world-300.js?v=1.2.2"></script>
 </body>
 </html>
