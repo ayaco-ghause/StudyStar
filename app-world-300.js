@@ -187,8 +187,15 @@ function renderBank(){
  $("nextRewardText").textContent=before?`${next.name}まであと ${before}P`:`${next.name}に交換できます`;
  $("bankBar").style.width=`${Math.min(100,state.points/next.points*100)}%`;
 }
+function sortStudyRecords(records){
+ return [...records].sort((a,b)=>{
+  const dateCompare=String(b.date||"").localeCompare(String(a.date||""));
+  if(dateCompare!==0)return dateCompare;
+  return (b.createdAt||0)-(a.createdAt||0);
+ });
+}
 function renderRecords(){
- const rows=[...state.records].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+ const rows=sortStudyRecords(state.records).slice(0,5);
  $("recentRecords").innerHTML=rows.length?rows.map(r=>`
  <div class="record-row">
  <span>${dateJP(r.date)}</span><div><strong>${r.category}</strong><small>${r.memo||""}</small></div>
@@ -497,7 +504,7 @@ $("tweetForm").addEventListener("submit",e=>{
 function openList(title,html){$("listTitle").textContent=title;$("listContent").innerHTML=html;$("listDialog").showModal()}
 $("closeList").onclick=()=>$("listDialog").close();
 $("allTweetsBtn").onclick=()=>openList("つぶやき帳",state.tweets.length?[...state.tweets].sort((a,b)=>b.createdAt-a.createdAt).map(t=>`<div class="recent-row"><span>${dateJP(t.date)}</span><span>${t.text}</span></div>`).join(""):'<div class="empty">まだつぶやきはありません</div>');
-$("historyBtn").onclick=()=>openList("学習記録",state.records.length?[...state.records].sort((a,b)=>b.createdAt-a.createdAt).map(r=>`<div class="record-row"><span>${dateJP(r.date)}</span><div><strong>${r.category}</strong><small>${r.memo||""}</small></div><span>${minText(r.minutes)} / +${r.points||0}P</span></div>`).join(""):'<div class="empty">まだ学習記録はありません</div>');
+$("historyBtn").onclick=()=>openList("学習記録",state.records.length?sortStudyRecords(state.records).map(r=>`<div class="record-row"><span>${dateJP(r.date)}</span><div><strong>${r.category}</strong><small>${r.memo||""}</small></div><span>${minText(r.minutes)} / +${r.points||0}P</span></div>`).join(""):'<div class="empty">まだ学習記録はありません</div>');
 $("bankBtn").onclick=$("navBank").onclick=()=>openList("ごほうびリスト",rewards().map(r=>`<div class="record-row"><span>${r.points}P</span><strong>${r.name}</strong><span>${state.points>=r.points?"交換できます":"あと "+(r.points-state.points)+"P"}</span></div>`).join(""));
 $("jumpBtn").onclick=$("navJump").onclick=()=>openList("Jump Sky",`<p>Challenge45を1回完了するごとに、今日の空に星が1つ灯ります。</p><div class="stars">${$("todayStars").textContent}</div><p>${$("jumpMessage").textContent}</p>`);
 function openDialog(dialog){
